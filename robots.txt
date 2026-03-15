@@ -1,0 +1,3 @@
+User-agent: *
+Allow: /
+Sitemap: https://artefactos.pro/sitemap.xml

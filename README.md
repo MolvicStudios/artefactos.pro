@@ -36,24 +36,9 @@ artefactos/                     ← Raíz (Cloudflare Pages)
 - El usuario aporta su clave Groq gratuita (sin registro, sin backend)
 - Clave se almacena en `localStorage` con key `artefactos_groq_key`
 
-## Configurar AdSense
+## Monetización
 
-El proyecto usa Google AdSense con Publisher ID `ca-pub-1513893788851225`.
-
-Hay **3 slots** con placeholders que debes reemplazar con los IDs reales de tus unidades de anuncio:
-
-| Placeholder    | Ubicación                        | Archivo(s)                    |
-|---------------|----------------------------------|-------------------------------|
-| `SLOT_HEADER` | Banner debajo del header         | `index.html`                  |
-| `SLOT_MID`    | Banner entre filas 2–3 del grid  | `js/main.js`                  |
-| `SLOT_FOOTER` | Banner sobre el footer           | `index.html`                  |
-
-### Pasos:
-
-1. Entra a tu [cuenta AdSense](https://www.google.com/adsense/)
-2. Crea 3 unidades de anuncio (tipo "Display" responsive)
-3. Copia el `data-ad-slot` de cada una
-4. Busca y reemplaza `SLOT_HEADER`, `SLOT_MID` y `SLOT_FOOTER` en los archivos indicados
+Se usa **Monetag** (auto-inyección vía tag). No necesita slots HTML ni configuración adicional en el código.
 
 ## Deploy en Cloudflare Pages
 

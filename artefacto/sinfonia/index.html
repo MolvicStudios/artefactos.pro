@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="es" data-theme="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <script>
+    (function(){
+      var t = localStorage.getItem('artefactos_theme');
+      if (t === 'light' || t === 'dark') document.documentElement.setAttribute('data-theme', t);
+      else if (window.matchMedia('(prefers-color-scheme: light)').matches) document.documentElement.setAttribute('data-theme', 'light');
+    })();
+  </script>
+  <title>Sinfonía Generativa — Artefactos.pro</title>
+  <meta name="description" content="Sinfonía Generativa convierte descripciones textuales en composiciones musicales conceptuales. La IA genera una partitura narrativa que el canvas visual interpreta en tiempo real con formas, colores y movimiento. Una experiencia sinestésica donde el texto se convierte en música visual. Gratis, sin registro.">
+  <link rel="canonical" href="https://artefactos.pro/artefacto/sinfonia/">
+  <meta property="og:title" content="Sinfonía Generativa — Artefactos.pro">
+  <meta property="og:description" content="Sinfonía Generativa convierte descripciones textuales en composiciones musicales conceptuales.">
+  <meta property="og:url" content="https://artefactos.pro/artefacto/sinfonia/">
+  <meta property="og:type" content="website">
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "SoftwareApplication",
+    "name": "Sinfonía Generativa",
+    "url": "https://artefactos.pro/artefacto/sinfonia/",
+    "applicationCategory": "EntertainmentApplication",
+    "operatingSystem": "Web",
+    "offers": { "@type": "Offer", "price": "0", "priceCurrency": "EUR" },
+    "description": "Sinfonía Generativa convierte descripciones textuales en composiciones musicales conceptuales. La IA genera una partitura narrativa que el canvas visual interpreta en tiempo real con formas, colores y movimiento. Una experiencia sinestésica donde el texto se convierte en música visual."
+  }
+  </script>
+  <link rel="manifest" href="/manifest.json">
+  <meta name="theme-color" content="#e8c96a">
+  <link rel="icon" href="/icons/icon-192.svg" type="image/svg+xml">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;700&family=Instrument+Serif&family=Syne:wght@600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/styles/main.css">
+  <style>
+    .seo-hero{text-align:center;padding:var(--space-2xl) var(--space-xl);max-width:720px;margin:0 auto}
+    .seo-hero .icon{font-size:4rem;margin-bottom:var(--space-md)}
+    .seo-hero h1{font-family:'Instrument Serif',Georgia,serif;font-size:clamp(2rem,4vw,3rem);color:var(--accent);margin-bottom:var(--space-md)}
+    .seo-hero p{font-size:1.1rem;color:var(--text-dim);line-height:1.7;margin-bottom:var(--space-xl)}
+    .features{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:var(--space-md);max-width:720px;margin:0 auto var(--space-xl);padding:0 var(--space-xl)}
+    .feature{background:var(--bg-card);border:1px solid var(--border);border-radius:var(--radius-md);padding:var(--space-lg);text-align:center}
+    .feature span{font-size:1.5rem;display:block;margin-bottom:var(--space-sm)}
+    .feature p{color:var(--text-dim);font-size:0.9rem}
+    .how-it-works{text-align:center;padding:var(--space-xl);max-width:600px;margin:0 auto}
+    .how-it-works h2{font-family:'Syne',sans-serif;font-size:1.4rem;margin-bottom:var(--space-md);color:var(--text)}
+    .how-it-works p{color:var(--text-dim);margin-bottom:var(--space-xl)}
+    .cta-btn{display:inline-block;background:var(--accent);color:var(--bg);padding:.85rem 2.5rem;border-radius:var(--radius-full);font-weight:700;font-size:1.05rem;transition:opacity .2s;text-decoration:none}
+    .cta-btn:hover{opacity:.85}
+    .back-link{display:inline-block;margin-top:var(--space-lg);color:var(--text-muted);font-size:0.9rem;transition:color .2s}
+    .back-link:hover{color:var(--accent)}
+  </style>
+</head>
+<body>
+  <div class="grain" aria-hidden="true"></div>
+  <header class="site-header">
+    <div class="header-inner">
+      <a href="/" class="logo">Artefactos<span>.pro</span></a>
+    </div>
+  </header>
+  <section class="seo-hero">
+    <div class="icon">🎼</div>
+    <h1>Sinfonía Generativa</h1>
+    <p>Sinfonía Generativa convierte descripciones textuales en composiciones musicales conceptuales. La IA genera una partitura narrativa que el canvas visual interpreta en tiempo real con formas, colores y movimiento. Una experiencia sinestésica donde el texto se convierte en música visual.</p>
+  </section>
+  <div class="features">
+    <div class="feature"><span>✦</span><p>Composición musical conceptual con IA</p></div>
+    <div class="feature"><span>✦</span><p>Visualización en canvas en tiempo real</p></div>
+    <div class="feature"><span>✦</span><p>Experiencia sinestésica única</p></div>
+    <div class="feature"><span>✦</span><p>Bilingüe ES/EN</p></div>
+  </div>
+  <section class="how-it-works">
+    <h2>¿Cómo funciona?</h2>
+    <p>Describe una emoción o escena y observa la sinfonía visual</p>
+    <a href="/artefactos/diversion/sinfonia/" class="cta-btn">Abrir Sinfonía Generativa</a>
+    <br>
+    <a href="/" class="back-link">← Volver a todos los artefactos</a>
+  </section>
+  <footer class="site-footer">
+    <p>© 2025 Artefactos.pro</p>
+  </footer>
+</body>
+</html>

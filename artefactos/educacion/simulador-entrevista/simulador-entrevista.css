@@ -1,0 +1,90 @@
+/* simulador-entrevista.css — Simulador de Entrevista */
+:root {
+  --acento: #fbbf24;
+  --bg-base: #060d1a;
+  --bg-panel: rgba(255,255,255,0.03);
+  --texto-claro: #f0ece6;
+  --texto-sec: #94a3b8;
+  --texto-muted: #475569;
+  --borde: rgba(255,255,255,0.06);
+  --azul-corp: #3b82f6;
+  --verde: #4ade80;
+  --rojo: #f87171;
+}
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+body {
+  font-family: 'DM Sans', sans-serif; background: var(--bg-base); color: var(--texto-claro);
+  min-height: 100vh; line-height: 1.6;
+}
+
+.art-header { display: flex; align-items: center; justify-content: space-between; padding: 1rem 1.5rem; border-bottom: 1px solid var(--borde); }
+.art-header-left { display: flex; align-items: center; gap: 0.75rem; }
+.back-link { color: var(--texto-sec); text-decoration: none; font-size: 0.85rem; transition: color 0.2s; }
+.back-link:hover { color: var(--acento); }
+.cat-badge { font-size: 0.7rem; text-transform: uppercase; letter-spacing: 0.06em; background: rgba(251,191,36,0.12); color: var(--acento); padding: 0.15rem 0.55rem; border-radius: 20px; }
+
+.main-wrap { max-width: 680px; margin: 0 auto; padding: 2rem 1.5rem 4rem; }
+h1 { font-family: 'Inter Tight', sans-serif; font-weight: 500; font-size: clamp(1.6rem, 3.5vw, 2rem); margin-bottom: 0.3rem; }
+.subtitulo { color: var(--texto-sec); font-size: 0.9rem; margin-bottom: 1.5rem; }
+
+/* Controles */
+.campo { width: 100%; padding: 0.65rem 0.9rem; background: rgba(255,255,255,0.04); border: 1px solid var(--borde); border-radius: 8px; color: var(--texto-claro); font-family: 'DM Sans', sans-serif; font-size: 0.9rem; outline: none; transition: border-color 0.2s; margin-bottom: 0.5rem; }
+.campo:focus { border-color: var(--azul-corp); }
+.campo::placeholder { color: var(--texto-muted); }
+
+.selector-row { display: flex; gap: 0.75rem; margin-bottom: 0.75rem; flex-wrap: wrap; }
+.selector-grupo { flex: 1; min-width: 120px; }
+.selector-label { font-size: 0.7rem; color: var(--texto-sec); text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 0.3rem; display: block; }
+.pills { display: flex; flex-wrap: wrap; gap: 0.3rem; }
+.pill { padding: 0.2rem 0.55rem; border-radius: 20px; border: 1px solid var(--borde); background: transparent; color: var(--texto-sec); font-size: 0.7rem; font-family: 'DM Sans', sans-serif; cursor: pointer; transition: all 0.2s; }
+.pill:hover { border-color: var(--azul-corp); color: var(--texto-claro); }
+.pill.active { background: var(--azul-corp); color: #fff; border-color: var(--azul-corp); }
+
+.btn-principal { width: 100%; padding: 0.7rem; background: var(--azul-corp); color: #fff; font-family: 'DM Sans', sans-serif; font-weight: 500; font-size: 0.9rem; border: none; border-radius: 8px; cursor: pointer; transition: opacity 0.2s; }
+.btn-principal:hover { opacity: 0.85; }
+.btn-principal:disabled { opacity: 0.4; cursor: not-allowed; }
+
+/* Entrevista activa */
+.entrevista-progress { display: flex; align-items: center; gap: 0.5rem; margin-bottom: 1rem; }
+.progress-bar { flex: 1; height: 4px; background: rgba(255,255,255,0.08); border-radius: 2px; overflow: hidden; }
+.progress-fill { height: 100%; background: var(--azul-corp); transition: width 0.3s; }
+.progress-label { font-size: 0.7rem; color: var(--texto-muted); }
+
+/* Avatar entrevistador */
+.avatar-zona { text-align: center; margin-bottom: 1rem; }
+.avatar-svg { width: 48px; height: 48px; }
+.avatar-nombre { font-family: 'Inter Tight', sans-serif; font-size: 0.8rem; color: var(--texto-sec); margin-top: 0.25rem; }
+
+.pregunta-entrevista {
+  font-family: 'Inter Tight', sans-serif; font-weight: 500;
+  font-size: 1.05rem; text-align: center; margin-bottom: 1.25rem;
+  line-height: 1.5; animation: fadeIn 0.4s ease;
+}
+
+textarea.resp-area { width: 100%; min-height: 100px; resize: vertical; padding: 0.7rem; background: rgba(255,255,255,0.04); border: 1px solid var(--borde); border-radius: 8px; color: var(--texto-claro); font-family: 'DM Sans', sans-serif; font-size: 0.9rem; outline: none; }
+textarea.resp-area:focus { border-color: var(--azul-corp); }
+.btn-responder { width: 100%; padding: 0.6rem; margin-top: 0.5rem; background: var(--azul-corp); color: #fff; border: none; border-radius: 8px; font-family: 'DM Sans', sans-serif; font-weight: 500; cursor: pointer; }
+.btn-responder:disabled { opacity: 0.4; cursor: not-allowed; }
+
+/* Feedback por pregunta */
+.feedback-pregunta { padding: 1rem; background: var(--bg-panel); border: 1px solid var(--borde); border-radius: 10px; margin-top: 1rem; animation: fadeIn 0.3s; }
+.fb-score { font-family: 'Inter Tight', sans-serif; font-weight: 500; font-size: 1.3rem; margin-bottom: 0.5rem; }
+.fb-score .num { color: var(--acento); }
+.fb-bien { color: var(--verde); font-size: 0.85rem; margin-bottom: 0.25rem; }
+.fb-mejorar { color: var(--rojo); font-size: 0.85rem; margin-bottom: 0.25rem; }
+.fb-modelo { color: var(--texto-sec); font-size: 0.85rem; margin-top: 0.5rem; padding-top: 0.5rem; border-top: 1px solid var(--borde); }
+.fb-modelo strong { color: var(--texto-claro); }
+
+.btn-siguiente { width: 100%; padding: 0.55rem; margin-top: 0.75rem; background: transparent; color: var(--texto-claro); border: 1px solid var(--borde); border-radius: 8px; font-family: 'DM Sans', sans-serif; font-size: 0.85rem; cursor: pointer; }
+.btn-siguiente:hover { border-color: var(--azul-corp); }
+
+/* Reporte final */
+.reporte { margin-top: 2rem; text-align: center; }
+.reporte h2 { font-family: 'Inter Tight', sans-serif; font-weight: 500; margin-bottom: 0.75rem; }
+.reporte-score { font-size: 2.5rem; font-family: 'Inter Tight', sans-serif; font-weight: 500; color: var(--acento); }
+.reporte-detalle { color: var(--texto-sec); font-size: 0.85rem; margin: 0.75rem 0; }
+.btn-exportar { padding: 0.5rem 1.2rem; background: transparent; border: 1px solid var(--borde); border-radius: 8px; color: var(--texto-sec); font-family: 'DM Sans', sans-serif; font-size: 0.8rem; cursor: pointer; margin: 0.25rem; }
+.btn-exportar:hover { border-color: var(--acento); color: var(--acento); }
+
+.loading { color: var(--texto-muted); font-style: italic; text-align: center; }
+@keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }

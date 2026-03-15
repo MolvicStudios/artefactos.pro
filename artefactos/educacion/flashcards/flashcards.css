@@ -1,0 +1,88 @@
+/* flashcards.css — Generador de Flashcards */
+:root {
+  --acento: #fbbf24;
+  --bg-base: #0a0a0f;
+  --texto-claro: #f8f8f8;
+  --texto-sec: #a1a1aa;
+  --texto-muted: #52525b;
+  --borde: rgba(255,255,255,0.07);
+}
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+body { font-family: 'DM Sans', sans-serif; background: var(--bg-base); color: var(--texto-claro); min-height: 100vh; line-height: 1.6; }
+
+.art-header { display: flex; align-items: center; justify-content: space-between; padding: 1rem 1.5rem; border-bottom: 1px solid var(--borde); }
+.art-header-left { display: flex; align-items: center; gap: 0.75rem; }
+.back-link { color: var(--texto-sec); text-decoration: none; font-size: 0.85rem; transition: color 0.2s; }
+.back-link:hover { color: var(--acento); }
+.cat-badge { font-size: 0.7rem; text-transform: uppercase; letter-spacing: 0.06em; background: rgba(251,191,36,0.12); color: var(--acento); padding: 0.15rem 0.55rem; border-radius: 20px; }
+
+.main-wrap { max-width: 700px; margin: 0 auto; padding: 2rem 1.5rem 4rem; }
+h1 { font-family: 'DM Sans', sans-serif; font-weight: 500; font-size: clamp(1.8rem, 4vw, 2.4rem); margin-bottom: 0.3rem; }
+.subtitulo { color: var(--texto-sec); font-size: 0.95rem; margin-bottom: 1.5rem; }
+
+.textarea-input { width: 100%; min-height: 140px; padding: 1rem; background: rgba(255,255,255,0.03); border: 1px solid var(--borde); border-radius: 8px; color: var(--texto-claro); font-family: 'DM Sans', sans-serif; font-size: 0.9rem; line-height: 1.6; resize: vertical; outline: none; transition: border-color 0.2s; }
+.textarea-input:focus { border-color: var(--acento); }
+.textarea-input::placeholder { color: var(--texto-muted); }
+.char-count { text-align: right; font-size: 0.7rem; color: var(--texto-muted); margin-top: 0.2rem; }
+
+.controles-row { display: flex; gap: 0.5rem; flex-wrap: wrap; margin: 0.75rem 0; }
+.selector-grupo { flex: 1; min-width: 140px; }
+.selector-label { font-size: 0.7rem; color: var(--texto-sec); text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 0.3rem; display: block; }
+.pills { display: flex; flex-wrap: wrap; gap: 0.3rem; }
+.pill { padding: 0.2rem 0.5rem; border-radius: 16px; border: 1px solid var(--borde); background: transparent; color: var(--texto-sec); font-size: 0.7rem; font-family: 'DM Sans', sans-serif; cursor: pointer; transition: all 0.2s; }
+.pill:hover { border-color: var(--acento); color: var(--texto-claro); }
+.pill.active { background: var(--acento); color: #000; border-color: var(--acento); }
+
+.btn-principal { width: 100%; padding: 0.7rem; background: var(--acento); color: #000; font-family: 'DM Sans', sans-serif; font-weight: 500; font-size: 0.9rem; border: none; border-radius: 8px; cursor: pointer; transition: opacity 0.2s; }
+.btn-principal:hover { opacity: 0.85; }
+.btn-principal:disabled { opacity: 0.4; cursor: not-allowed; }
+
+/* Progreso */
+.progreso-bar { margin: 1.5rem 0 0.5rem; }
+.progreso-info { display: flex; justify-content: space-between; font-size: 0.8rem; color: var(--texto-sec); margin-bottom: 0.3rem; }
+.progreso-bg { height: 4px; background: rgba(255,255,255,0.08); border-radius: 2px; overflow: hidden; }
+.progreso-fill { height: 100%; background: var(--acento); border-radius: 2px; transition: width 0.4s ease; }
+
+/* Flashcard 3D */
+.card-container { perspective: 800px; margin: 1rem auto; max-width: 480px; }
+.flashcard {
+  width: 100%; aspect-ratio: 3/2; position: relative;
+  transform-style: preserve-3d; transition: transform 0.6s ease;
+  cursor: pointer;
+}
+.flashcard.flipped { transform: rotateY(180deg); }
+.card-face {
+  position: absolute; inset: 0; backface-visibility: hidden;
+  border-radius: 12px; display: flex; align-items: center;
+  justify-content: center; padding: 2rem; text-align: center;
+}
+.card-front {
+  background: rgba(255,255,255,0.04); border: 1px solid var(--borde);
+  font-family: 'DM Sans', sans-serif; font-weight: 500;
+  font-size: 1.1rem; color: var(--texto-claro); line-height: 1.5;
+}
+.card-back {
+  background: #451a03; border: 1px solid rgba(251,191,36,0.2);
+  transform: rotateY(180deg);
+  font-family: 'Lora', serif; font-size: 1rem;
+  color: #fde68a; line-height: 1.6;
+}
+.card-hint { position: absolute; bottom: 0.5rem; font-size: 0.65rem; color: var(--texto-muted); }
+
+/* Botones de estudio */
+.estudio-btns { display: flex; gap: 0.75rem; justify-content: center; margin-top: 1rem; }
+.btn-facil, .btn-dificil { padding: 0.5rem 1.5rem; border-radius: 8px; border: none; font-family: 'DM Sans', sans-serif; font-size: 0.85rem; font-weight: 500; cursor: pointer; transition: opacity 0.2s; }
+.btn-facil { background: #4ade80; color: #000; }
+.btn-dificil { background: #f87171; color: #000; }
+.btn-facil:hover, .btn-dificil:hover { opacity: 0.85; }
+
+/* Resultados */
+.resultados { margin-top: 2rem; padding: 1.5rem; background: rgba(255,255,255,0.03); border-radius: 10px; text-align: center; }
+.resultados-titulo { font-size: 1.3rem; margin-bottom: 0.5rem; }
+.resultados-pct { font-size: 2.5rem; font-weight: 700; color: var(--acento); }
+
+.acciones-post { display: flex; gap: 0.5rem; margin-top: 1rem; justify-content: center; flex-wrap: wrap; }
+.btn-sec { padding: 0.4rem 0.9rem; border-radius: 6px; border: 1px solid var(--borde); background: transparent; color: var(--texto-sec); font-size: 0.8rem; font-family: 'DM Sans', sans-serif; cursor: pointer; transition: all 0.2s; }
+.btn-sec:hover { border-color: var(--acento); color: var(--acento); }
+
+.loading { color: var(--texto-muted); font-style: italic; margin-top: 1.5rem; text-align: center; }

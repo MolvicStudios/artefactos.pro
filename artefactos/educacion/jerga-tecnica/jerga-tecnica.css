@@ -1,0 +1,80 @@
+/* jerga-tecnica.css — Jerga Técnica */
+:root {
+  --acento: #fbbf24;
+  --bg-base: #091209;
+  --bg-panel: rgba(255,255,255,0.03);
+  --texto-claro: #e0ffe0;
+  --texto-sec: #7da97d;
+  --texto-muted: #4a6a4a;
+  --borde: rgba(255,255,255,0.06);
+  --verde-term: #4ade80;
+}
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+body {
+  font-family: 'DM Sans', sans-serif; background: var(--bg-base); color: var(--texto-claro);
+  min-height: 100vh; line-height: 1.6;
+}
+
+.art-header { display: flex; align-items: center; justify-content: space-between; padding: 1rem 1.5rem; border-bottom: 1px solid var(--borde); }
+.art-header-left { display: flex; align-items: center; gap: 0.75rem; }
+.back-link { color: var(--texto-sec); text-decoration: none; font-size: 0.85rem; transition: color 0.2s; }
+.back-link:hover { color: var(--acento); }
+.cat-badge { font-size: 0.7rem; text-transform: uppercase; letter-spacing: 0.06em; background: rgba(251,191,36,0.12); color: var(--acento); padding: 0.15rem 0.55rem; border-radius: 20px; }
+
+.main-wrap { max-width: 960px; margin: 0 auto; padding: 2rem 1.5rem 4rem; }
+h1 { font-family: 'JetBrains Mono', monospace; font-weight: 500; font-size: clamp(1.6rem, 3.5vw, 2rem); margin-bottom: 0.3rem; color: var(--verde-term); }
+.subtitulo { color: var(--texto-sec); font-size: 0.9rem; margin-bottom: 1.5rem; }
+
+/* Controles */
+.campo { width: 100%; padding: 0.65rem 0.9rem; background: rgba(255,255,255,0.04); border: 1px solid var(--borde); border-radius: 8px; color: var(--texto-claro); font-family: 'DM Sans', sans-serif; font-size: 0.9rem; outline: none; transition: border-color 0.2s; margin-bottom: 0.5rem; }
+.campo:focus { border-color: var(--verde-term); }
+.campo::placeholder { color: var(--texto-muted); }
+textarea.campo { resize: vertical; min-height: 100px; font-family: 'JetBrains Mono', monospace; font-size: 0.8rem; }
+
+.selector-row { display: flex; gap: 0.75rem; margin-bottom: 0.75rem; flex-wrap: wrap; }
+.selector-grupo { flex: 1; min-width: 120px; }
+.selector-label { font-size: 0.7rem; color: var(--texto-sec); text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 0.3rem; display: block; }
+.pills { display: flex; flex-wrap: wrap; gap: 0.3rem; }
+.pill { padding: 0.2rem 0.55rem; border-radius: 20px; border: 1px solid var(--borde); background: transparent; color: var(--texto-sec); font-size: 0.7rem; font-family: 'DM Sans', sans-serif; cursor: pointer; transition: all 0.2s; }
+.pill:hover { border-color: var(--verde-term); color: var(--texto-claro); }
+.pill.active { background: var(--verde-term); color: #000; border-color: var(--verde-term); }
+
+.btn-principal { width: 100%; padding: 0.65rem; background: var(--verde-term); color: #000; font-family: 'DM Sans', sans-serif; font-weight: 500; font-size: 0.9rem; border: none; border-radius: 8px; cursor: pointer; transition: opacity 0.2s; }
+.btn-principal:hover { opacity: 0.85; }
+.btn-principal:disabled { opacity: 0.4; cursor: not-allowed; }
+
+/* Paneles lado a lado */
+.paneles { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-top: 1.5rem; }
+.panel { padding: 1rem; background: var(--bg-panel); border: 1px solid var(--borde); border-radius: 10px; }
+.panel-titulo { font-family: 'JetBrains Mono', monospace; font-size: 0.75rem; color: var(--verde-term); text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 0.75rem; padding-bottom: 0.35rem; border-bottom: 1px solid var(--borde); }
+.panel-original { font-family: 'JetBrains Mono', monospace; font-size: 0.8rem; line-height: 1.7; color: var(--texto-claro); }
+.panel-traducido { font-family: 'DM Sans', sans-serif; font-size: 0.88rem; line-height: 1.7; color: var(--texto-claro); }
+
+/* Términos subrayados con tooltip */
+.termino {
+  text-decoration: underline; text-decoration-color: var(--verde-term);
+  text-underline-offset: 2px; cursor: help; position: relative;
+}
+.termino:hover::after {
+  content: attr(data-def);
+  position: absolute; bottom: 100%; left: 50%; transform: translateX(-50%);
+  background: #1a2e1a; color: var(--texto-claro); border: 1px solid var(--verde-term);
+  padding: 0.4rem 0.65rem; border-radius: 6px; font-size: 0.75rem;
+  white-space: normal; width: max-content; max-width: 250px;
+  z-index: 10; pointer-events: none;
+  font-family: 'DM Sans', sans-serif;
+}
+
+/* Glosario */
+.glosario { margin-top: 1.5rem; }
+.glosario h3 { font-family: 'JetBrains Mono', monospace; font-size: 0.8rem; color: var(--verde-term); margin-bottom: 0.5rem; }
+.glosario-tabla { width: 100%; border-collapse: collapse; }
+.glosario-tabla th, .glosario-tabla td { padding: 0.4rem 0.6rem; border-bottom: 1px solid var(--borde); text-align: left; font-size: 0.8rem; }
+.glosario-tabla th { color: var(--texto-sec); font-family: 'JetBrains Mono', monospace; font-size: 0.7rem; text-transform: uppercase; }
+.glosario-tabla td:first-child { font-family: 'JetBrains Mono', monospace; color: var(--verde-term); }
+
+.loading { color: var(--texto-muted); font-style: italic; text-align: center; }
+
+@media (max-width: 700px) {
+  .paneles { grid-template-columns: 1fr; }
+}

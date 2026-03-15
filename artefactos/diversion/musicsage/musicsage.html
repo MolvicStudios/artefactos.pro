@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>MusicSage — Gabinete de Curiosidades</title>
+  <link rel="stylesheet" href="../../../styles/gabinete.css">
+  <link rel="stylesheet" href="musicsage.css">
+  <script src="../../../js/config.js" defer></script>
+  <script type="module" src="musicsage.js" defer></script>
+</head>
+<body class="musicsage-page">
+
+  <!-- Header -->
+  <header class="gabinete-header">
+    <a id="back-btn" href="../../index.html" class="back-btn">← Volver al Gabinete</a>
+    <button id="lang-toggle" class="lang-toggle" aria-label="Cambiar idioma">EN</button>
+  </header>
+
+  <!-- Contenido principal -->
+  <main class="musicsage-container">
+
+    <!-- Título -->
+    <h1 id="musicsage-title" class="musicsage-title">MusicSage</h1>
+    <p class="musicsage-subtitle">♫ The art of listening, the science of sound ♫</p>
+
+    <!-- Marco de vinilo -->
+    <div class="musicsage-vinyl-frame">
+
+      <!-- Sugerencias -->
+      <div class="musicsage-suggestions">
+        <button class="musicsage-suggestion">¿Qué es el modo dórico?</button>
+        <button class="musicsage-suggestion">Historia del jazz</button>
+        <button class="musicsage-suggestion">¿Por qué suena triste el modo menor?</button>
+        <button class="musicsage-suggestion">Explica la forma sonata</button>
+        <button class="musicsage-suggestion">Orígenes del blues</button>
+      </div>
+
+      <!-- Chat -->
+      <div id="musicsage-chat" class="musicsage-chat"></div>
+
+      <!-- Ecualizador -->
+      <div id="musicsage-equalizer" class="musicsage-equalizer" aria-hidden="true">
+        <div class="musicsage-equalizer__bar"></div>
+        <div class="musicsage-equalizer__bar"></div>
+        <div class="musicsage-equalizer__bar"></div>
+        <div class="musicsage-equalizer__bar"></div>
+        <div class="musicsage-equalizer__bar"></div>
+        <div class="musicsage-equalizer__bar"></div>
+        <div class="musicsage-equalizer__bar"></div>
+      </div>
+
+      <!-- Error -->
+      <div id="musicsage-error" class="musicsage-error"></div>
+
+      <!-- Input -->
+      <div class="musicsage-input-bar">
+        <input id="musicsage-input" class="musicsage-input" type="text" placeholder="Pregunta sobre música..." autocomplete="off">
+        <button id="btn-send" class="musicsage-send">Enviar</button>
+      </div>
+
+    </div>
+
+  </main>
+
+  <!-- Footer -->
+  <footer class="gabinete-footer">
+    <p>© MolvicStudios.pro — Gabinete de Curiosidades</p>
+  </footer>
+
+</body>
+</html>

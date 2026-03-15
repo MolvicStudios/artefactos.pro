@@ -20,6 +20,20 @@ export const translations = {
     count_label: 'artefactos',
     footer_credit: 'Construido con Groq + LLaMA 3.3 · Un proyecto de MolvicStudios',
 
+    // — UI v2 —
+    hero_title: '50 artefactos impulsados por IA',
+    hero_subtitle: 'Herramientas gratuitas de inteligencia artificial para crear, aprender, explorar y producir. Sin registro. Sin límites.',
+    hero_counter: 'artefactos activos',
+    search_placeholder: 'Buscar artefactos…',
+    filter_todos: 'Todos',
+    filter_diversion: '🎮 Diversión',
+    filter_creatividad: '🎨 Creatividad',
+    filter_educacion: '📚 Educación',
+    filter_productividad: '⚡ Productividad',
+    filter_research: '🔬 Research',
+    empty_state: 'No se encontraron artefactos con esa búsqueda.',
+    footer_text: 'Hecho con curiosidad e inteligencia artificial',
+
     // — API Key panel —
     apikey_title: 'Activa los artefactos',
     apikey_desc: 'Necesitas una clave de API de Groq gratuita para usar cualquier artefacto.',
@@ -116,8 +130,8 @@ export const translations = {
     dialogo_desc: 'Dos personajes. Una escena. Química instantánea.',
     reescritor_nombre: 'Reescribidor de escenas',
     reescritor_desc: 'La misma escena en 5 estilos distintos.',
-    scriptorium2_nombre: 'El Scriptorium',
-    scriptorium2_desc: 'Texto transformado en voz de otra época.',
+    saga_nombre: 'Generador de sagas',
+    saga_desc: 'Trilogías completas con portadas, sinopsis y continuación.',
 
     // — Educación (10) —
     explicador_nombre: 'Explicador de conceptos',
@@ -138,8 +152,8 @@ export const translations = {
     'resumen-academico_desc': 'Papers y artículos académicos en lenguaje humano.',
     'casos-practicos_nombre': 'Generador de casos prácticos',
     'casos-practicos_desc': 'Casos reales para aprender cualquier disciplina.',
-    'bestiario-edu_nombre': 'Bestiario Digital',
-    'bestiario-edu_desc': 'Mitología comparada como nunca la estudiaste.'
+    'debate-socratico_nombre': 'Debate Socrático',
+    'debate-socratico_desc': 'Dos tesis enfrentadas con análisis de falacias.'
   },
 
   en: {
@@ -159,6 +173,20 @@ export const translations = {
     btn_proximamente: 'Coming soon',
     count_label: 'artifacts',
     footer_credit: 'Built with Groq + LLaMA 3.3 · A MolvicStudios project',
+
+    // — UI v2 —
+    hero_title: '50 AI-powered artifacts',
+    hero_subtitle: 'Free artificial intelligence tools to create, learn, explore and produce. No sign-up. No limits.',
+    hero_counter: 'active artifacts',
+    search_placeholder: 'Search artifacts…',
+    filter_todos: 'All',
+    filter_diversion: '🎮 Fun',
+    filter_creatividad: '🎨 Creativity',
+    filter_educacion: '📚 Education',
+    filter_productividad: '⚡ Productivity',
+    filter_research: '🔬 Research',
+    empty_state: 'No artifacts found for that search.',
+    footer_text: 'Made with curiosity and artificial intelligence',
 
     // — API Key panel —
     apikey_title: 'Activate the artifacts',
@@ -256,8 +284,8 @@ export const translations = {
     dialogo_desc: 'Two characters. One scene. Instant chemistry.',
     reescritor_nombre: 'Scene rewriter',
     reescritor_desc: 'The same scene in 5 different styles.',
-    scriptorium2_nombre: 'The Scriptorium',
-    scriptorium2_desc: 'Text transformed into the voice of another era.',
+    saga_nombre: 'Saga generator',
+    saga_desc: 'Complete trilogies with covers, synopses and continuation.',
 
     // — Educación (10) —
     explicador_nombre: 'Concept explainer',
@@ -278,8 +306,8 @@ export const translations = {
     'resumen-academico_desc': 'Academic papers in human language.',
     'casos-practicos_nombre': 'Case study generator',
     'casos-practicos_desc': 'Real cases to learn any discipline.',
-    'bestiario-edu_nombre': 'Digital Bestiary',
-    'bestiario-edu_desc': 'Comparative mythology like you never studied it.'
+    'debate-socratico_nombre': 'Socratic Debate',
+    'debate-socratico_desc': 'Two opposing theses with fallacy analysis.'
   }
 };
 

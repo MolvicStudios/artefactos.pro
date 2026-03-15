@@ -1,0 +1,86 @@
+/* explicador.css — Explicador de Conceptos */
+:root {
+  --acento: #fbbf24;
+  --bg-base: #0c1220;
+  --texto-claro: #f0ede8;
+  --texto-sec: #a1a1aa;
+  --texto-muted: #52525b;
+  --borde: rgba(255,255,255,0.07);
+  --verde-nino: #86efac;
+  --azul-uni: #93c5fd;
+}
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+body { font-family: 'DM Sans', sans-serif; background: var(--bg-base); color: var(--texto-claro); min-height: 100vh; line-height: 1.6; }
+
+.art-header { display: flex; align-items: center; justify-content: space-between; padding: 1rem 1.5rem; border-bottom: 1px solid var(--borde); }
+.art-header-left { display: flex; align-items: center; gap: 0.75rem; }
+.back-link { color: var(--texto-sec); text-decoration: none; font-size: 0.85rem; transition: color 0.2s; }
+.back-link:hover { color: var(--acento); }
+.cat-badge { font-size: 0.7rem; text-transform: uppercase; letter-spacing: 0.06em; background: rgba(251,191,36,0.12); color: var(--acento); padding: 0.15rem 0.55rem; border-radius: 20px; }
+
+.main-wrap { max-width: 960px; margin: 0 auto; padding: 2rem 1.5rem 4rem; }
+h1 { font-family: 'Nunito', sans-serif; font-size: clamp(1.8rem, 4vw, 2.4rem); margin-bottom: 0.3rem; }
+.subtitulo { color: var(--texto-sec); font-size: 0.95rem; margin-bottom: 1.5rem; }
+
+/* Buscador */
+.busqueda { display: flex; gap: 0.5rem; margin-bottom: 0.75rem; }
+.campo { flex: 1; padding: 0.65rem 0.9rem; background: rgba(255,255,255,0.04); border: 1px solid var(--borde); border-radius: 8px; color: var(--texto-claro); font-family: 'DM Sans', sans-serif; font-size: 0.95rem; outline: none; transition: border-color 0.2s; }
+.campo:focus { border-color: var(--acento); }
+.campo::placeholder { color: var(--texto-muted); }
+
+.selector-grupo { margin-bottom: 0.75rem; }
+.selector-label { font-size: 0.75rem; color: var(--texto-sec); text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 0.35rem; display: block; }
+.pills { display: flex; flex-wrap: wrap; gap: 0.35rem; }
+.pill { padding: 0.25rem 0.65rem; border-radius: 20px; border: 1px solid var(--borde); background: transparent; color: var(--texto-sec); font-size: 0.75rem; font-family: 'DM Sans', sans-serif; cursor: pointer; transition: all 0.2s; }
+.pill:hover { border-color: var(--acento); color: var(--texto-claro); }
+.pill.active { background: var(--acento); color: #000; border-color: var(--acento); }
+
+.btn-principal { width: 100%; padding: 0.7rem; background: var(--acento); color: #000; font-family: 'DM Sans', sans-serif; font-weight: 500; font-size: 0.9rem; border: none; border-radius: 8px; cursor: pointer; transition: opacity 0.2s; }
+.btn-principal:hover { opacity: 0.85; }
+.btn-principal:disabled { opacity: 0.4; cursor: not-allowed; }
+
+/* Historial chips */
+.historial-chips { display: flex; flex-wrap: wrap; gap: 0.3rem; margin-top: 0.75rem; }
+.chip { padding: 0.2rem 0.55rem; border-radius: 12px; border: 1px solid var(--borde); background: transparent; color: var(--texto-muted); font-size: 0.7rem; font-family: 'DM Sans', sans-serif; cursor: pointer; transition: all 0.2s; }
+.chip:hover { border-color: var(--acento); color: var(--texto-claro); }
+.sesion-counter { font-size: 0.75rem; color: var(--texto-muted); margin-top: 0.5rem; }
+
+/* Columnas de niveles */
+.niveles-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1rem; margin-top: 2rem; }
+.nivel-col {
+  background: rgba(255,255,255,0.03); border: 1px solid var(--borde);
+  border-radius: 10px; overflow: hidden;
+  animation: fadeUp 0.5s ease both;
+}
+.nivel-header { padding: 0.6rem 0.75rem; display: flex; align-items: center; gap: 0.4rem; }
+.nivel-header .icono { font-size: 1rem; }
+.nivel-header .titulo { font-family: 'Nunito', sans-serif; font-size: 0.8rem; text-transform: uppercase; letter-spacing: 0.04em; }
+.nivel-col[data-nivel="nino"] .nivel-header { background: rgba(134,239,172,0.1); color: var(--verde-nino); }
+.nivel-col[data-nivel="uni"] .nivel-header { background: rgba(147,197,253,0.1); color: var(--azul-uni); }
+.nivel-col[data-nivel="experto"] .nivel-header { background: rgba(251,191,36,0.1); color: var(--acento); }
+
+.nivel-body { padding: 0.75rem; font-family: 'Source Serif 4', serif; font-size: 0.92rem; line-height: 1.7; color: var(--texto-sec); }
+.nivel-acciones { padding: 0 0.75rem 0.6rem; }
+.btn-mini { padding: 0.2rem 0.5rem; border-radius: 4px; border: 1px solid var(--borde); background: transparent; color: var(--texto-muted); font-size: 0.7rem; font-family: 'DM Sans', sans-serif; cursor: pointer; transition: all 0.2s; }
+.btn-mini:hover { border-color: var(--acento); color: var(--acento); }
+
+/* Analogía */
+.analogia-panel {
+  margin-top: 1rem; padding: 1rem;
+  background: rgba(251,191,36,0.05);
+  border-left: 3px solid var(--acento);
+  border-radius: 0 8px 8px 0;
+  font-family: 'Source Serif 4', serif; font-size: 0.95rem;
+  line-height: 1.7; color: var(--texto-sec);
+}
+.analogia-label { font-size: 0.7rem; text-transform: uppercase; letter-spacing: 0.06em; color: var(--acento); margin-bottom: 0.4rem; display: block; }
+
+.acciones-post { display: flex; gap: 0.5rem; margin-top: 1rem; }
+.btn-sec { padding: 0.4rem 0.9rem; border-radius: 6px; border: 1px solid var(--borde); background: transparent; color: var(--texto-sec); font-size: 0.8rem; font-family: 'DM Sans', sans-serif; cursor: pointer; transition: all 0.2s; }
+.btn-sec:hover { border-color: var(--acento); color: var(--acento); }
+
+.loading { color: var(--texto-muted); font-style: italic; margin-top: 1.5rem; }
+
+@keyframes fadeUp { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
+
+@media (max-width: 700px) { .niveles-grid { grid-template-columns: 1fr; } }

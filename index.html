@@ -1,102 +1,136 @@
 <!DOCTYPE html>
-<html lang="es">
+<html lang="es" data-theme="dark">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>artefactos.pro — 50 experiencias de IA</title>
-  <meta name="description" content="50 artefactos de inteligencia artificial: entretenimiento, productividad, research, creatividad y educación. Bilingüe ES/EN. Trae tu clave Groq gratuita.">
+
+  <!-- Anti-FOUC: set theme before CSS loads -->
+  <script>
+    (function(){
+      var t = localStorage.getItem('artefactos_theme');
+      if (t === 'light' || t === 'dark') document.documentElement.setAttribute('data-theme', t);
+      else if (window.matchMedia('(prefers-color-scheme: light)').matches) document.documentElement.setAttribute('data-theme', 'light');
+    })();
+  </script>
+
+  <title>Artefactos — 50 herramientas IA gratuitas</title>
+  <meta name="description" content="50 herramientas de inteligencia artificial gratuitas para creatividad, educación, diversión, productividad e investigación. Sin registro. Sin límites.">
+  <meta name="keywords" content="herramientas IA, inteligencia artificial gratis, creatividad IA, educación IA, productividad IA">
+  <link rel="canonical" href="https://artefactos.pro/">
 
   <!-- Open Graph -->
-  <meta property="og:title" content="artefactos.pro">
-  <meta property="og:description" content="50 experiencias de IA. Trae tu clave Groq.">
-  <meta property="og:url" content="https://artefactos.pro">
+  <meta property="og:title" content="Artefactos — 50 herramientas IA gratuitas">
+  <meta property="og:description" content="Creatividad, educación, diversión, productividad e investigación. 50 artefactos impulsados por IA, gratuitos y sin registro.">
+  <meta property="og:url" content="https://artefactos.pro/">
   <meta property="og:type" content="website">
+  <meta property="og:image" content="https://artefactos.pro/icons/icon-512.svg">
+  <meta property="og:site_name" content="Artefactos">
 
-  <!-- Google Fonts -->
+  <!-- Twitter Card -->
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Artefactos — 50 herramientas IA gratuitas">
+  <meta name="twitter:description" content="50 artefactos impulsados por IA. Gratuitos, sin registro, sin límites.">
+
+  <!-- Schema.org WebSite -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "WebSite",
+    "name": "Artefactos",
+    "url": "https://artefactos.pro/",
+    "description": "50 herramientas de inteligencia artificial gratuitas para creatividad, educación, diversión, productividad e investigación.",
+    "potentialAction": {
+      "@type": "SearchAction",
+      "target": "https://artefactos.pro/#search={search_term_string}",
+      "query-input": "required name=search_term_string"
+    }
+  }
+  </script>
+
+  <!-- PWA -->
+  <link rel="manifest" href="/manifest.json">
+  <meta name="theme-color" content="#e8c96a">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <link rel="icon" href="/icons/icon-192.svg" type="image/svg+xml">
+  <link rel="apple-touch-icon" href="/icons/icon-192.svg">
+
+  <!-- Fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@700&family=DM+Sans:wght@400;500&family=JetBrains+Mono:wght@400&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;700&family=Instrument+Serif&family=JetBrains+Mono:wght@400;500&family=Syne:wght@600;700;800&display=swap" rel="stylesheet">
 
-  <!-- AdSense (async, no bloquea render) -->
-  <!-- Publisher ID: ca-pub-1513893788851225 -->
-  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-1513893788851225" crossorigin="anonymous"></script>
-
-  <!-- Estilos -->
+  <!-- Styles -->
   <link rel="stylesheet" href="styles/main.css">
-  <link rel="stylesheet" href="styles/ads.css">
 </head>
 <body>
+  <!-- Grain overlay -->
+  <div class="grain" aria-hidden="true"></div>
 
-  <!-- CURSOR PERSONALIZADO -->
-  <div id="custom-cursor"></div>
+  <!-- Skip link -->
+  <a class="skip-link" href="#grid">Saltar al contenido</a>
 
-  <!-- HEADER -->
-  <header id="site-header">
+  <!-- PWA install banner (hidden by default) -->
+  <div id="pwa-banner" hidden>
+    <p>Instala Artefactos como app para acceso rápido</p>
+    <button id="pwa-install">Instalar</button>
+    <button id="pwa-dismiss" aria-label="Cerrar">✕</button>
+  </div>
+
+  <!-- Header -->
+  <header class="site-header">
     <div class="header-inner">
-      <div class="logo">
-        <span class="logo-text">artefactos<span class="logo-dot">.</span>pro</span>
+      <a href="/" class="logo" aria-label="Artefactos — inicio">Artefactos<span>.pro</span></a>
+      <div class="header-actions">
+        <button id="lang-toggle" aria-label="Switch to English">EN</button>
+        <button id="theme-toggle" aria-label="Cambiar a modo claro">☀️</button>
       </div>
-      <div class="header-controls">
-        <span id="artefacto-count" class="artefacto-count"></span>
-        <button id="lang-toggle" class="lang-toggle" aria-label="Cambiar idioma">EN</button>
-      </div>
-    </div>
-
-    <!-- Slot AdSense header -->
-    <!-- REEMPLAZAR SLOT_HEADER con el ID real de tu unidad de anuncio en AdSense -->
-    <div class="ad-container" id="ad-header-wrap">
-      <span class="ad-label">publicidad</span>
-      <ins class="adsbygoogle" id="ad-header"
-           style="display:block"
-           data-ad-client="ca-pub-1513893788851225"
-           data-ad-slot="SLOT_HEADER"
-           data-ad-format="auto"
-           data-full-width-responsive="true"></ins>
     </div>
   </header>
 
-  <!-- HERO -->
-  <section id="hero">
-    <h1 id="site-title">artefactos<span class="logo-dot">.</span>pro</h1>
-    <p id="site-subtitle"></p>
-
-    <!-- Barra de búsqueda -->
-    <div class="search-wrap">
-      <input type="search" id="search-input" autocomplete="off" spellcheck="false" />
-    </div>
+  <!-- Hero -->
+  <section class="hero">
+    <h1 class="font-display" data-i18n="hero_title">50 artefactos impulsados por IA</h1>
+    <p data-i18n="hero_subtitle">Herramientas gratuitas de inteligencia artificial para crear, aprender, explorar y producir. Sin registro. Sin límites.</p>
+    <div class="counter"><span id="live-count">0</span> <span data-i18n="hero_counter">artefactos activos</span></div>
   </section>
 
-  <!-- FILTROS DE CATEGORÍA -->
-  <nav id="cat-filter" aria-label="Filtrar por categoría">
-    <button class="cat-btn active" data-cat="all"></button>
-    <button class="cat-btn" data-cat="entretenimiento"></button>
-    <button class="cat-btn" data-cat="productividad"></button>
-    <button class="cat-btn" data-cat="research"></button>
-    <button class="cat-btn" data-cat="creatividad"></button>
-    <button class="cat-btn" data-cat="educacion"></button>
+  <!-- Search -->
+  <div class="search-wrapper">
+    <span class="search-icon" aria-hidden="true">🔍</span>
+    <input type="search" id="search-input" placeholder="Buscar artefactos…" data-i18n-placeholder="search_placeholder" autocomplete="off">
+  </div>
+
+  <!-- Category filters -->
+  <nav class="filters" aria-label="Filtrar por categoría">
+    <button class="filter-btn active" data-filter="todos" data-i18n="filter_todos">Todos</button>
+    <button class="filter-btn" data-filter="diversion" data-i18n="filter_diversion">🎮 Diversión</button>
+    <button class="filter-btn" data-filter="creatividad" data-i18n="filter_creatividad">🎨 Creatividad</button>
+    <button class="filter-btn" data-filter="educacion" data-i18n="filter_educacion">📚 Educación</button>
+    <button class="filter-btn" data-filter="productividad" data-i18n="filter_productividad">⚡ Productividad</button>
+    <button class="filter-btn" data-filter="research" data-i18n="filter_research">🔬 Research</button>
   </nav>
 
-  <!-- GRID DE ARTEFACTOS (se renderiza desde main.js) -->
-  <main id="artefactos-grid"></main>
+  <!-- Artifact grid -->
+  <main id="grid" class="grid" aria-live="polite">
+    <!-- Cards rendered by main.js -->
+  </main>
 
-  <!-- FOOTER -->
-  <footer id="site-footer">
-    <!-- Slot AdSense footer -->
-    <!-- REEMPLAZAR SLOT_FOOTER con el ID real de tu unidad de anuncio en AdSense -->
-    <div class="ad-container" id="ad-footer-wrap">
-      <span class="ad-label">publicidad</span>
-      <ins class="adsbygoogle" id="ad-footer"
-           style="display:block"
-           data-ad-client="ca-pub-1513893788851225"
-           data-ad-slot="SLOT_FOOTER"
-           data-ad-format="auto"
-           data-full-width-responsive="true"></ins>
-    </div>
-    <p id="footer-credit"></p>
+  <!-- Empty state (shown when no results) -->
+  <div id="empty-state" class="empty-state" hidden>
+    <div class="empty-icon">🔭</div>
+    <p data-i18n="empty_state">No se encontraron artefactos con esa búsqueda.</p>
+  </div>
+
+  <!-- Footer -->
+  <footer class="site-footer">
+    <nav class="footer-links">
+      <a href="https://github.com/MolvicStudios/artefactos.pro" target="_blank" rel="noopener">GitHub</a>
+    </nav>
+    <p>© 2025 Artefactos.pro — <span data-i18n="footer_text">Hecho con curiosidad e inteligencia artificial</span></p>
   </footer>
 
-  <!-- Scripts -->
-  <script type="module" src="js/ads.js"></script>
+  <!-- Main script (ES module) -->
   <script type="module" src="js/main.js"></script>
 </body>
 </html>

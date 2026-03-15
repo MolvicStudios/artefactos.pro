@@ -1,0 +1,85 @@
+/* debate-socratico.css — Debate Socrático (LIGHT THEME) */
+:root {
+  --acento: #d97706;
+  --bg-base: #f8f5f0;
+  --bg-panel: #ffffff;
+  --texto-oscuro: #1a1a1a;
+  --texto-sec: #555555;
+  --texto-muted: #999999;
+  --borde: rgba(0,0,0,0.08);
+  --rojo-tesis: #b91c1c;
+  --azul-tesis: #1d4ed8;
+  --rojo-light: #fef2f2;
+  --azul-light: #eff6ff;
+}
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+body {
+  font-family: 'DM Sans', sans-serif; background: var(--bg-base); color: var(--texto-oscuro);
+  min-height: 100vh; line-height: 1.6;
+}
+
+.art-header { display: flex; align-items: center; justify-content: space-between; padding: 1rem 1.5rem; border-bottom: 1px solid var(--borde); background: var(--bg-panel); }
+.art-header-left { display: flex; align-items: center; gap: 0.75rem; }
+.back-link { color: var(--texto-sec); text-decoration: none; font-size: 0.85rem; transition: color 0.2s; }
+.back-link:hover { color: var(--acento); }
+.cat-badge { font-size: 0.7rem; text-transform: uppercase; letter-spacing: 0.06em; background: #fef3c7; color: var(--acento); padding: 0.15rem 0.55rem; border-radius: 20px; }
+
+.main-wrap { max-width: 900px; margin: 0 auto; padding: 2rem 1.5rem 4rem; }
+h1 { font-family: 'Cormorant Garamond', serif; font-weight: 700; font-size: clamp(1.8rem, 4vw, 2.6rem); margin-bottom: 0.3rem; }
+.subtitulo { color: var(--texto-sec); font-size: 0.95rem; margin-bottom: 1.5rem; }
+
+.campo { width: 100%; padding: 0.65rem 0.9rem; background: var(--bg-panel); border: 1px solid var(--borde); border-radius: 8px; color: var(--texto-oscuro); font-family: 'DM Sans', sans-serif; font-size: 0.9rem; outline: none; transition: border-color 0.2s; margin-bottom: 0.5rem; }
+.campo:focus { border-color: var(--acento); }
+.campo::placeholder { color: var(--texto-muted); }
+
+.selector-row { display: flex; gap: 0.75rem; margin-bottom: 0.75rem; flex-wrap: wrap; }
+.selector-grupo { min-width: 100px; }
+.selector-label { font-size: 0.7rem; color: var(--texto-sec); text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 0.3rem; display: block; }
+.pills { display: flex; flex-wrap: wrap; gap: 0.3rem; }
+.pill { padding: 0.2rem 0.55rem; border-radius: 20px; border: 1px solid var(--borde); background: transparent; color: var(--texto-sec); font-size: 0.7rem; font-family: 'DM Sans', sans-serif; cursor: pointer; transition: all 0.2s; }
+.pill:hover { border-color: var(--acento); color: var(--texto-oscuro); }
+.pill.active { background: var(--acento); color: #fff; border-color: var(--acento); }
+
+.btn-principal { width: 100%; padding: 0.7rem; background: var(--acento); color: #fff; font-family: 'DM Sans', sans-serif; font-weight: 500; font-size: 0.9rem; border: none; border-radius: 8px; cursor: pointer; transition: opacity 0.2s; }
+.btn-principal:hover { opacity: 0.85; }
+.btn-principal:disabled { opacity: 0.4; cursor: not-allowed; }
+
+/* Tesis banners */
+.tesis-banner { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-bottom: 1.5rem; }
+.tesis-card { padding: 1rem; border-radius: 10px; }
+.tesis-a { background: var(--rojo-light); border: 1px solid rgba(185,28,28,0.2); }
+.tesis-b { background: var(--azul-light); border: 1px solid rgba(29,78,216,0.2); }
+.tesis-label { font-size: 0.7rem; text-transform: uppercase; letter-spacing: 0.06em; font-weight: 500; margin-bottom: 0.35rem; }
+.tesis-a .tesis-label { color: var(--rojo-tesis); }
+.tesis-b .tesis-label { color: var(--azul-tesis); }
+.tesis-texto { font-family: 'Cormorant Garamond', serif; font-weight: 700; font-size: 1.05rem; line-height: 1.5; }
+.tesis-a .tesis-texto { color: var(--rojo-tesis); }
+.tesis-b .tesis-texto { color: var(--azul-tesis); }
+
+/* Columnas de argumentos */
+.debate-columnas { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+.col-titulo { font-family: 'Cormorant Garamond', serif; font-weight: 700; text-align: center; padding: 0.5rem; border-radius: 6px; margin-bottom: 0.75rem; font-size: 0.9rem; }
+.col-a .col-titulo { background: var(--rojo-light); color: var(--rojo-tesis); }
+.col-b .col-titulo { background: var(--azul-light); color: var(--azul-tesis); }
+
+.argumento { padding: 0.75rem; margin-bottom: 0.5rem; background: var(--bg-panel); border: 1px solid var(--borde); border-radius: 8px; }
+.arg-peso { font-size: 0.65rem; text-transform: uppercase; letter-spacing: 0.04em; padding: 0.1rem 0.4rem; border-radius: 10px; display: inline-block; margin-bottom: 0.35rem; }
+.arg-fuerte { background: rgba(74,222,128,0.15); color: #16a34a; }
+.arg-medio { background: rgba(251,191,36,0.15); color: #b45309; }
+.arg-debil { background: rgba(248,113,113,0.15); color: #dc2626; }
+.arg-texto { font-family: 'Cormorant Garamond', serif; font-size: 0.9rem; line-height: 1.6; }
+.arg-falacia { font-size: 0.7rem; color: #dc2626; margin-top: 0.3rem; font-style: italic; }
+.col-a .argumento { border-left: 3px solid var(--rojo-tesis); }
+.col-b .argumento { border-left: 3px solid var(--azul-tesis); }
+
+/* Preguntas examen */
+.exam-zona { margin-top: 2rem; padding: 1.25rem; background: var(--bg-panel); border: 1px solid var(--borde); border-radius: 10px; }
+.exam-titulo { font-family: 'Cormorant Garamond', serif; font-weight: 700; font-size: 1.1rem; margin-bottom: 0.75rem; color: var(--acento); }
+.exam-pregunta { font-family: 'Cormorant Garamond', serif; font-size: 0.95rem; padding: 0.4rem 0; border-bottom: 1px solid var(--borde); line-height: 1.6; }
+.exam-pregunta:last-child { border-bottom: none; }
+
+.loading { color: var(--texto-muted); font-style: italic; text-align: center; }
+
+@media (max-width: 650px) {
+  .tesis-banner, .debate-columnas { grid-template-columns: 1fr; }
+}

@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="es" data-theme="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Sin conexión — Artefactos</title>
+  <style>
+    *{margin:0;padding:0;box-sizing:border-box}
+    body{min-height:100vh;display:flex;align-items:center;justify-content:center;font-family:'DM Sans',system-ui,sans-serif;background:#0a0a0f;color:#e2e2e2;text-align:center;padding:2rem}
+    .offline{max-width:420px}
+    .offline h1{font-family:'Instrument Serif',serif;font-size:2.5rem;color:#e8c96a;margin-bottom:1rem}
+    .offline p{font-size:1.1rem;line-height:1.6;opacity:.8;margin-bottom:2rem}
+    .offline button{background:#e8c96a;color:#0a0a0f;border:none;padding:.75rem 2rem;border-radius:8px;font-size:1rem;cursor:pointer;font-weight:600;transition:opacity .2s}
+    .offline button:hover{opacity:.85}
+  </style>
+</head>
+<body>
+  <div class="offline">
+    <h1>🔌 Sin conexión</h1>
+    <p>Parece que no tienes conexión a Internet. Los artefactos necesitan conexión para funcionar con la IA.</p>
+    <button onclick="location.reload()">Reintentar</button>
+  </div>
+</body>
+</html>

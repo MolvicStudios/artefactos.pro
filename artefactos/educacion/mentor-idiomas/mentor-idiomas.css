@@ -1,0 +1,75 @@
+/* mentor-idiomas.css — Mentor de Idiomas */
+:root {
+  --acento: #fbbf24;
+  --bg-base: #120d08;
+  --bg-panel: rgba(255,255,255,0.03);
+  --texto-claro: #f0ece6;
+  --texto-sec: #a89888;
+  --texto-muted: #6b5c4e;
+  --borde: rgba(255,255,255,0.06);
+  --tierra: #c2956a;
+}
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+body {
+  font-family: 'DM Sans', sans-serif; background: var(--bg-base); color: var(--texto-claro);
+  min-height: 100vh; line-height: 1.6;
+}
+
+.art-header { display: flex; align-items: center; justify-content: space-between; padding: 1rem 1.5rem; border-bottom: 1px solid var(--borde); }
+.art-header-left { display: flex; align-items: center; gap: 0.75rem; }
+.back-link { color: var(--texto-sec); text-decoration: none; font-size: 0.85rem; transition: color 0.2s; }
+.back-link:hover { color: var(--acento); }
+.cat-badge { font-size: 0.7rem; text-transform: uppercase; letter-spacing: 0.06em; background: rgba(251,191,36,0.12); color: var(--acento); padding: 0.15rem 0.55rem; border-radius: 20px; }
+
+.main-wrap { max-width: 640px; margin: 0 auto; padding: 2rem 1.5rem 4rem; }
+h1 { font-family: 'Noto Serif', serif; font-weight: 600; font-size: clamp(1.6rem, 3.5vw, 2rem); margin-bottom: 0.3rem; }
+.subtitulo { color: var(--texto-sec); font-size: 0.9rem; margin-bottom: 1.5rem; }
+
+.campo { width: 100%; padding: 0.65rem 0.9rem; background: rgba(255,255,255,0.04); border: 1px solid var(--borde); border-radius: 8px; color: var(--texto-claro); font-family: 'DM Sans', sans-serif; font-size: 0.9rem; outline: none; transition: border-color 0.2s; margin-bottom: 0.5rem; }
+.campo:focus { border-color: var(--tierra); }
+.campo::placeholder { color: var(--texto-muted); }
+
+.selector-row { display: flex; gap: 0.75rem; margin-bottom: 0.75rem; flex-wrap: wrap; }
+.selector-grupo { flex: 1; min-width: 100px; }
+.selector-label { font-size: 0.7rem; color: var(--texto-sec); text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 0.3rem; display: block; }
+.pills { display: flex; flex-wrap: wrap; gap: 0.3rem; }
+.pill { padding: 0.2rem 0.5rem; border-radius: 20px; border: 1px solid var(--borde); background: transparent; color: var(--texto-sec); font-size: 0.7rem; font-family: 'DM Sans', sans-serif; cursor: pointer; transition: all 0.2s; }
+.pill:hover { border-color: var(--tierra); color: var(--texto-claro); }
+.pill.active { background: var(--tierra); color: #000; border-color: var(--tierra); }
+
+.btn-principal { width: 100%; padding: 0.7rem; background: var(--tierra); color: #000; font-family: 'DM Sans', sans-serif; font-weight: 500; font-size: 0.9rem; border: none; border-radius: 8px; cursor: pointer; transition: opacity 0.2s; }
+.btn-principal:hover { opacity: 0.85; }
+.btn-principal:disabled { opacity: 0.4; cursor: not-allowed; }
+
+/* Chat */
+.chat-contenedor { margin-top: 1.5rem; }
+.mensaje { margin-bottom: 1rem; animation: fadeIn 0.3s; }
+.msg-mentor { padding: 0.85rem; background: var(--bg-panel); border: 1px solid var(--borde); border-radius: 10px 10px 10px 2px; }
+.msg-mentor-texto { font-family: 'Noto Serif', serif; font-size: 0.95rem; line-height: 1.7; }
+.msg-user { text-align: right; }
+.msg-user-texto { display: inline-block; padding: 0.6rem 0.85rem; background: rgba(194,149,106,0.12); border: 1px solid rgba(194,149,106,0.2); border-radius: 10px 10px 2px 10px; font-size: 0.9rem; max-width: 85%; text-align: left; }
+
+/* Panel de correcciones */
+.correcciones { margin-top: 0.4rem; }
+.correcciones-toggle { background: none; border: none; color: var(--tierra); font-size: 0.75rem; cursor: pointer; padding: 0.2rem 0; font-family: 'DM Sans', sans-serif; }
+.correcciones-contenido { padding: 0.5rem 0.7rem; background: rgba(194,149,106,0.06); border-left: 2px solid var(--tierra); border-radius: 0 6px 6px 0; margin-top: 0.3rem; font-size: 0.8rem; color: var(--texto-sec); line-height: 1.6; display: none; }
+.correcciones-contenido.visible { display: block; }
+.corr-error { color: #f87171; text-decoration: line-through; }
+.corr-fix { color: #4ade80; }
+
+/* Input del chat */
+.chat-input-zona { display: flex; gap: 0.5rem; margin-top: 0.75rem; }
+.chat-input { flex: 1; padding: 0.6rem 0.8rem; background: rgba(255,255,255,0.04); border: 1px solid var(--borde); border-radius: 8px; color: var(--texto-claro); font-family: 'DM Sans', sans-serif; font-size: 0.9rem; outline: none; }
+.chat-input:focus { border-color: var(--tierra); }
+.btn-enviar { padding: 0.6rem 1rem; background: var(--tierra); color: #000; border: none; border-radius: 8px; font-family: 'DM Sans', sans-serif; font-weight: 500; cursor: pointer; }
+.btn-enviar:disabled { opacity: 0.4; cursor: not-allowed; }
+
+/* Vocabulario acumulado */
+.vocab-zona { margin-top: 1.5rem; padding: 1rem; background: var(--bg-panel); border: 1px solid var(--borde); border-radius: 10px; }
+.vocab-titulo { font-family: 'Noto Serif', serif; font-size: 0.85rem; color: var(--tierra); margin-bottom: 0.5rem; }
+.vocab-chips { display: flex; flex-wrap: wrap; gap: 0.3rem; }
+.vocab-chip { padding: 0.15rem 0.5rem; border-radius: 20px; background: rgba(194,149,106,0.1); border: 1px solid rgba(194,149,106,0.2); color: var(--texto-sec); font-size: 0.7rem; cursor: help; }
+.vocab-chip:hover { color: var(--texto-claro); border-color: var(--tierra); }
+
+.loading { color: var(--texto-muted); font-style: italic; text-align: center; }
+@keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }

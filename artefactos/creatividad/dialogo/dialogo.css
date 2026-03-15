@@ -1,0 +1,86 @@
+/* dialogo.css — Generador de Diálogos */
+:root {
+  --acento: #fb923c;
+  --azul: #60a5fa;
+  --bg-base: #080808;
+  --bg-burbuja-a: rgba(251,146,60,0.10);
+  --bg-burbuja-b: rgba(96,165,250,0.10);
+  --texto-claro: #fafafa;
+  --texto-sec: #a1a1aa;
+  --texto-muted: #52525b;
+  --borde: rgba(255,255,255,0.07);
+}
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+body { font-family: 'DM Sans', sans-serif; background: var(--bg-base); color: var(--texto-claro); min-height: 100vh; line-height: 1.6; }
+
+.art-header { display: flex; align-items: center; justify-content: space-between; padding: 1rem 1.5rem; border-bottom: 1px solid var(--borde); }
+.art-header-left { display: flex; align-items: center; gap: 0.75rem; }
+.back-link { color: var(--texto-sec); text-decoration: none; font-size: 0.85rem; transition: color 0.2s; }
+.back-link:hover { color: var(--acento); }
+.cat-badge { font-size: 0.7rem; text-transform: uppercase; letter-spacing: 0.06em; background: rgba(251,146,60,0.12); color: var(--acento); padding: 0.15rem 0.55rem; border-radius: 20px; }
+
+.main-wrap { max-width: 680px; margin: 0 auto; padding: 2rem 1.5rem 4rem; }
+h1 { font-family: 'Barlow Condensed', sans-serif; font-weight: 700; font-size: clamp(1.8rem, 4vw, 2.5rem); text-transform: uppercase; letter-spacing: 0.03em; margin-bottom: 0.3rem; }
+.subtitulo { color: var(--texto-sec); font-size: 0.95rem; margin-bottom: 1.5rem; }
+
+/* Formulario */
+.form-stack { display: flex; flex-direction: column; gap: 0.5rem; margin-bottom: 0.75rem; }
+.form-row { display: flex; gap: 0.5rem; flex-wrap: wrap; }
+.campo { width: 100%; padding: 0.55rem 0.9rem; background: rgba(255,255,255,0.04); border: 1px solid var(--borde); border-radius: 8px; color: var(--texto-claro); font-family: 'DM Sans', sans-serif; font-size: 0.85rem; outline: none; transition: border-color 0.2s; }
+.campo:focus { border-color: var(--acento); }
+.campo::placeholder { color: var(--texto-muted); }
+.campo-flex { flex: 1; min-width: 120px; }
+
+.selector-grupo { margin-bottom: 0.75rem; }
+.selector-label { font-size: 0.75rem; color: var(--texto-sec); text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 0.35rem; display: block; }
+.pills { display: flex; flex-wrap: wrap; gap: 0.35rem; }
+.pill { padding: 0.25rem 0.65rem; border-radius: 20px; border: 1px solid var(--borde); background: transparent; color: var(--texto-sec); font-size: 0.75rem; font-family: 'DM Sans', sans-serif; cursor: pointer; transition: all 0.2s; }
+.pill:hover { border-color: var(--acento); color: var(--texto-claro); }
+.pill.active { background: var(--acento); color: #000; border-color: var(--acento); }
+
+.btn-principal { width: 100%; padding: 0.7rem; background: var(--acento); color: #000; font-family: 'DM Sans', sans-serif; font-weight: 500; font-size: 0.9rem; border: none; border-radius: 8px; cursor: pointer; transition: opacity 0.2s; }
+.btn-principal:hover { opacity: 0.85; }
+.btn-principal:disabled { opacity: 0.4; cursor: not-allowed; }
+
+/* Chat burbujas */
+.chat-zona { margin-top: 2rem; display: flex; flex-direction: column; gap: 0.5rem; }
+.burbuja {
+  max-width: 80%; padding: 0.75rem 1rem;
+  border-radius: 12px; position: relative;
+  animation: bubbleIn 0.35s ease both;
+}
+.burbuja-a {
+  align-self: flex-start; background: var(--bg-burbuja-a);
+  border-bottom-left-radius: 4px;
+}
+.burbuja-b {
+  align-self: flex-end; background: var(--bg-burbuja-b);
+  border-bottom-right-radius: 4px;
+}
+.burbuja-nombre {
+  font-family: 'Barlow Condensed', sans-serif; font-weight: 500;
+  font-size: 0.7rem; text-transform: uppercase; letter-spacing: 0.05em;
+  margin-bottom: 0.2rem;
+}
+.burbuja-a .burbuja-nombre { color: var(--acento); }
+.burbuja-b .burbuja-nombre { color: var(--azul); }
+.burbuja-texto {
+  font-family: 'Spectral', serif; font-size: 0.95rem;
+  line-height: 1.6; color: var(--texto-claro);
+}
+.burbuja-acotacion {
+  font-family: 'Spectral', serif; font-style: italic;
+  font-size: 0.8rem; color: var(--texto-muted);
+  margin-top: 0.2rem;
+}
+
+.acciones-post { display: flex; gap: 0.5rem; margin-top: 1.25rem; flex-wrap: wrap; }
+.btn-sec { padding: 0.4rem 0.9rem; border-radius: 6px; border: 1px solid var(--borde); background: transparent; color: var(--texto-sec); font-size: 0.8rem; font-family: 'DM Sans', sans-serif; cursor: pointer; transition: all 0.2s; }
+.btn-sec:hover { border-color: var(--acento); color: var(--acento); }
+
+.loading { color: var(--texto-muted); font-style: italic; margin-top: 1.5rem; }
+
+@keyframes bubbleIn {
+  from { opacity: 0; transform: translateY(8px); }
+  to { opacity: 1; transform: translateY(0); }
+}

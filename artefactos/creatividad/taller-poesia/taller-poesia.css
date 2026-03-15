@@ -1,0 +1,150 @@
+/* taller-poesia.css — Taller de Poesía */
+:root {
+  --acento: #fb923c;
+  --bg-base: #110f0c;
+  --dorado: #d4a96a;
+  --crema: #ede8df;
+  --texto-claro: #f4f4f5;
+  --texto-sec: #a1a1aa;
+  --texto-muted: #52525b;
+  --borde: rgba(255,255,255,0.07);
+}
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+body {
+  font-family: 'DM Sans', sans-serif;
+  background: var(--bg-base);
+  color: var(--texto-claro);
+  min-height: 100vh; line-height: 1.6;
+}
+
+.art-header {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 1rem 1.5rem; border-bottom: 1px solid var(--borde);
+}
+.art-header-left { display: flex; align-items: center; gap: 0.75rem; }
+.back-link { color: var(--texto-sec); text-decoration: none; font-size: 0.85rem; transition: color 0.2s; }
+.back-link:hover { color: var(--acento); }
+.cat-badge {
+  font-size: 0.7rem; text-transform: uppercase; letter-spacing: 0.06em;
+  background: rgba(251,146,60,0.12); color: var(--acento);
+  padding: 0.15rem 0.55rem; border-radius: 20px;
+}
+
+.main-wrap { max-width: 960px; margin: 0 auto; padding: 2rem 1.5rem 4rem; }
+
+h1 {
+  font-family: 'Cinzel', serif; font-weight: 500;
+  font-size: clamp(1.5rem, 3.5vw, 2rem); margin-bottom: 0.3rem;
+}
+.subtitulo { color: var(--texto-sec); font-size: 0.95rem; margin-bottom: 1.5rem; }
+
+/* Tabs modo */
+.modo-tabs { display: flex; gap: 0; margin-bottom: 1.5rem; border-bottom: 1px solid var(--borde); }
+.modo-tab {
+  padding: 0.6rem 1.2rem; background: transparent; border: none;
+  color: var(--texto-muted); font-family: 'Cinzel', serif; font-size: 0.85rem;
+  cursor: pointer; border-bottom: 2px solid transparent; transition: all 0.2s;
+}
+.modo-tab:hover { color: var(--texto-sec); }
+.modo-tab.active { color: var(--dorado); border-bottom-color: var(--dorado); }
+
+/* Paneles */
+.dual-layout { display: grid; grid-template-columns: 1fr 1fr; gap: 2rem; }
+@media (max-width: 700px) { .dual-layout { grid-template-columns: 1fr; } }
+
+.panel { min-height: 300px; }
+.panel-label {
+  font-family: 'Cinzel', serif; font-size: 0.75rem; color: var(--dorado);
+  text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 0.75rem;
+}
+
+/* Separador vertical decorativo */
+.dual-layout { position: relative; }
+.dual-layout::before {
+  content: '✦';
+  position: absolute; left: 50%; top: 50%;
+  transform: translate(-50%, -50%);
+  color: var(--dorado); font-size: 0.7rem; opacity: 0.4;
+  z-index: 1;
+}
+@media (max-width: 700px) { .dual-layout::before { display: none; } }
+
+/* Inputs */
+.campo-texto {
+  width: 100%; padding: 0.7rem 1rem;
+  background: rgba(255,255,255,0.04); border: 1px solid var(--borde);
+  border-radius: 8px; color: var(--texto-claro);
+  font-family: 'DM Sans', sans-serif; font-size: 0.9rem; outline: none;
+  transition: border-color 0.2s; resize: vertical;
+}
+.campo-texto:focus { border-color: var(--dorado); }
+.campo-texto::placeholder { color: var(--texto-muted); }
+textarea.campo-texto { min-height: 120px; }
+
+.selector-grupo { margin-bottom: 0.75rem; }
+.selector-label {
+  font-size: 0.75rem; color: var(--texto-sec);
+  text-transform: uppercase; letter-spacing: 0.05em;
+  margin-bottom: 0.35rem; display: block;
+}
+.pills { display: flex; flex-wrap: wrap; gap: 0.35rem; }
+.pill {
+  padding: 0.25rem 0.65rem; border-radius: 20px;
+  border: 1px solid var(--borde); background: transparent;
+  color: var(--texto-sec); font-size: 0.75rem;
+  font-family: 'DM Sans', sans-serif; cursor: pointer; transition: all 0.2s;
+}
+.pill:hover { border-color: var(--dorado); color: var(--texto-claro); }
+.pill.active { background: var(--dorado); color: #000; border-color: var(--dorado); }
+
+.btn-principal {
+  width: 100%; padding: 0.65rem;
+  background: var(--dorado); color: #000;
+  font-family: 'Cinzel', serif; font-size: 0.85rem;
+  border: none; border-radius: 8px; cursor: pointer;
+  transition: opacity 0.2s; margin-top: 0.75rem;
+}
+.btn-principal:hover { opacity: 0.85; }
+.btn-principal:disabled { opacity: 0.4; cursor: not-allowed; }
+
+/* Resultado poema */
+.resultado-poema {
+  font-family: 'EB Garamond', serif; font-style: italic;
+  font-size: 1.1rem; line-height: 2em; color: var(--crema);
+  white-space: pre-line; padding: 1rem 0;
+}
+.resultado-poema .verso:hover {
+  text-decoration: underline; text-decoration-color: var(--dorado);
+  text-underline-offset: 4px;
+}
+
+/* Resultado análisis */
+.analisis-seccion { margin-bottom: 1rem; }
+.analisis-titulo {
+  font-family: 'Cinzel', serif; font-size: 0.8rem; color: var(--dorado);
+  text-transform: uppercase; letter-spacing: 0.06em;
+  margin-bottom: 0.3rem; padding-bottom: 0.2rem;
+  border-bottom: 1px solid rgba(212,169,106,0.2);
+}
+.analisis-texto { font-size: 0.9rem; color: var(--texto-sec); line-height: 1.7; }
+
+.btn-sec {
+  padding: 0.4rem 0.9rem; border-radius: 6px;
+  border: 1px solid var(--borde); background: transparent;
+  color: var(--texto-sec); font-size: 0.8rem;
+  font-family: 'DM Sans', sans-serif; cursor: pointer; transition: all 0.2s;
+  margin-top: 0.5rem; margin-right: 0.4rem;
+}
+.btn-sec:hover { border-color: var(--dorado); color: var(--dorado); }
+
+/* Historial */
+.historial-tabs { display: flex; gap: 0.3rem; margin-top: 1rem; flex-wrap: wrap; }
+.hist-tab {
+  padding: 0.2rem 0.5rem; border-radius: 4px;
+  background: rgba(255,255,255,0.03); border: 1px solid var(--borde);
+  color: var(--texto-muted); font-size: 0.7rem; cursor: pointer; transition: all 0.2s;
+}
+.hist-tab:hover { color: var(--dorado); border-color: var(--dorado); }
+
+.hidden { display: none !important; }
+.loading { color: var(--texto-muted); font-style: italic; }

@@ -1,0 +1,77 @@
+/* continuador.css — Continuador de Historias */
+:root {
+  --acento: #fb923c;
+  --bg-base: #080808;
+  --texto-claro: #fafafa;
+  --texto-sec: #a1a1aa;
+  --texto-muted: #52525b;
+  --borde: rgba(255,255,255,0.07);
+}
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+body { font-family: 'DM Sans', sans-serif; background: var(--bg-base); color: var(--texto-claro); min-height: 100vh; line-height: 1.6; }
+
+.art-header { display: flex; align-items: center; justify-content: space-between; padding: 1rem 1.5rem; border-bottom: 1px solid var(--borde); }
+.art-header-left { display: flex; align-items: center; gap: 0.75rem; }
+.back-link { color: var(--texto-sec); text-decoration: none; font-size: 0.85rem; transition: color 0.2s; }
+.back-link:hover { color: var(--acento); }
+.cat-badge { font-size: 0.7rem; text-transform: uppercase; letter-spacing: 0.06em; background: rgba(251,146,60,0.12); color: var(--acento); padding: 0.15rem 0.55rem; border-radius: 20px; }
+
+.main-wrap { max-width: 760px; margin: 0 auto; padding: 2rem 1.5rem 4rem; }
+h1 { font-family: 'Syne', sans-serif; font-size: clamp(1.8rem, 4vw, 2.5rem); margin-bottom: 0.3rem; }
+.subtitulo { color: var(--texto-sec); font-size: 0.95rem; margin-bottom: 1.5rem; }
+
+/* Zona de texto del usuario */
+.zona-usuario { margin-bottom: 1rem; }
+.textarea-user {
+  width: 100%; min-height: 160px; padding: 1rem;
+  background: rgba(255,255,255,0.03); border: 1px solid var(--borde);
+  border-radius: 8px; color: var(--texto-claro);
+  font-family: 'Crimson Pro', serif; font-size: 1.05rem;
+  line-height: 1.7; resize: vertical; outline: none;
+  transition: border-color 0.2s;
+}
+.textarea-user:focus { border-color: var(--acento); }
+.textarea-user::placeholder { color: var(--texto-muted); font-style: italic; }
+.char-count { text-align: right; font-size: 0.7rem; color: var(--texto-muted); margin-top: 0.25rem; }
+
+/* Controles */
+.controles { display: flex; flex-wrap: wrap; gap: 0.5rem; align-items: center; margin-bottom: 1rem; }
+.selector-grupo { margin-bottom: 0.75rem; }
+.selector-label { font-size: 0.75rem; color: var(--texto-sec); text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 0.35rem; display: block; }
+.pills { display: flex; flex-wrap: wrap; gap: 0.35rem; }
+.pill { padding: 0.25rem 0.65rem; border-radius: 20px; border: 1px solid var(--borde); background: transparent; color: var(--texto-sec); font-size: 0.75rem; font-family: 'DM Sans', sans-serif; cursor: pointer; transition: all 0.2s; }
+.pill:hover { border-color: var(--acento); color: var(--texto-claro); }
+.pill.active { background: var(--acento); color: #000; border-color: var(--acento); }
+
+.btn-principal { width: 100%; padding: 0.7rem; background: var(--acento); color: #000; font-family: 'DM Sans', sans-serif; font-weight: 500; font-size: 0.9rem; border: none; border-radius: 8px; cursor: pointer; transition: opacity 0.2s; }
+.btn-principal:hover { opacity: 0.85; }
+.btn-principal:disabled { opacity: 0.4; cursor: not-allowed; }
+
+/* Zona de continuación */
+.zona-continuacion {
+  margin-top: 2rem; padding: 1.25rem;
+  background: rgba(251,146,60,0.04);
+  border-left: 3px solid var(--acento);
+  border-radius: 0 8px 8px 0;
+  min-height: 80px;
+}
+.zona-continuacion p {
+  font-family: 'Crimson Pro', serif; font-size: 1.05rem;
+  line-height: 1.8; color: var(--texto-claro);
+}
+.cont-label {
+  font-size: 0.7rem; text-transform: uppercase;
+  letter-spacing: 0.06em; color: var(--acento);
+  margin-bottom: 0.5rem; display: block;
+}
+.historial-cont { margin-top: 0.75rem; border-top: 1px solid var(--borde); padding-top: 0.75rem; }
+.historial-cont p { opacity: 0.5; font-size: 0.95rem; margin-bottom: 0.5rem; }
+
+.acciones-post { display: flex; gap: 0.5rem; margin-top: 1rem; flex-wrap: wrap; }
+.btn-sec { padding: 0.4rem 0.9rem; border-radius: 6px; border: 1px solid var(--borde); background: transparent; color: var(--texto-sec); font-size: 0.8rem; font-family: 'DM Sans', sans-serif; cursor: pointer; transition: all 0.2s; }
+.btn-sec:hover { border-color: var(--acento); color: var(--acento); }
+
+.loading { color: var(--texto-muted); font-style: italic; margin-top: 1.5rem; }
+
+@keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+.fade-in { animation: fadeIn 0.5s ease both; }

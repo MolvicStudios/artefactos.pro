@@ -1,0 +1,96 @@
+/* reescritor.css — Reescritor de Estilo */
+:root {
+  --acento: #fb923c;
+  --bg-base: #080808;
+  --texto-claro: #fafafa;
+  --texto-sec: #a1a1aa;
+  --texto-muted: #52525b;
+  --borde: rgba(255,255,255,0.07);
+  --min: #60a5fa;
+  --bar: #a78bfa;
+  --cin: #f472b6;
+  --lir: #34d399;
+  --iro: #fbbf24;
+}
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+body { font-family: 'DM Sans', sans-serif; background: var(--bg-base); color: var(--texto-claro); min-height: 100vh; line-height: 1.6; }
+
+.art-header { display: flex; align-items: center; justify-content: space-between; padding: 1rem 1.5rem; border-bottom: 1px solid var(--borde); }
+.art-header-left { display: flex; align-items: center; gap: 0.75rem; }
+.back-link { color: var(--texto-sec); text-decoration: none; font-size: 0.85rem; transition: color 0.2s; }
+.back-link:hover { color: var(--acento); }
+.cat-badge { font-size: 0.7rem; text-transform: uppercase; letter-spacing: 0.06em; background: rgba(251,146,60,0.12); color: var(--acento); padding: 0.15rem 0.55rem; border-radius: 20px; }
+
+.main-wrap { max-width: 720px; margin: 0 auto; padding: 2rem 1.5rem 4rem; }
+h1 { font-family: 'IBM Plex Sans', sans-serif; font-weight: 500; font-size: clamp(1.8rem, 4vw, 2.4rem); margin-bottom: 0.3rem; }
+.subtitulo { color: var(--texto-sec); font-size: 0.95rem; margin-bottom: 1.5rem; }
+
+.textarea-input {
+  width: 100%; min-height: 140px; padding: 1rem;
+  background: rgba(255,255,255,0.03); border: 1px solid var(--borde);
+  border-radius: 8px; color: var(--texto-claro);
+  font-family: 'IBM Plex Serif', serif; font-size: 1rem;
+  line-height: 1.7; resize: vertical; outline: none;
+  transition: border-color 0.2s;
+}
+.textarea-input:focus { border-color: var(--acento); }
+.textarea-input::placeholder { color: var(--texto-muted); font-style: italic; }
+
+/* Slider de intensidad */
+.intensidad-grupo { margin: 1rem 0; }
+.intensidad-label { font-size: 0.75rem; color: var(--texto-sec); text-transform: uppercase; letter-spacing: 0.05em; }
+.slider-wrap { display: flex; align-items: center; gap: 0.75rem; margin-top: 0.35rem; }
+.slider-wrap input[type="range"] {
+  flex: 1; -webkit-appearance: none; appearance: none;
+  height: 4px; background: rgba(255,255,255,0.1); border-radius: 2px; outline: none;
+}
+.slider-wrap input[type="range"]::-webkit-slider-thumb {
+  -webkit-appearance: none; width: 16px; height: 16px;
+  background: var(--acento); border-radius: 50%; cursor: pointer;
+}
+.slider-value { font-size: 0.85rem; color: var(--acento); font-weight: 500; min-width: 20px; text-align: center; }
+
+.btn-principal { width: 100%; padding: 0.7rem; background: var(--acento); color: #000; font-family: 'DM Sans', sans-serif; font-weight: 500; font-size: 0.9rem; border: none; border-radius: 8px; cursor: pointer; transition: opacity 0.2s; }
+.btn-principal:hover { opacity: 0.85; }
+.btn-principal:disabled { opacity: 0.4; cursor: not-allowed; }
+
+/* Cards de estilos */
+.estilos-grid { margin-top: 2rem; display: flex; flex-direction: column; gap: 0.75rem; }
+.estilo-card {
+  background: rgba(255,255,255,0.02); border: 1px solid var(--borde);
+  border-radius: 10px; overflow: hidden;
+  border-left: 4px solid transparent;
+  animation: cardIn 0.4s ease both;
+}
+.estilo-card[data-estilo="Minimalista"] { border-left-color: var(--min); }
+.estilo-card[data-estilo="Barroco"] { border-left-color: var(--bar); }
+.estilo-card[data-estilo="Cinematográfico"] { border-left-color: var(--cin); }
+.estilo-card[data-estilo="Lírico"] { border-left-color: var(--lir); }
+.estilo-card[data-estilo="Irónico"] { border-left-color: var(--iro); }
+
+.estilo-header {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 0.6rem 1rem;
+}
+.estilo-nombre { font-family: 'IBM Plex Sans', sans-serif; font-weight: 500; font-size: 0.85rem; text-transform: uppercase; letter-spacing: 0.04em; }
+.estilo-card[data-estilo="Minimalista"] .estilo-nombre { color: var(--min); }
+.estilo-card[data-estilo="Barroco"] .estilo-nombre { color: var(--bar); }
+.estilo-card[data-estilo="Cinematográfico"] .estilo-nombre { color: var(--cin); }
+.estilo-card[data-estilo="Lírico"] .estilo-nombre { color: var(--lir); }
+.estilo-card[data-estilo="Irónico"] .estilo-nombre { color: var(--iro); }
+
+.btn-mini { padding: 0.2rem 0.5rem; border-radius: 4px; border: 1px solid var(--borde); background: transparent; color: var(--texto-muted); font-size: 0.7rem; font-family: 'DM Sans', sans-serif; cursor: pointer; transition: all 0.2s; }
+.btn-mini:hover { border-color: var(--acento); color: var(--acento); }
+
+.estilo-body {
+  padding: 0 1rem 0.75rem;
+  font-family: 'IBM Plex Serif', serif; font-size: 0.95rem;
+  line-height: 1.7; color: var(--texto-sec);
+}
+
+.loading { color: var(--texto-muted); font-style: italic; margin-top: 1.5rem; }
+
+@keyframes cardIn {
+  from { opacity: 0; transform: translateY(8px); }
+  to { opacity: 1; transform: translateY(0); }
+}

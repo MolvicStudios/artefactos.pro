@@ -1,0 +1,89 @@
+/* tutor-socratico.css — Tutor Socrático */
+:root {
+  --acento: #fbbf24;
+  --bg-base: #0e0c10;
+  --texto-claro: #f0ece6;
+  --texto-sec: #a1a1aa;
+  --texto-muted: #6b6570;
+  --borde: rgba(255,255,255,0.06);
+}
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+body {
+  font-family: 'DM Sans', sans-serif; background: var(--bg-base); color: var(--texto-claro);
+  min-height: 100vh; line-height: 1.6;
+  background-image: repeating-linear-gradient(
+    135deg, transparent, transparent 50px,
+    rgba(255,255,255,0.008) 50px, rgba(255,255,255,0.008) 51px
+  );
+}
+
+.art-header { display: flex; align-items: center; justify-content: space-between; padding: 1rem 1.5rem; border-bottom: 1px solid var(--borde); }
+.art-header-left { display: flex; align-items: center; gap: 0.75rem; }
+.back-link { color: var(--texto-sec); text-decoration: none; font-size: 0.85rem; transition: color 0.2s; }
+.back-link:hover { color: var(--acento); }
+.cat-badge { font-size: 0.7rem; text-transform: uppercase; letter-spacing: 0.06em; background: rgba(251,191,36,0.12); color: var(--acento); padding: 0.15rem 0.55rem; border-radius: 20px; }
+
+.main-wrap { max-width: 640px; margin: 0 auto; padding: 2rem 1.5rem 4rem; }
+h1 { font-family: 'Philosopher', serif; font-size: clamp(1.8rem, 4vw, 2.4rem); margin-bottom: 0.3rem; }
+.subtitulo { color: var(--texto-sec); font-size: 0.95rem; margin-bottom: 1.5rem; }
+
+/* Inicio */
+.campo { width: 100%; padding: 0.65rem 0.9rem; background: rgba(255,255,255,0.04); border: 1px solid var(--borde); border-radius: 8px; color: var(--texto-claro); font-family: 'DM Sans', sans-serif; font-size: 0.9rem; outline: none; transition: border-color 0.2s; margin-bottom: 0.5rem; }
+.campo:focus { border-color: var(--acento); }
+.campo::placeholder { color: var(--texto-muted); }
+
+.selector-grupo { margin-bottom: 0.75rem; }
+.selector-label { font-size: 0.75rem; color: var(--texto-sec); text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 0.35rem; display: block; }
+.pills { display: flex; flex-wrap: wrap; gap: 0.35rem; }
+.pill { padding: 0.25rem 0.65rem; border-radius: 20px; border: 1px solid var(--borde); background: transparent; color: var(--texto-sec); font-size: 0.75rem; font-family: 'DM Sans', sans-serif; cursor: pointer; transition: all 0.2s; }
+.pill:hover { border-color: var(--acento); color: var(--texto-claro); }
+.pill.active { background: var(--acento); color: #000; border-color: var(--acento); }
+
+.btn-principal { width: 100%; padding: 0.7rem; background: var(--acento); color: #000; font-family: 'DM Sans', sans-serif; font-weight: 500; font-size: 0.9rem; border: none; border-radius: 8px; cursor: pointer; transition: opacity 0.2s; }
+.btn-principal:hover { opacity: 0.85; }
+.btn-principal:disabled { opacity: 0.4; cursor: not-allowed; }
+
+/* Chat socrático */
+.chat-zona { margin-top: 1.5rem; }
+.pregunta-tutor {
+  text-align: center; padding: 1.5rem 1rem;
+  font-family: 'Philosopher', serif; font-size: 1.15rem;
+  font-style: italic; color: var(--texto-claro); line-height: 1.6;
+  animation: fadeIn 0.5s ease;
+}
+.pregunta-counter { text-align: center; font-size: 0.7rem; color: var(--texto-muted); margin-bottom: 0.75rem; }
+
+.respuesta-zona { margin-top: 1rem; }
+.input-respuesta {
+  width: 100%; padding: 0.7rem 0; background: transparent;
+  border: none; border-bottom: 1px solid var(--borde);
+  color: var(--texto-claro); font-family: 'DM Sans', sans-serif;
+  font-size: 0.95rem; outline: none; transition: border-color 0.2s;
+}
+.input-respuesta:focus { border-bottom-color: var(--acento); }
+.input-respuesta::placeholder { color: var(--texto-muted); }
+
+.btns-respuesta { display: flex; gap: 0.5rem; margin-top: 0.75rem; }
+.btn-sec { padding: 0.4rem 0.9rem; border-radius: 6px; border: 1px solid var(--borde); background: transparent; color: var(--texto-sec); font-size: 0.8rem; font-family: 'DM Sans', sans-serif; cursor: pointer; transition: all 0.2s; }
+.btn-sec:hover { border-color: var(--acento); color: var(--acento); }
+.btn-enviar { flex: 1; padding: 0.5rem; background: var(--acento); color: #000; border: none; border-radius: 6px; font-family: 'DM Sans', sans-serif; font-weight: 500; font-size: 0.85rem; cursor: pointer; }
+.btn-enviar:disabled { opacity: 0.4; cursor: not-allowed; }
+
+/* Historial */
+.historial-item { padding: 0.75rem 0; border-bottom: 1px solid rgba(255,255,255,0.03); }
+.hist-pregunta { font-family: 'Philosopher', serif; font-style: italic; color: var(--texto-sec); font-size: 0.9rem; }
+.hist-respuesta { color: var(--texto-muted); font-size: 0.85rem; margin-top: 0.2rem; }
+
+/* Síntesis */
+.sintesis-panel {
+  margin-top: 2rem; padding: 1.5rem;
+  background: rgba(251,191,36,0.05);
+  border: 1px solid rgba(251,191,36,0.15);
+  border-radius: 10px;
+}
+.sintesis-panel h3 { font-family: 'Philosopher', serif; color: var(--acento); margin-bottom: 0.5rem; }
+.sintesis-panel p { font-family: 'Philosopher', serif; font-size: 0.95rem; line-height: 1.7; color: var(--texto-sec); }
+
+.loading { color: var(--texto-muted); font-style: italic; text-align: center; }
+
+@keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
