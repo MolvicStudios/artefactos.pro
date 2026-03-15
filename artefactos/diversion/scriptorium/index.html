@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>El Scriptorium — Gabinete de Curiosidades</title>
+  <link rel="stylesheet" href="../../../styles/gabinete.css">
+  <link rel="stylesheet" href="scriptorium.css">
+  <script src="../../../js/config.js" defer></script>
+  <script type="module" src="scriptorium.js" defer></script>
+</head>
+<body class="scriptorium-page">
+
+  <!-- Header -->
+  <header class="gabinete-header">
+    <a id="back-btn" href="../../index.html" class="back-btn">← Volver al Gabinete</a>
+    <button id="lang-toggle" class="lang-toggle" aria-label="Cambiar idioma">EN</button>
+  </header>
+
+  <!-- Contenido -->
+  <main class="scriptorium-container">
+
+    <!-- Título -->
+    <h1 id="scriptorium-title" class="scriptorium-title">El Scriptorium</h1>
+    <p class="scriptorium-subtitle">Verba volant, scripta manent</p>
+
+    <!-- Selector de épocas -->
+    <div id="eras-container" class="scriptorium-eras"></div>
+
+    <!-- Pergaminos side-by-side -->
+    <div class="scriptorium-scrolls">
+
+      <!-- Input -->
+      <div class="scriptorium-scroll">
+        <div id="input-label" class="scriptorium-scroll__header">Tu texto original</div>
+        <textarea id="scriptorium-textarea" class="scriptorium-textarea" placeholder="Pega o escribe tu texto aquí (máx. 500 palabras)..."></textarea>
+        <div id="word-count" class="scriptorium-word-count">0 / 500 palabras</div>
+      </div>
+
+      <!-- Output -->
+      <div class="scriptorium-scroll">
+        <div id="output-label" class="scriptorium-scroll__header">Texto transformado</div>
+        <div id="scriptorium-output" class="scriptorium-output"></div>
+      </div>
+
+    </div>
+
+    <!-- Efecto pluma escribiendo -->
+    <div id="scriptorium-writing" class="scriptorium-writing">
+      <span class="scriptorium-writing__quill">✒</span>
+      <span id="writing-text">Transcribiendo...</span>
+    </div>
+
+    <!-- Sello visual -->
+    <div id="scriptorium-seal" class="scriptorium-seal">
+      <span id="seal-text" class="scriptorium-seal__text"></span>
+    </div>
+
+    <!-- Error -->
+    <div id="scriptorium-error" class="scriptorium-error"></div>
+
+    <!-- Acciones -->
+    <div class="scriptorium-actions">
+      <button id="btn-transform" class="scriptorium-btn-transform">Transformar</button>
+      <button id="btn-copy" class="scriptorium-btn-copy">Copiar</button>
+    </div>
+
+    <!-- Historial -->
+    <section id="scriptorium-history" class="scriptorium-history">
+      <h2 id="history-title" class="scriptorium-history__title">Transformaciones anteriores</h2>
+      <div id="history-list"></div>
+    </section>
+
+  </main>
+
+  <!-- Footer -->
+  <footer class="gabinete-footer">
+    <p>© MolvicStudios.pro — Gabinete de Curiosidades</p>
+  </footer>
+
+</body>
+</html>
