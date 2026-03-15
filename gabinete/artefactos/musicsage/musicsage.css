@@ -1,0 +1,277 @@
+/* musicsage.css — Estilos de MusicSage */
+
+/* === FONDO: negro piano con pentagrama difuminado === */
+body.musicsage-page {
+  background: #0d0d0d;
+  min-height: 100vh;
+  font-family: 'Lora', serif;
+  color: #f5f0e8;
+  position: relative;
+}
+
+/* Pentagrama difuminado al fondo */
+body.musicsage-page::after {
+  content: '';
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  opacity: 0.04;
+  background-image:
+    repeating-linear-gradient(
+      0deg,
+      transparent,
+      transparent 38px,
+      #f5f0e8 38px,
+      #f5f0e8 39px
+    );
+  background-size: 100% 200px;
+  background-position: center;
+}
+
+/* === CONTENEDOR === */
+.musicsage-container {
+  max-width: 720px;
+  margin: 0 auto;
+  padding: 30px 24px 60px;
+  position: relative;
+  z-index: 1;
+}
+
+/* === TÍTULO === */
+.musicsage-title {
+  font-family: 'Playfair Display', serif;
+  font-size: clamp(1.5rem, 4vw, 2.2rem);
+  color: #f5f0e8;
+  text-align: center;
+  margin-bottom: 4px;
+}
+
+.musicsage-subtitle {
+  text-align: center;
+  color: #d4ac0d;
+  font-size: 0.85rem;
+  font-style: italic;
+  margin-bottom: 30px;
+}
+
+/* === CHAT === */
+.musicsage-chat {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  margin-bottom: 24px;
+  max-height: 420px;
+  overflow-y: auto;
+  padding-right: 8px;
+}
+
+.musicsage-message {
+  padding: 16px 20px;
+  border-radius: 12px;
+  line-height: 1.6;
+  font-size: 0.95rem;
+  max-width: 88%;
+  animation: msgSlideIn 0.3s ease;
+}
+
+@keyframes msgSlideIn {
+  from { opacity: 0; transform: translateY(8px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.musicsage-message--user {
+  align-self: flex-end;
+  background: rgba(192, 57, 43, 0.12);
+  border: 1px solid rgba(192, 57, 43, 0.2);
+  color: #f5f0e8;
+  border-bottom-right-radius: 3px;
+}
+
+.musicsage-message--ai {
+  align-self: flex-start;
+  background: rgba(245, 240, 232, 0.05);
+  border: 1px solid rgba(245, 240, 232, 0.08);
+  color: #f5f0e8;
+  border-bottom-left-radius: 3px;
+}
+
+/* === ECUALIZADOR ANIMADO === */
+.musicsage-equalizer {
+  display: none;
+  align-items: flex-end;
+  gap: 3px;
+  height: 24px;
+  padding: 8px 0;
+  justify-content: center;
+}
+
+.musicsage-equalizer.active {
+  display: flex;
+}
+
+.musicsage-equalizer__bar {
+  width: 4px;
+  background: #c0392b;
+  border-radius: 2px;
+  animation: eqBounce 0.8s ease-in-out infinite alternate;
+}
+
+.musicsage-equalizer__bar:nth-child(1) { height: 8px; animation-delay: 0s; }
+.musicsage-equalizer__bar:nth-child(2) { height: 16px; animation-delay: 0.1s; }
+.musicsage-equalizer__bar:nth-child(3) { height: 12px; animation-delay: 0.2s; }
+.musicsage-equalizer__bar:nth-child(4) { height: 20px; animation-delay: 0.15s; }
+.musicsage-equalizer__bar:nth-child(5) { height: 10px; animation-delay: 0.25s; }
+.musicsage-equalizer__bar:nth-child(6) { height: 18px; animation-delay: 0.05s; }
+.musicsage-equalizer__bar:nth-child(7) { height: 14px; animation-delay: 0.2s; }
+
+@keyframes eqBounce {
+  0% { transform: scaleY(0.3); }
+  100% { transform: scaleY(1); }
+}
+
+/* === SUGERENCIAS === */
+.musicsage-suggestions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-bottom: 20px;
+  justify-content: center;
+}
+
+.musicsage-suggestion {
+  background: rgba(212, 172, 13, 0.08);
+  border: 1px solid rgba(212, 172, 13, 0.2);
+  color: #d4ac0d;
+  padding: 8px 16px;
+  border-radius: 20px;
+  font-family: 'Lora', serif;
+  font-size: 0.8rem;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.musicsage-suggestion:hover {
+  background: rgba(212, 172, 13, 0.15);
+  border-color: #d4ac0d;
+}
+
+/* === INPUT DE CHAT === */
+.musicsage-input-bar {
+  display: flex;
+  gap: 10px;
+  margin-top: 12px;
+}
+
+.musicsage-input {
+  flex: 1;
+  background: rgba(245, 240, 232, 0.05);
+  border: 1px solid rgba(245, 240, 232, 0.12);
+  color: #f5f0e8;
+  padding: 14px 18px;
+  font-family: 'Lora', serif;
+  font-size: 0.95rem;
+  border-radius: 8px;
+  transition: border-color 0.2s ease;
+}
+
+.musicsage-input:focus {
+  outline: none;
+  border-color: #c0392b;
+}
+
+.musicsage-input::placeholder {
+  color: rgba(245, 240, 232, 0.3);
+  font-style: italic;
+}
+
+.musicsage-send {
+  background: #c0392b;
+  color: #f5f0e8;
+  border: none;
+  padding: 14px 24px;
+  font-family: 'Playfair Display', serif;
+  font-weight: 700;
+  font-size: 0.85rem;
+  cursor: pointer;
+  border-radius: 8px;
+  transition: all 0.2s ease;
+  white-space: nowrap;
+}
+
+.musicsage-send:hover {
+  background: #e74c3c;
+  transform: translateY(-1px);
+}
+
+.musicsage-send:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+  transform: none;
+}
+
+/* === ERROR === */
+.musicsage-error {
+  display: none;
+  text-align: center;
+  padding: 12px;
+  color: #e74c3c;
+  background: rgba(231, 76, 60, 0.06);
+  border: 1px solid rgba(231, 76, 60, 0.15);
+  border-radius: 6px;
+  font-size: 0.85rem;
+  margin-bottom: 12px;
+}
+
+.musicsage-error.active {
+  display: block;
+}
+
+/* === ESTILO LINER NOTES (vinilo) === */
+.musicsage-vinyl-frame {
+  border: 1px solid rgba(245, 240, 232, 0.08);
+  border-radius: 12px;
+  padding: 28px 24px;
+  background: rgba(245, 240, 232, 0.02);
+  position: relative;
+}
+
+.musicsage-vinyl-frame::before {
+  content: '';
+  position: absolute;
+  top: 8px;
+  left: 8px;
+  right: 8px;
+  bottom: 8px;
+  border: 1px solid rgba(245, 240, 232, 0.04);
+  border-radius: 8px;
+  pointer-events: none;
+}
+
+/* === RESPONSIVE === */
+@media (max-width: 600px) {
+  .musicsage-container {
+    padding: 20px 16px 40px;
+  }
+
+  .musicsage-chat {
+    max-height: 320px;
+  }
+
+  .musicsage-message {
+    max-width: 95%;
+  }
+
+  .musicsage-input-bar {
+    flex-direction: column;
+  }
+
+  .musicsage-suggestions {
+    gap: 6px;
+  }
+
+  .musicsage-suggestion {
+    font-size: 0.75rem;
+    padding: 6px 12px;
+  }
+}

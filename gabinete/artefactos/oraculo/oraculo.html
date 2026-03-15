@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>El Oráculo de Delfos — Gabinete de Curiosidades</title>
+  <link rel="stylesheet" href="../../styles/gabinete.css">
+  <link rel="stylesheet" href="oraculo.css">
+  <script src="../../js/config.js" defer></script>
+  <script type="module" src="oraculo.js" defer></script>
+</head>
+<body class="oraculo-page">
+
+  <!-- Header -->
+  <header class="gabinete-header">
+    <a id="back-btn" href="../../index.html" class="back-btn">← Volver al Gabinete</a>
+    <button id="lang-toggle" class="lang-toggle" aria-label="Cambiar idioma">EN</button>
+  </header>
+
+  <!-- Contenido principal -->
+  <main class="oraculo-container">
+
+    <!-- Llama animada -->
+    <div class="oraculo-flame" aria-hidden="true">
+      <div class="oraculo-flame__glow"></div>
+      <div class="oraculo-flame__core"></div>
+    </div>
+
+    <!-- Título -->
+    <h1 id="oraculo-title" class="oraculo-title">El Oráculo de Delfos</h1>
+    <p class="oraculo-subtitle">
+      <svg width="16" height="16" viewBox="0 0 16 16" style="vertical-align: middle; margin-right: 4px;" fill="none">
+        <circle cx="8" cy="8" r="6" stroke="#8ca3bc" stroke-width="0.8" opacity="0.5"/>
+        <circle cx="8" cy="8" r="2" fill="#8ca3bc" opacity="0.4"/>
+      </svg>
+      γνῶθι σεαυτόν — Conócete a ti mismo
+    </p>
+
+    <!-- Formulario -->
+    <div class="oraculo-form">
+      <textarea id="oraculo-input" class="oraculo-input" rows="3" placeholder="Escribe tu pregunta al Oráculo..." maxlength="500"></textarea>
+      <div class="oraculo-actions">
+        <button id="btn-ask" class="oraculo-btn-ask">Consultar al Oráculo</button>
+        <button id="btn-new" class="oraculo-btn-new">Nueva consulta</button>
+      </div>
+    </div>
+
+    <!-- Error -->
+    <div id="oraculo-error" class="oraculo-error"></div>
+
+    <!-- Loader -->
+    <div id="oraculo-loader" class="oraculo-loader">
+      <span id="loader-text">Invocando sabiduría...</span>
+    </div>
+
+    <!-- Respuesta -->
+    <div id="oraculo-response" class="oraculo-response">
+      <p id="oraculo-response-text" class="oraculo-response__text"></p>
+    </div>
+
+    <!-- Inscripciones (historial) -->
+    <section id="oraculo-inscriptions" class="oraculo-inscriptions" style="display: none;">
+      <h2 id="inscriptions-title" class="oraculo-inscriptions__title">Inscripciones anteriores</h2>
+      <div id="inscriptions-list"></div>
+    </section>
+
+  </main>
+
+  <!-- Footer -->
+  <footer class="gabinete-footer">
+    <p>© MolvicStudios.pro — Gabinete de Curiosidades</p>
+  </footer>
+
+</body>
+</html>

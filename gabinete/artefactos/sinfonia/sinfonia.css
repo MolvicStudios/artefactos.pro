@@ -1,0 +1,324 @@
+@import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;600;700&family=Cormorant:ital,wght@0,400;0,600;1,400&display=swap');
+
+.sinfonia-page {
+  background: #050508;
+  color: #ffffff;
+  min-height: 100vh;
+  font-family: 'Space Grotesk', sans-serif;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Header */
+.sinfonia-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 16px 24px;
+  position: relative;
+  z-index: 10;
+}
+
+.sinfonia-back {
+  color: #7b2fff;
+  text-decoration: none;
+  font-size: 0.85rem;
+  font-weight: 600;
+}
+
+.sinfonia-back:hover { opacity: 0.7; }
+
+.sinfonia-lang {
+  background: transparent;
+  border: 1px solid rgba(123, 47, 255, 0.4);
+  color: #7b2fff;
+  padding: 4px 14px;
+  font-size: 0.75rem;
+  font-family: 'Space Grotesk', sans-serif;
+  font-weight: 600;
+  cursor: pointer;
+  border-radius: 3px;
+}
+
+/* Canvas area */
+.sinfonia-canvas-wrap {
+  flex: 1;
+  position: relative;
+  min-height: 0;
+}
+
+.sinfonia-canvas-wrap canvas {
+  width: 100%;
+  height: 100%;
+  display: block;
+}
+
+/* Title overlay on canvas */
+.sinfonia-title-overlay {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  text-align: center;
+  pointer-events: none;
+  z-index: 5;
+  opacity: 0.9;
+  transition: opacity 0.5s;
+}
+
+.sinfonia-title-overlay.faded {
+  opacity: 0.15;
+}
+
+.sinfonia-piece-title {
+  font-family: 'Cormorant', serif;
+  font-size: clamp(1.4rem, 3vw, 2.4rem);
+  font-weight: 600;
+  color: #ffffff;
+  margin-bottom: 4px;
+  text-shadow: 0 0 30px rgba(123, 47, 255, 0.5);
+}
+
+.sinfonia-piece-subtitle {
+  font-family: 'Cormorant', serif;
+  font-style: italic;
+  font-size: 0.9rem;
+  color: rgba(255, 255, 255, 0.5);
+}
+
+.sinfonia-composer-note {
+  font-family: 'Cormorant', serif;
+  font-style: italic;
+  font-size: 0.85rem;
+  color: rgba(255, 255, 255, 0.4);
+  margin-top: 12px;
+  max-width: 400px;
+}
+
+/* Controls panel */
+.sinfonia-controls {
+  background: rgba(10, 10, 20, 0.95);
+  border-top: 1px solid rgba(123, 47, 255, 0.15);
+  padding: 20px 24px;
+  position: relative;
+  z-index: 10;
+}
+
+.sinfonia-controls__row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.sinfonia-mood-select {
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(123, 47, 255, 0.3);
+  color: #ffffff;
+  padding: 10px 16px;
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: 0.85rem;
+  border-radius: 4px;
+  appearance: none;
+  cursor: pointer;
+  min-width: 160px;
+}
+
+.sinfonia-mood-select option {
+  background: #050508;
+  color: #ffffff;
+}
+
+.sinfonia-btn {
+  background: transparent;
+  border: 1px solid rgba(123, 47, 255, 0.5);
+  color: #7b2fff;
+  padding: 10px 24px;
+  font-family: 'Space Grotesk', sans-serif;
+  font-weight: 700;
+  font-size: 0.8rem;
+  cursor: pointer;
+  border-radius: 4px;
+  transition: all 0.2s;
+  white-space: nowrap;
+}
+
+.sinfonia-btn:hover {
+  background: rgba(123, 47, 255, 0.1);
+}
+
+.sinfonia-btn--primary {
+  background: #7b2fff;
+  color: #ffffff;
+  border-color: #7b2fff;
+}
+
+.sinfonia-btn--primary:hover {
+  background: #6a1fe8;
+}
+
+.sinfonia-btn--cyan {
+  border-color: rgba(0, 229, 255, 0.5);
+  color: #00e5ff;
+}
+
+.sinfonia-btn--cyan:hover {
+  background: rgba(0, 229, 255, 0.1);
+}
+
+.sinfonia-btn:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
+/* Volume slider */
+.sinfonia-volume {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.sinfonia-volume__label {
+  font-size: 0.7rem;
+  color: rgba(255, 255, 255, 0.4);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+}
+
+.sinfonia-volume__slider {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 80px;
+  height: 4px;
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 2px;
+  outline: none;
+}
+
+.sinfonia-volume__slider::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  background: #7b2fff;
+  cursor: pointer;
+}
+
+.sinfonia-volume__slider::-moz-range-thumb {
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  background: #7b2fff;
+  cursor: pointer;
+  border: none;
+}
+
+/* Loading */
+.sinfonia-loading {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  color: #7b2fff;
+  font-size: 0.9rem;
+  z-index: 15;
+  animation: pulse-load 1.5s ease-in-out infinite;
+}
+
+@keyframes pulse-load {
+  0%, 100% { opacity: 0.5; }
+  50% { opacity: 1; }
+}
+
+/* API Key panel */
+.apikey-panel {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 80vh;
+  padding: 24px;
+}
+
+.apikey-panel__card {
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(123, 47, 255, 0.2);
+  border-radius: 12px;
+  padding: 40px;
+  max-width: 420px;
+  text-align: center;
+}
+
+.apikey-panel__title {
+  font-family: 'Cormorant', serif;
+  font-size: 1.3rem;
+  color: #7b2fff;
+  margin-bottom: 12px;
+}
+
+.apikey-panel__desc {
+  font-size: 0.85rem;
+  color: rgba(255, 255, 255, 0.5);
+  margin-bottom: 24px;
+  line-height: 1.5;
+}
+
+.apikey-panel__field {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 16px;
+}
+
+.apikey-panel__input {
+  flex: 1;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(123, 47, 255, 0.3);
+  color: #ffffff;
+  padding: 10px 14px;
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: 0.85rem;
+  border-radius: 4px;
+}
+
+.apikey-panel__input:focus { outline: none; border-color: #7b2fff; }
+
+.apikey-panel__save {
+  background: #7b2fff;
+  color: #fff;
+  border: none;
+  padding: 10px 20px;
+  font-weight: 700;
+  font-size: 0.8rem;
+  cursor: pointer;
+  border-radius: 4px;
+}
+
+.apikey-panel__link {
+  font-size: 0.75rem;
+  color: #00e5ff;
+  text-decoration: none;
+}
+
+.apikey-panel__link:hover { text-decoration: underline; }
+
+.apikey-change-btn {
+  position: fixed;
+  bottom: 16px;
+  right: 16px;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(123, 47, 255, 0.2);
+  color: #7b2fff;
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  cursor: pointer;
+  font-size: 0.9rem;
+  z-index: 50;
+}
+
+@media (max-width: 600px) {
+  .sinfonia-controls__row { gap: 8px; }
+  .sinfonia-mood-select { min-width: 120px; font-size: 0.8rem; }
+  .sinfonia-btn { padding: 8px 14px; font-size: 0.75rem; }
+}

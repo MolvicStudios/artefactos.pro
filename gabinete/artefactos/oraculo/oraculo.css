@@ -1,0 +1,313 @@
+/* oraculo.css — Estilos del Oráculo de Delfos */
+
+/* === FONDO: mármol oscuro simulado === */
+body.oraculo-page {
+  background: #0a0008;
+  background-image:
+    radial-gradient(ellipse at 20% 50%, rgba(140, 163, 188, 0.06) 0%, transparent 60%),
+    radial-gradient(ellipse at 80% 30%, rgba(201, 168, 76, 0.04) 0%, transparent 50%),
+    linear-gradient(180deg, #0a0008 0%, #0d0510 50%, #0a0008 100%);
+  min-height: 100vh;
+  font-family: 'IM Fell English', serif;
+  color: #e8e4d9;
+}
+
+/* Textura de ruido más intensa */
+body.oraculo-page::before {
+  opacity: 0.06;
+}
+
+/* === CONTENEDOR PRINCIPAL === */
+.oraculo-container {
+  max-width: 700px;
+  margin: 0 auto;
+  padding: 40px 24px 60px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+/* === LLAMA ANIMADA === */
+.oraculo-flame {
+  width: 60px;
+  height: 90px;
+  position: relative;
+  margin-bottom: 30px;
+}
+
+.oraculo-flame__core,
+.oraculo-flame__glow {
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  border-radius: 50% 50% 50% 50% / 60% 60% 40% 40%;
+}
+
+.oraculo-flame__core {
+  width: 24px;
+  height: 50px;
+  background: linear-gradient(to top, #c9a84c, #e0bc60, #fff8e0);
+  animation: flameFlicker 1.2s ease-in-out infinite alternate;
+  filter: blur(2px);
+}
+
+.oraculo-flame__glow {
+  width: 50px;
+  height: 70px;
+  background: radial-gradient(ellipse, rgba(201, 168, 76, 0.3) 0%, transparent 70%);
+  animation: flameGlow 2s ease-in-out infinite alternate;
+  filter: blur(8px);
+}
+
+@keyframes flameFlicker {
+  0% { height: 50px; width: 24px; opacity: 0.9; }
+  25% { height: 55px; width: 20px; opacity: 1; }
+  50% { height: 48px; width: 26px; opacity: 0.85; }
+  75% { height: 56px; width: 22px; opacity: 0.95; }
+  100% { height: 52px; width: 24px; opacity: 0.9; }
+}
+
+@keyframes flameGlow {
+  0% { opacity: 0.5; transform: translateX(-50%) scale(1); }
+  100% { opacity: 0.8; transform: translateX(-50%) scale(1.15); }
+}
+
+/* === TÍTULO === */
+.oraculo-title {
+  font-family: 'Cinzel Decorative', cursive;
+  font-size: clamp(1.5rem, 4vw, 2.2rem);
+  color: #c9a84c;
+  text-align: center;
+  margin-bottom: 8px;
+  letter-spacing: 0.06em;
+}
+
+.oraculo-subtitle {
+  font-style: italic;
+  color: #8ca3bc;
+  font-size: 0.95rem;
+  text-align: center;
+  margin-bottom: 40px;
+}
+
+/* === FORMULARIO DE CONSULTA === */
+.oraculo-form {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  margin-bottom: 30px;
+}
+
+.oraculo-input {
+  width: 100%;
+  background: rgba(201, 168, 76, 0.04);
+  border: 1px solid rgba(201, 168, 76, 0.2);
+  color: #e8e4d9;
+  padding: 16px 20px;
+  font-family: 'IM Fell English', serif;
+  font-size: 1.05rem;
+  border-radius: 4px;
+  transition: border-color 0.25s ease;
+  resize: none;
+  min-height: 80px;
+}
+
+.oraculo-input:focus {
+  outline: none;
+  border-color: #c9a84c;
+}
+
+.oraculo-input::placeholder {
+  color: rgba(140, 163, 188, 0.5);
+  font-style: italic;
+}
+
+.oraculo-actions {
+  display: flex;
+  gap: 12px;
+  justify-content: center;
+}
+
+.oraculo-btn-ask {
+  background: linear-gradient(135deg, #c9a84c, #a88a3a);
+  color: #0a0008;
+  border: none;
+  padding: 12px 32px;
+  font-family: 'Cinzel Decorative', cursive;
+  font-size: 0.85rem;
+  cursor: pointer;
+  transition: all 0.25s ease;
+  letter-spacing: 0.06em;
+  border-radius: 3px;
+}
+
+.oraculo-btn-ask:hover {
+  background: linear-gradient(135deg, #e0bc60, #c9a84c);
+  transform: translateY(-1px);
+  box-shadow: 0 4px 20px rgba(201, 168, 76, 0.3);
+}
+
+.oraculo-btn-ask:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+  transform: none;
+  box-shadow: none;
+}
+
+.oraculo-btn-new {
+  background: transparent;
+  border: 1px solid rgba(140, 163, 188, 0.3);
+  color: #8ca3bc;
+  padding: 12px 24px;
+  font-family: 'IM Fell English', serif;
+  font-size: 0.85rem;
+  cursor: pointer;
+  transition: all 0.25s ease;
+  border-radius: 3px;
+}
+
+.oraculo-btn-new:hover {
+  border-color: #8ca3bc;
+  color: #e8e4d9;
+}
+
+/* === ZONA DE RESPUESTA === */
+.oraculo-response {
+  width: 100%;
+  min-height: 120px;
+  padding: 28px 24px;
+  background: rgba(201, 168, 76, 0.03);
+  border: 1px solid rgba(201, 168, 76, 0.12);
+  border-radius: 4px;
+  margin-bottom: 40px;
+  display: none;
+}
+
+.oraculo-response.active {
+  display: block;
+  animation: stoneReveal 0.8s ease forwards;
+}
+
+@keyframes stoneReveal {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.oraculo-response__text {
+  font-family: 'IM Fell English', serif;
+  font-size: 1.1rem;
+  line-height: 1.8;
+  color: #c9a84c;
+  font-style: italic;
+  white-space: pre-wrap;
+}
+
+/* Efecto de grabado letra a letra */
+.oraculo-response__text .char {
+  opacity: 0;
+  animation: charEngrave 0.05s ease forwards;
+}
+
+@keyframes charEngrave {
+  to { opacity: 1; }
+}
+
+/* === LOADER === */
+.oraculo-loader {
+  display: none;
+  text-align: center;
+  padding: 30px;
+  color: #8ca3bc;
+  font-style: italic;
+  animation: loaderPulse 1.5s ease-in-out infinite;
+}
+
+.oraculo-loader.active {
+  display: block;
+}
+
+/* === ERROR === */
+.oraculo-error {
+  display: none;
+  text-align: center;
+  padding: 14px;
+  color: #e74c3c;
+  background: rgba(231, 76, 60, 0.06);
+  border: 1px solid rgba(231, 76, 60, 0.15);
+  border-radius: 4px;
+  margin-bottom: 20px;
+  font-size: 0.9rem;
+}
+
+.oraculo-error.active {
+  display: block;
+}
+
+/* === INSCRIPCIONES (historial) === */
+.oraculo-inscriptions {
+  width: 100%;
+  margin-top: 20px;
+}
+
+.oraculo-inscriptions__title {
+  font-family: 'Cinzel Decorative', cursive;
+  font-size: 0.85rem;
+  color: rgba(201, 168, 76, 0.4);
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  margin-bottom: 16px;
+  text-align: center;
+}
+
+.oraculo-inscription {
+  padding: 16px 20px;
+  margin-bottom: 12px;
+  border-left: 2px solid rgba(201, 168, 76, 0.15);
+  background: rgba(201, 168, 76, 0.02);
+  border-radius: 0 4px 4px 0;
+  opacity: 0.6;
+  transition: opacity 0.25s ease;
+}
+
+.oraculo-inscription:hover {
+  opacity: 1;
+}
+
+.oraculo-inscription__question {
+  font-size: 0.8rem;
+  color: #8ca3bc;
+  margin-bottom: 6px;
+}
+
+.oraculo-inscription__answer {
+  font-size: 0.9rem;
+  color: rgba(201, 168, 76, 0.7);
+  font-style: italic;
+  line-height: 1.5;
+}
+
+/* Animación de desvanecimiento para "nueva consulta" */
+.oraculo-fade-out {
+  animation: smokeFade 0.6s ease forwards;
+}
+
+@keyframes smokeFade {
+  to {
+    opacity: 0;
+    filter: blur(8px);
+    transform: translateY(-10px);
+  }
+}
+
+/* === RESPONSIVE === */
+@media (max-width: 600px) {
+  .oraculo-container {
+    padding: 24px 16px 40px;
+  }
+
+  .oraculo-actions {
+    flex-direction: column;
+  }
+}

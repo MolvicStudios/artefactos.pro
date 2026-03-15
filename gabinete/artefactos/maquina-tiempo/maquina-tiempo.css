@@ -1,0 +1,412 @@
+@import url('https://fonts.googleapis.com/css2?family=Share+Tech+Mono&family=Josefin+Slab:wght@400;700&display=swap');
+
+.maquina-page {
+  background: #080810;
+  color: #f2e8d5;
+  min-height: 100vh;
+  font-family: 'Share Tech Mono', monospace;
+  overflow-x: hidden;
+  position: relative;
+}
+
+/* Stars canvas */
+.maquina-stars {
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+}
+
+/* Vignette */
+.maquina-page::after {
+  content: '';
+  position: fixed;
+  inset: 0;
+  background: radial-gradient(ellipse at center, transparent 50%, #080810 100%);
+  pointer-events: none;
+  z-index: 1;
+}
+
+/* Main content */
+.maquina-content {
+  position: relative;
+  z-index: 2;
+  max-width: 720px;
+  margin: 0 auto;
+  padding: 40px 24px 80px;
+}
+
+/* Header */
+.maquina-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 40px;
+}
+
+.maquina-back {
+  color: #b87333;
+  text-decoration: none;
+  font-size: 0.85rem;
+  transition: opacity 0.2s;
+}
+
+.maquina-back:hover { opacity: 0.7; }
+
+.maquina-lang {
+  background: transparent;
+  border: 1px solid rgba(184, 115, 51, 0.4);
+  color: #b87333;
+  padding: 4px 14px;
+  font-family: 'Share Tech Mono', monospace;
+  font-size: 0.75rem;
+  cursor: pointer;
+  border-radius: 3px;
+}
+
+/* Title */
+.maquina-title {
+  font-family: 'Josefin Slab', serif;
+  font-size: clamp(1.6rem, 4vw, 2.4rem);
+  color: #b87333;
+  text-align: center;
+  margin-bottom: 8px;
+  letter-spacing: 0.04em;
+}
+
+.maquina-subtitle {
+  text-align: center;
+  font-size: 0.85rem;
+  color: rgba(242, 232, 213, 0.5);
+  margin-bottom: 40px;
+}
+
+/* Cockpit decorative dials */
+.maquina-dials {
+  display: flex;
+  justify-content: center;
+  gap: 24px;
+  margin-bottom: 32px;
+  opacity: 0.5;
+}
+
+.maquina-dials svg {
+  width: 48px;
+  height: 48px;
+}
+
+/* Selector de época */
+.maquina-setup {
+  text-align: center;
+}
+
+.maquina-label {
+  display: block;
+  font-size: 0.8rem;
+  color: #b87333;
+  margin-bottom: 8px;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+}
+
+.maquina-select {
+  width: 100%;
+  max-width: 400px;
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(184, 115, 51, 0.3);
+  color: #f2e8d5;
+  padding: 12px 16px;
+  font-family: 'Share Tech Mono', monospace;
+  font-size: 0.9rem;
+  border-radius: 4px;
+  appearance: none;
+  cursor: pointer;
+  margin-bottom: 16px;
+}
+
+.maquina-select option {
+  background: #080810;
+  color: #f2e8d5;
+}
+
+.maquina-role-input {
+  width: 100%;
+  max-width: 400px;
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(184, 115, 51, 0.2);
+  color: #f2e8d5;
+  padding: 12px 16px;
+  font-family: 'Share Tech Mono', monospace;
+  font-size: 0.85rem;
+  border-radius: 4px;
+  margin-bottom: 24px;
+}
+
+.maquina-role-input::placeholder {
+  color: rgba(242, 232, 213, 0.3);
+}
+
+.maquina-btn {
+  background: transparent;
+  border: 1px solid #39ff14;
+  color: #39ff14;
+  padding: 12px 32px;
+  font-family: 'Share Tech Mono', monospace;
+  font-size: 0.85rem;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  cursor: pointer;
+  border-radius: 4px;
+  transition: all 0.2s;
+}
+
+.maquina-btn:hover {
+  background: rgba(57, 255, 20, 0.1);
+}
+
+.maquina-btn:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
+/* Travel flash transition */
+.maquina-flash {
+  position: fixed;
+  inset: 0;
+  background: white;
+  z-index: 100;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.15s;
+}
+
+.maquina-flash.active {
+  opacity: 1;
+}
+
+/* Narrative area */
+.maquina-narrative {
+  margin-top: 32px;
+}
+
+.maquina-turn-indicator {
+  font-size: 0.75rem;
+  color: #b87333;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  margin-bottom: 16px;
+  text-align: center;
+}
+
+.maquina-text {
+  font-family: 'Share Tech Mono', monospace;
+  font-size: 0.95rem;
+  line-height: 1.7;
+  color: #f2e8d5;
+  white-space: pre-wrap;
+  min-height: 100px;
+  border-left: 2px solid rgba(57, 255, 20, 0.3);
+  padding-left: 16px;
+  margin-bottom: 24px;
+}
+
+/* Cursor de telegrafista */
+.maquina-text .cursor {
+  display: inline-block;
+  width: 8px;
+  height: 1em;
+  background: #39ff14;
+  animation: blink-cursor 0.6s step-end infinite;
+  vertical-align: text-bottom;
+}
+
+@keyframes blink-cursor {
+  50% { opacity: 0; }
+}
+
+/* Acciones */
+.maquina-actions {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-top: 16px;
+}
+
+.maquina-action-btn {
+  background: rgba(184, 115, 51, 0.08);
+  border: 1px solid rgba(184, 115, 51, 0.3);
+  color: #f2e8d5;
+  padding: 14px 20px;
+  font-family: 'Share Tech Mono', monospace;
+  font-size: 0.85rem;
+  text-align: left;
+  cursor: pointer;
+  border-radius: 4px;
+  transition: all 0.2s;
+}
+
+.maquina-action-btn:hover {
+  background: rgba(184, 115, 51, 0.15);
+  border-color: #b87333;
+}
+
+/* Summary */
+.maquina-summary {
+  margin-top: 32px;
+}
+
+.maquina-summary__title {
+  font-family: 'Josefin Slab', serif;
+  font-size: 1.2rem;
+  color: #b87333;
+  margin-bottom: 12px;
+}
+
+.maquina-summary__text {
+  font-size: 0.9rem;
+  line-height: 1.6;
+  color: rgba(242, 232, 213, 0.9);
+  margin-bottom: 24px;
+}
+
+.maquina-facts {
+  margin-top: 16px;
+}
+
+.maquina-facts__title {
+  font-family: 'Josefin Slab', serif;
+  font-size: 1rem;
+  color: #39ff14;
+  margin-bottom: 12px;
+}
+
+.maquina-fact {
+  padding: 12px 16px;
+  border-left: 2px solid rgba(57, 255, 20, 0.3);
+  margin-bottom: 12px;
+}
+
+.maquina-fact__name {
+  font-weight: 700;
+  color: #b87333;
+  font-size: 0.85rem;
+  margin-bottom: 4px;
+}
+
+.maquina-fact__desc {
+  font-size: 0.8rem;
+  color: rgba(242, 232, 213, 0.7);
+}
+
+/* Loading */
+.maquina-loading {
+  text-align: center;
+  color: #39ff14;
+  font-size: 0.85rem;
+  padding: 32px 0;
+  animation: pulse-loading 1.5s ease-in-out infinite;
+}
+
+@keyframes pulse-loading {
+  0%, 100% { opacity: 0.5; }
+  50% { opacity: 1; }
+}
+
+/* API key panel override */
+.apikey-panel {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 80vh;
+  padding: 24px;
+}
+
+.apikey-panel__card {
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(184, 115, 51, 0.2);
+  border-radius: 12px;
+  padding: 40px;
+  max-width: 420px;
+  text-align: center;
+}
+
+.apikey-panel__title {
+  font-family: 'Josefin Slab', serif;
+  font-size: 1.3rem;
+  color: #b87333;
+  margin-bottom: 12px;
+}
+
+.apikey-panel__desc {
+  font-size: 0.85rem;
+  color: rgba(242, 232, 213, 0.6);
+  margin-bottom: 24px;
+  line-height: 1.5;
+}
+
+.apikey-panel__field {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 16px;
+}
+
+.apikey-panel__input {
+  flex: 1;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(184, 115, 51, 0.3);
+  color: #f2e8d5;
+  padding: 10px 14px;
+  font-family: 'Share Tech Mono', monospace;
+  font-size: 0.85rem;
+  border-radius: 4px;
+}
+
+.apikey-panel__input:focus {
+  outline: none;
+  border-color: #39ff14;
+}
+
+.apikey-panel__save {
+  background: #39ff14;
+  color: #080810;
+  border: none;
+  padding: 10px 20px;
+  font-family: 'Share Tech Mono', monospace;
+  font-weight: 700;
+  font-size: 0.8rem;
+  cursor: pointer;
+  border-radius: 4px;
+}
+
+.apikey-panel__link {
+  font-size: 0.75rem;
+  color: #b87333;
+  text-decoration: none;
+}
+
+.apikey-panel__link:hover { text-decoration: underline; }
+
+/* Change key btn */
+.apikey-change-btn {
+  position: fixed;
+  bottom: 16px;
+  right: 16px;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(184, 115, 51, 0.2);
+  color: #b87333;
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  cursor: pointer;
+  font-size: 0.9rem;
+  z-index: 50;
+  transition: opacity 0.2s;
+}
+
+.apikey-change-btn:hover { opacity: 0.7; }
+
+@media (max-width: 600px) {
+  .maquina-content { padding: 24px 16px 60px; }
+  .maquina-dials { gap: 12px; }
+  .maquina-dials svg { width: 36px; height: 36px; }
+}

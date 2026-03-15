@@ -1,0 +1,333 @@
+@import url('https://fonts.googleapis.com/css2?family=Libre+Caslon+Display&family=Spectral:ital,wght@0,400;0,600;1,400&display=swap');
+
+.gabobj-page {
+  background: #1a0f07;
+  color: #f0e6c8;
+  min-height: 100vh;
+  font-family: 'Spectral', serif;
+  overflow-x: hidden;
+}
+
+/* Header */
+.gabobj-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 20px 24px;
+}
+
+.gabobj-back {
+  color: #c8a951;
+  text-decoration: none;
+  font-size: 0.85rem;
+  transition: opacity 0.2s;
+}
+
+.gabobj-back:hover { opacity: 0.7; }
+
+.gabobj-lang {
+  background: transparent;
+  border: 1px solid rgba(200, 169, 81, 0.4);
+  color: #c8a951;
+  padding: 4px 14px;
+  font-family: 'Spectral', serif;
+  font-size: 0.75rem;
+  cursor: pointer;
+  border-radius: 3px;
+}
+
+/* Title */
+.gabobj-title {
+  font-family: 'Libre Caslon Display', cursive;
+  font-size: clamp(1.5rem, 4vw, 2.2rem);
+  color: #c8a951;
+  text-align: center;
+  margin-bottom: 8px;
+}
+
+.gabobj-counter {
+  text-align: center;
+  font-size: 0.8rem;
+  color: rgba(240, 230, 200, 0.4);
+  margin-bottom: 32px;
+  letter-spacing: 0.1em;
+}
+
+/* Vitrina */
+.gabobj-vitrina {
+  max-width: 560px;
+  margin: 0 auto;
+  padding: 0 24px;
+  position: relative;
+}
+
+.gabobj-case {
+  background: rgba(0, 0, 0, 0.3);
+  border: 1px solid rgba(200, 169, 81, 0.15);
+  border-radius: 12px;
+  padding: 40px 32px;
+  position: relative;
+  overflow: hidden;
+}
+
+/* Cenital light */
+.gabobj-case::before {
+  content: '';
+  position: absolute;
+  top: -40px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 200px;
+  height: 120px;
+  background: radial-gradient(ellipse, rgba(200, 169, 81, 0.12) 0%, transparent 70%);
+  pointer-events: none;
+}
+
+/* SVG illustration */
+.gabobj-illustration {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 24px;
+  min-height: 140px;
+  align-items: center;
+}
+
+.gabobj-illustration svg {
+  width: 140px;
+  height: 140px;
+  opacity: 0;
+  transform: scale(0.8);
+  animation: gabobj-reveal 0.8s ease forwards;
+}
+
+@keyframes gabobj-reveal {
+  to { opacity: 1; transform: scale(1); }
+}
+
+/* Museum label */
+.gabobj-label {
+  background: rgba(240, 230, 200, 0.06);
+  border: 1px solid rgba(200, 169, 81, 0.12);
+  padding: 16px 20px;
+  border-radius: 4px;
+  text-align: center;
+  margin-bottom: 24px;
+}
+
+.gabobj-label__catalog {
+  font-size: 0.7rem;
+  color: rgba(240, 230, 200, 0.3);
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  margin-bottom: 6px;
+}
+
+.gabobj-label__origin {
+  font-size: 0.85rem;
+  color: rgba(240, 230, 200, 0.6);
+}
+
+.gabobj-label__era {
+  font-size: 0.8rem;
+  color: #c8a951;
+  margin-top: 4px;
+}
+
+/* Reveal button */
+.gabobj-reveal-btn {
+  display: block;
+  margin: 0 auto 24px;
+  background: transparent;
+  border: 1px solid #c8a951;
+  color: #c8a951;
+  padding: 12px 36px;
+  font-family: 'Libre Caslon Display', cursive;
+  font-size: 0.9rem;
+  cursor: pointer;
+  border-radius: 4px;
+  transition: all 0.2s;
+}
+
+.gabobj-reveal-btn:hover {
+  background: rgba(200, 169, 81, 0.1);
+}
+
+/* Revealed info */
+.gabobj-info {
+  animation: gabobj-fadein 0.6s ease;
+}
+
+@keyframes gabobj-fadein {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.gabobj-info__name {
+  font-family: 'Libre Caslon Display', cursive;
+  font-size: 1.3rem;
+  color: #c8a951;
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+.gabobj-info__field {
+  margin-bottom: 14px;
+}
+
+.gabobj-info__field-label {
+  font-size: 0.7rem;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  color: rgba(240, 230, 200, 0.4);
+  margin-bottom: 4px;
+}
+
+.gabobj-info__field-value {
+  font-size: 0.9rem;
+  color: rgba(240, 230, 200, 0.85);
+  line-height: 1.5;
+}
+
+/* Rarity stars */
+.gabobj-rarity {
+  display: flex;
+  gap: 4px;
+  margin-top: 4px;
+}
+
+.gabobj-rarity__star {
+  width: 14px;
+  height: 14px;
+  fill: #c8a951;
+}
+
+.gabobj-rarity__star.empty {
+  fill: rgba(200, 169, 81, 0.2);
+}
+
+/* Next button */
+.gabobj-next-btn {
+  display: block;
+  margin: 32px auto 0;
+  background: #2d5016;
+  border: none;
+  color: #f0e6c8;
+  padding: 12px 32px;
+  font-family: 'Spectral', serif;
+  font-size: 0.85rem;
+  cursor: pointer;
+  border-radius: 4px;
+  transition: all 0.2s;
+}
+
+.gabobj-next-btn:hover {
+  background: #3a6820;
+}
+
+/* Loading */
+.gabobj-loading {
+  text-align: center;
+  color: #c8a951;
+  font-size: 0.85rem;
+  padding: 40px 0;
+  animation: pulse-load 1.5s ease-in-out infinite;
+}
+
+@keyframes pulse-load {
+  0%, 100% { opacity: 0.5; }
+  50% { opacity: 1; }
+}
+
+/* API Key panel */
+.apikey-panel {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 80vh;
+  padding: 24px;
+}
+
+.apikey-panel__card {
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(200, 169, 81, 0.2);
+  border-radius: 12px;
+  padding: 40px;
+  max-width: 420px;
+  text-align: center;
+}
+
+.apikey-panel__title {
+  font-family: 'Libre Caslon Display', cursive;
+  font-size: 1.3rem;
+  color: #c8a951;
+  margin-bottom: 12px;
+}
+
+.apikey-panel__desc {
+  font-size: 0.85rem;
+  color: rgba(240, 230, 200, 0.6);
+  margin-bottom: 24px;
+  line-height: 1.5;
+}
+
+.apikey-panel__field {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 16px;
+}
+
+.apikey-panel__input {
+  flex: 1;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(200, 169, 81, 0.3);
+  color: #f0e6c8;
+  padding: 10px 14px;
+  font-family: 'Spectral', serif;
+  font-size: 0.85rem;
+  border-radius: 4px;
+}
+
+.apikey-panel__input:focus {
+  outline: none;
+  border-color: #c8a951;
+}
+
+.apikey-panel__save {
+  background: #c8a951;
+  color: #1a0f07;
+  border: none;
+  padding: 10px 20px;
+  font-family: 'Spectral', serif;
+  font-weight: 700;
+  font-size: 0.8rem;
+  cursor: pointer;
+  border-radius: 4px;
+}
+
+.apikey-panel__link {
+  font-size: 0.75rem;
+  color: #c8a951;
+  text-decoration: none;
+}
+
+.apikey-panel__link:hover { text-decoration: underline; }
+
+.apikey-change-btn {
+  position: fixed;
+  bottom: 16px;
+  right: 16px;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(200, 169, 81, 0.2);
+  color: #c8a951;
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  cursor: pointer;
+  font-size: 0.9rem;
+  z-index: 50;
+}
+
+@media (max-width: 600px) {
+  .gabobj-case { padding: 24px 16px; }
+  .gabobj-vitrina { padding: 0 12px; }
+}

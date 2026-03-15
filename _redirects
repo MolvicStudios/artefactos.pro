@@ -1,0 +1,5 @@
+# Redirigir rutas de gabinete sin trailing slash
+/gabinete   /gabinete/  301
+
+# SPA fallback (por si se usan rutas hash)
+/*          /index.html  200

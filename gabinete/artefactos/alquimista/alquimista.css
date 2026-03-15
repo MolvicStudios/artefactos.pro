@@ -1,0 +1,310 @@
+/* alquimista.css — Estilos del Alquimista */
+
+/* === FONDO: pergamino oscuro con símbolos flotantes === */
+body.alquimista-page {
+  background: #1a1408;
+  background-image:
+    radial-gradient(ellipse at 30% 60%, rgba(26, 74, 46, 0.08) 0%, transparent 50%),
+    radial-gradient(ellipse at 70% 30%, rgba(124, 74, 30, 0.06) 0%, transparent 50%);
+  min-height: 100vh;
+  font-family: 'Crimson Text', serif;
+  color: #e8e4d9;
+  overflow-x: hidden;
+}
+
+/* Símbolos alquímicos flotantes */
+body.alquimista-page::after {
+  content: '☿ ♀ ♂ 🜄 🜃 🜁 🜂 ☉ ☽ △ ▽';
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  font-size: 2rem;
+  color: rgba(212, 160, 23, 0.04);
+  word-spacing: 80px;
+  line-height: 120px;
+  letter-spacing: 60px;
+  overflow: hidden;
+  animation: symbolDrift 60s linear infinite;
+  white-space: nowrap;
+  padding: 40px;
+}
+
+@keyframes symbolDrift {
+  from { transform: translate(0, 0); }
+  to { transform: translate(-200px, -100px); }
+}
+
+/* === LAYOUT PRINCIPAL === */
+.alquimista-layout {
+  display: flex;
+  max-width: 960px;
+  margin: 0 auto;
+  padding: 30px 24px 60px;
+  gap: 24px;
+  position: relative;
+  z-index: 1;
+}
+
+.alquimista-main {
+  flex: 1;
+  min-width: 0;
+}
+
+/* === TÍTULO === */
+.alquimista-title {
+  font-family: 'UnifrakturMaguntia', cursive;
+  font-size: clamp(1.6rem, 4vw, 2.4rem);
+  color: #d4a017;
+  text-align: center;
+  margin-bottom: 6px;
+}
+
+.alquimista-subtitle {
+  text-align: center;
+  color: #7c4a1e;
+  font-size: 0.9rem;
+  font-style: italic;
+  margin-bottom: 28px;
+}
+
+/* === CHAT === */
+.alquimista-chat {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  margin-bottom: 20px;
+  max-height: 400px;
+  overflow-y: auto;
+  padding-right: 6px;
+}
+
+.alquimista-message {
+  padding: 16px 20px;
+  border-radius: 8px;
+  line-height: 1.7;
+  font-size: 0.95rem;
+  max-width: 90%;
+}
+
+.alquimista-message--user {
+  align-self: flex-end;
+  background: rgba(26, 74, 46, 0.12);
+  border: 1px solid rgba(26, 74, 46, 0.25);
+  color: #e8e4d9;
+}
+
+.alquimista-message--ai {
+  align-self: flex-start;
+  background: rgba(212, 160, 23, 0.04);
+  border: 1px solid rgba(212, 160, 23, 0.1);
+  color: #e8e4d9;
+  animation: inkReveal 0.6s ease;
+}
+
+@keyframes inkReveal {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+/* Símbolo del día al final del mensaje */
+.alquimista-symbol-badge {
+  display: inline-block;
+  margin-top: 10px;
+  padding: 6px 14px;
+  background: rgba(212, 160, 23, 0.08);
+  border: 1px solid rgba(212, 160, 23, 0.15);
+  border-radius: 4px;
+  font-size: 0.8rem;
+  color: #d4a017;
+}
+
+.alquimista-symbol-badge__icon {
+  font-size: 1.1rem;
+  margin-right: 6px;
+}
+
+/* === INPUT === */
+.alquimista-input-bar {
+  display: flex;
+  gap: 10px;
+}
+
+.alquimista-input {
+  flex: 1;
+  background: rgba(212, 160, 23, 0.04);
+  border: 1px solid rgba(212, 160, 23, 0.15);
+  color: #e8e4d9;
+  padding: 14px 18px;
+  font-family: 'Crimson Text', serif;
+  font-size: 1rem;
+  border-radius: 6px;
+  transition: border-color 0.2s ease;
+}
+
+.alquimista-input:focus {
+  outline: none;
+  border-color: #d4a017;
+}
+
+.alquimista-input::placeholder {
+  color: rgba(124, 74, 30, 0.5);
+  font-style: italic;
+}
+
+.alquimista-send {
+  background: linear-gradient(135deg, #d4a017, #7c4a1e);
+  color: #1a1408;
+  border: none;
+  padding: 14px 22px;
+  font-family: 'UnifrakturMaguntia', cursive;
+  font-size: 0.9rem;
+  cursor: pointer;
+  border-radius: 6px;
+  transition: all 0.2s ease;
+  white-space: nowrap;
+}
+
+.alquimista-send:hover {
+  filter: brightness(1.15);
+  transform: translateY(-1px);
+}
+
+.alquimista-send:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+  transform: none;
+}
+
+/* === LOADER === */
+.alquimista-loader {
+  display: none;
+  text-align: center;
+  padding: 20px;
+  color: #d4a017;
+  font-style: italic;
+  animation: loaderPulse 1.5s ease-in-out infinite;
+}
+
+.alquimista-loader.active {
+  display: block;
+}
+
+/* === ERROR === */
+.alquimista-error {
+  display: none;
+  text-align: center;
+  padding: 12px;
+  color: #e74c3c;
+  background: rgba(231, 76, 60, 0.06);
+  border: 1px solid rgba(231, 76, 60, 0.15);
+  border-radius: 6px;
+  font-size: 0.85rem;
+  margin-bottom: 12px;
+}
+
+.alquimista-error.active {
+  display: block;
+}
+
+/* === GRIMORIO (panel lateral colapsable) === */
+.alquimista-grimoire {
+  width: 240px;
+  flex-shrink: 0;
+}
+
+.alquimista-grimoire__toggle {
+  display: none; /* Visible solo en móvil */
+  width: 100%;
+  background: rgba(212, 160, 23, 0.08);
+  border: 1px solid rgba(212, 160, 23, 0.15);
+  color: #d4a017;
+  padding: 10px;
+  font-family: 'UnifrakturMaguntia', cursive;
+  font-size: 1rem;
+  cursor: pointer;
+  border-radius: 6px;
+  margin-bottom: 12px;
+}
+
+.alquimista-grimoire__content {
+  border: 1px solid rgba(212, 160, 23, 0.1);
+  border-radius: 8px;
+  padding: 20px 16px;
+  background: rgba(212, 160, 23, 0.02);
+}
+
+.alquimista-grimoire__title {
+  font-family: 'UnifrakturMaguntia', cursive;
+  font-size: 1.1rem;
+  color: #d4a017;
+  text-align: center;
+  margin-bottom: 16px;
+  letter-spacing: 0.06em;
+}
+
+.alquimista-grimoire__term {
+  padding: 8px 0;
+  border-bottom: 1px solid rgba(212, 160, 23, 0.06);
+}
+
+.alquimista-grimoire__term:last-child {
+  border-bottom: none;
+}
+
+.alquimista-grimoire__term-name {
+  font-weight: 700;
+  color: #d4a017;
+  font-size: 0.85rem;
+}
+
+.alquimista-grimoire__term-icon {
+  margin-right: 6px;
+}
+
+.alquimista-grimoire__term-def {
+  font-size: 0.78rem;
+  color: rgba(232, 228, 217, 0.6);
+  margin-top: 2px;
+  line-height: 1.4;
+}
+
+/* === BORDES DECORATIVOS SVG === */
+.alquimista-border {
+  position: absolute;
+  opacity: 0.08;
+  pointer-events: none;
+}
+
+/* === RESPONSIVE === */
+@media (max-width: 768px) {
+  .alquimista-layout {
+    flex-direction: column;
+    padding: 20px 16px 40px;
+  }
+
+  .alquimista-grimoire {
+    width: 100%;
+    order: -1;
+  }
+
+  .alquimista-grimoire__toggle {
+    display: block;
+  }
+
+  .alquimista-grimoire__content.collapsed {
+    display: none;
+  }
+
+  .alquimista-chat {
+    max-height: 320px;
+  }
+
+  .alquimista-message {
+    max-width: 95%;
+  }
+
+  .alquimista-input-bar {
+    flex-direction: column;
+  }
+}

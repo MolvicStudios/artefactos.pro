@@ -1,0 +1,74 @@
+/* ads.css — Estilos de slots publicitarios AdSense para artefactos.pro */
+
+/* Contenedor de anuncio */
+.ad-container {
+  --ad-bg: rgba(255,255,255,0.02);
+  max-width: 1280px;
+  margin: var(--space-md) auto;
+  padding: var(--space-sm);
+  background: var(--ad-bg);
+  border: 1px dashed rgba(255,255,255,0.05);
+  border-radius: var(--radius-md);
+  text-align: center;
+  position: relative;
+  transition: opacity 0.4s ease, max-height 0.4s ease;
+  overflow: hidden;
+}
+
+/* Label "publicidad" */
+.ad-label {
+  display: block;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 10px;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  margin-bottom: var(--space-xs);
+}
+
+/* Slot header — debajo del header */
+#ad-header-wrap {
+  margin-top: 0;
+  border-top: none;
+  border-radius: 0 0 var(--radius-md) var(--radius-md);
+}
+
+/* Slot mid-grid — entre filas del grid */
+#ad-mid-wrap {
+  grid-column: 1 / -1;
+  margin: var(--space-sm) 0;
+}
+
+/* Slot footer — encima del footer */
+#ad-footer-wrap {
+  margin-bottom: var(--space-md);
+}
+
+/* Ocultar contenedores vacíos suavemente */
+.ad-container.ad-hidden {
+  opacity: 0;
+  max-height: 0;
+  padding: 0;
+  margin: 0;
+  border: none;
+  pointer-events: none;
+}
+
+/* ========================================
+   RESPONSIVE
+   ======================================== */
+
+/* En mobile: ajustar anuncios */
+@media (max-width: 640px) {
+  .ad-container {
+    margin: var(--space-sm) 1rem;
+    padding: var(--space-xs);
+  }
+}
+
+/* Ocultar anuncios grandes en mobile (se usa responsive de AdSense pero por si acaso) */
+@media (max-width: 640px) {
+  .ad-container ins.adsbygoogle {
+    max-height: 100px;
+  }
+}

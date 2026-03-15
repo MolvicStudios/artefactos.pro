@@ -1,0 +1,421 @@
+/* duelo.css — Estilos del Duelo de Filósofos */
+
+/* === FONDO: sala de debates académica === */
+body.duelo-page {
+  background: #111111;
+  background-image:
+    radial-gradient(ellipse at 50% 0%, rgba(248, 246, 240, 0.03) 0%, transparent 50%);
+  min-height: 100vh;
+  font-family: 'Cormorant Garamond', serif;
+  color: #f8f6f0;
+}
+
+/* === CONTENEDOR === */
+.duelo-container {
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 30px 24px 60px;
+  position: relative;
+  z-index: 1;
+}
+
+/* === TÍTULO === */
+.duelo-title {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: clamp(1.6rem, 4vw, 2.4rem);
+  font-weight: 700;
+  color: #f8f6f0;
+  text-align: center;
+  margin-bottom: 6px;
+  letter-spacing: 0.04em;
+}
+
+.duelo-subtitle {
+  text-align: center;
+  color: #6b6b6b;
+  font-size: 0.95rem;
+  font-style: italic;
+  margin-bottom: 30px;
+}
+
+/* === PANEL DE CONFIGURACIÓN === */
+.duelo-setup {
+  background: rgba(248, 246, 240, 0.03);
+  border: 1px solid rgba(248, 246, 240, 0.08);
+  border-radius: 10px;
+  padding: 28px 24px;
+  margin-bottom: 28px;
+}
+
+.duelo-setup__row {
+  display: flex;
+  gap: 16px;
+  margin-bottom: 16px;
+  align-items: end;
+}
+
+.duelo-setup__group {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.duelo-setup__label {
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: #6b6b6b;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+}
+
+.duelo-setup__select {
+  background: rgba(248, 246, 240, 0.06);
+  border: 1px solid rgba(248, 246, 240, 0.12);
+  color: #f8f6f0;
+  padding: 12px 14px;
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 1rem;
+  border-radius: 6px;
+  cursor: pointer;
+  appearance: none;
+  -webkit-appearance: none;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath d='M6 8L1 3h10z' fill='%23f8f6f0'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 12px center;
+}
+
+.duelo-setup__select option {
+  background: #1a1a1a;
+  color: #f8f6f0;
+}
+
+.duelo-setup__vs {
+  font-size: 1.4rem;
+  font-weight: 700;
+  color: #8b0000;
+  align-self: center;
+  padding-bottom: 6px;
+}
+
+.duelo-setup__topic {
+  width: 100%;
+  background: rgba(248, 246, 240, 0.06);
+  border: 1px solid rgba(248, 246, 240, 0.12);
+  color: #f8f6f0;
+  padding: 12px 14px;
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 1rem;
+  border-radius: 6px;
+  margin-bottom: 16px;
+}
+
+.duelo-setup__topic:focus {
+  outline: none;
+  border-color: #8b0000;
+}
+
+.duelo-setup__topic::placeholder {
+  color: #6b6b6b;
+  font-style: italic;
+}
+
+.duelo-btn-start {
+  width: 100%;
+  background: #8b0000;
+  color: #f8f6f0;
+  border: none;
+  padding: 14px;
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 1.05rem;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  cursor: pointer;
+  border-radius: 6px;
+  transition: all 0.2s ease;
+}
+
+.duelo-btn-start:hover {
+  background: #a00000;
+  transform: translateY(-1px);
+}
+
+.duelo-btn-start:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+  transform: none;
+}
+
+/* === ARENA DE DEBATE === */
+.duelo-arena {
+  display: none;
+}
+
+.duelo-arena.active {
+  display: block;
+}
+
+.duelo-round-header {
+  text-align: center;
+  margin-bottom: 20px;
+  padding: 12px;
+  border-bottom: 1px solid rgba(139, 0, 0, 0.2);
+}
+
+.duelo-round-header__text {
+  font-size: 0.85rem;
+  color: #6b6b6b;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+}
+
+.duelo-round-header__topic {
+  font-size: 1rem;
+  color: #f8f6f0;
+  font-style: italic;
+  margin-top: 4px;
+}
+
+/* === COLUMNAS DE FILÓSOFOS === */
+.duelo-columns {
+  display: flex;
+  gap: 20px;
+  margin-bottom: 20px;
+}
+
+.duelo-column {
+  flex: 1;
+  padding: 20px;
+  border-radius: 8px;
+  transition: all 0.5s ease;
+  border: 1px solid rgba(248, 246, 240, 0.06);
+}
+
+.duelo-column--a {
+  background: rgba(248, 246, 240, 0.02);
+}
+
+.duelo-column--b {
+  background: rgba(248, 246, 240, 0.02);
+}
+
+.duelo-column.speaking {
+  background: rgba(248, 246, 240, 0.06);
+  border-color: rgba(248, 246, 240, 0.15);
+}
+
+.duelo-column.silent {
+  opacity: 0.4;
+}
+
+/* Retrato SVG geométrico */
+.duelo-portrait {
+  width: 60px;
+  height: 60px;
+  margin: 0 auto 12px;
+}
+
+.duelo-portrait svg {
+  width: 100%;
+  height: 100%;
+}
+
+.duelo-column__name {
+  text-align: center;
+  font-size: 1.05rem;
+  font-weight: 700;
+  color: #f8f6f0;
+  margin-bottom: 12px;
+  letter-spacing: 0.04em;
+}
+
+.duelo-column__speech {
+  font-size: 0.95rem;
+  line-height: 1.7;
+  color: rgba(248, 246, 240, 0.85);
+  font-style: italic;
+  min-height: 60px;
+}
+
+.duelo-column__speech:empty::before {
+  content: '...';
+  color: #6b6b6b;
+}
+
+/* === INTERVENCIONES HISTORIAL === */
+.duelo-round-block {
+  margin-bottom: 24px;
+  padding-bottom: 24px;
+  border-bottom: 1px solid rgba(248, 246, 240, 0.05);
+}
+
+.duelo-round-label {
+  text-align: center;
+  font-size: 0.75rem;
+  color: #6b6b6b;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  margin-bottom: 14px;
+}
+
+/* === ACCIONES === */
+.duelo-actions {
+  display: flex;
+  gap: 12px;
+  justify-content: center;
+  margin-top: 20px;
+  flex-wrap: wrap;
+}
+
+.duelo-btn-next {
+  background: rgba(248, 246, 240, 0.08);
+  border: 1px solid rgba(248, 246, 240, 0.15);
+  color: #f8f6f0;
+  padding: 12px 28px;
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 0.95rem;
+  font-weight: 600;
+  cursor: pointer;
+  border-radius: 6px;
+  transition: all 0.2s ease;
+}
+
+.duelo-btn-next:hover {
+  background: rgba(248, 246, 240, 0.12);
+}
+
+.duelo-btn-next:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
+.duelo-btn-verdict {
+  background: #8b0000;
+  color: #f8f6f0;
+  border: none;
+  padding: 12px 28px;
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 0.95rem;
+  font-weight: 700;
+  cursor: pointer;
+  border-radius: 6px;
+  transition: all 0.2s ease;
+}
+
+.duelo-btn-verdict:hover {
+  background: #a00000;
+}
+
+.duelo-btn-verdict:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
+.duelo-btn-new {
+  background: transparent;
+  border: 1px solid #6b6b6b;
+  color: #6b6b6b;
+  padding: 12px 28px;
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 0.95rem;
+  cursor: pointer;
+  border-radius: 6px;
+  transition: all 0.2s ease;
+}
+
+.duelo-btn-new:hover {
+  border-color: #f8f6f0;
+  color: #f8f6f0;
+}
+
+/* === VEREDICTO === */
+.duelo-verdict {
+  display: none;
+  padding: 24px;
+  background: rgba(139, 0, 0, 0.06);
+  border: 1px solid rgba(139, 0, 0, 0.15);
+  border-radius: 8px;
+  margin-top: 20px;
+}
+
+.duelo-verdict.active {
+  display: block;
+  animation: verdictIn 0.5s ease;
+}
+
+@keyframes verdictIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.duelo-verdict__title {
+  text-align: center;
+  font-size: 0.8rem;
+  color: #8b0000;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  margin-bottom: 12px;
+}
+
+.duelo-verdict__text {
+  font-size: 0.95rem;
+  line-height: 1.7;
+  color: rgba(248, 246, 240, 0.85);
+}
+
+/* === LOADER Y ERROR === */
+.duelo-loader {
+  display: none;
+  text-align: center;
+  padding: 20px;
+  color: #6b6b6b;
+  font-style: italic;
+  animation: loaderPulse 1.5s ease-in-out infinite;
+}
+
+.duelo-loader.active {
+  display: block;
+}
+
+.duelo-error {
+  display: none;
+  text-align: center;
+  padding: 12px;
+  color: #e74c3c;
+  background: rgba(231, 76, 60, 0.06);
+  border: 1px solid rgba(231, 76, 60, 0.15);
+  border-radius: 6px;
+  font-size: 0.85rem;
+  margin: 12px 0;
+}
+
+.duelo-error.active {
+  display: block;
+}
+
+/* === RESPONSIVE === */
+@media (max-width: 700px) {
+  .duelo-container {
+    padding: 20px 16px 40px;
+  }
+
+  .duelo-setup__row {
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .duelo-setup__vs {
+    text-align: center;
+    padding: 0;
+  }
+
+  .duelo-columns {
+    flex-direction: column;
+    gap: 16px;
+  }
+
+  .duelo-actions {
+    flex-direction: column;
+    align-items: stretch;
+  }
+}

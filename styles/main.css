@@ -1,0 +1,559 @@
+/* main.css — Sistema visual del hub artefactos.pro
+   "Laboratorio de curiosidades del futuro"
+   Enciclopedia ilustrada del s.XIX + terminal futurista */
+
+/* ========================================
+   RESET MÍNIMO
+   ======================================== */
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  scroll-behavior: smooth;
+  -webkit-text-size-adjust: 100%;
+}
+
+body {
+  font-family: 'DM Sans', sans-serif;
+  background: var(--bg-base);
+  color: var(--text-primary);
+  line-height: 1.6;
+  min-height: 100vh;
+  overflow-x: hidden;
+  cursor: none;
+}
+
+a { color: inherit; text-decoration: none; }
+button { cursor: none; }
+input { cursor: none; }
+img { max-width: 100%; display: block; }
+
+/* ========================================
+   VARIABLES
+   ======================================== */
+:root {
+  --bg-base:        #09090b;
+  --bg-surface:     #111113;
+  --bg-raised:      #1a1a1f;
+  --border:         rgba(255,255,255,0.07);
+  --border-hover:   rgba(255,255,255,0.14);
+  --text-primary:   #f4f4f5;
+  --text-secondary: #a1a1aa;
+  --text-muted:     #52525b;
+  --accent:         #e8c96a;
+  --accent-dim:     rgba(232,201,106,0.12);
+
+  /* Colores por categoría */
+  --cat-entretenimiento: #a78bfa;
+  --cat-productividad:   #34d399;
+  --cat-research:        #60a5fa;
+  --cat-creatividad:     #fb923c;
+  --cat-educacion:       #fbbf24;
+
+  /* Espaciado */
+  --space-xs: 0.25rem;
+  --space-sm: 0.5rem;
+  --space-md: 1rem;
+  --space-lg: 1.5rem;
+  --space-xl: 2.5rem;
+  --space-2xl: 4rem;
+
+  /* Radios */
+  --radius-sm: 6px;
+  --radius-md: 10px;
+  --radius-lg: 14px;
+}
+
+/* ========================================
+   TEXTURAS DE FONDO — grain + dot grid
+   ======================================== */
+body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 9999;
+  opacity: 0.035;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
+  background-size: 128px 128px;
+}
+
+body::after {
+  content: '';
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 0;
+  opacity: 0.3;
+  background-image: radial-gradient(circle, rgba(255,255,255,0.04) 1px, transparent 1px);
+  background-size: 24px 24px;
+}
+
+/* ========================================
+   CURSOR PERSONALIZADO
+   ======================================== */
+#custom-cursor {
+  position: fixed;
+  width: 8px;
+  height: 8px;
+  background: var(--accent);
+  border-radius: 50%;
+  pointer-events: none;
+  z-index: 10000;
+  transform: translate(-50%, -50%);
+  transition: transform 0.08s ease-out, opacity 0.2s;
+  opacity: 0;
+  mix-blend-mode: difference;
+}
+
+#custom-cursor.visible {
+  opacity: 1;
+}
+
+#custom-cursor.hover {
+  transform: translate(-50%, -50%) scale(3);
+  opacity: 0.6;
+}
+
+/* Ocultar cursor custom en mobile */
+@media (hover: none) and (pointer: coarse) {
+  body { cursor: auto; }
+  button, a, input { cursor: auto; }
+  #custom-cursor { display: none; }
+}
+
+/* ========================================
+   HEADER
+   ======================================== */
+#site-header {
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  background: rgba(9,9,11,0.85);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border-bottom: 1px solid var(--border);
+}
+
+.header-inner {
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 0.85rem 1.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.logo-text {
+  font-family: 'Syne', sans-serif;
+  font-weight: 700;
+  font-size: 1.25rem;
+  color: var(--text-primary);
+  letter-spacing: -0.02em;
+}
+
+.logo-dot {
+  color: var(--accent);
+  display: inline-block;
+  animation: dotPulse 2s ease-in-out infinite;
+}
+
+@keyframes dotPulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.4; }
+}
+
+.header-controls {
+  display: flex;
+  align-items: center;
+  gap: var(--space-md);
+}
+
+.artefacto-count {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.75rem;
+  color: var(--text-muted);
+  background: var(--accent-dim);
+  padding: 0.2rem 0.6rem;
+  border-radius: 20px;
+}
+
+.lang-toggle {
+  background: transparent;
+  border: 1px solid var(--border);
+  color: var(--text-secondary);
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.75rem;
+  padding: 0.25rem 0.6rem;
+  border-radius: var(--radius-sm);
+  transition: color 0.2s, border-color 0.2s;
+}
+.lang-toggle:hover {
+  color: var(--accent);
+  border-color: rgba(232,201,106,0.3);
+}
+
+/* ========================================
+   HERO
+   ======================================== */
+#hero {
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: var(--space-2xl) 1.5rem var(--space-xl);
+  text-align: center;
+}
+
+#site-title {
+  font-family: 'Syne', sans-serif;
+  font-weight: 700;
+  font-size: clamp(2rem, 5vw, 3.5rem);
+  letter-spacing: -0.03em;
+  color: var(--text-primary);
+  margin-bottom: var(--space-sm);
+}
+
+#site-subtitle {
+  color: var(--text-secondary);
+  font-size: clamp(0.95rem, 2vw, 1.15rem);
+  margin-bottom: var(--space-lg);
+}
+
+/* Barra de búsqueda */
+.search-wrap {
+  max-width: 420px;
+  margin: 0 auto;
+}
+
+#search-input {
+  width: 100%;
+  padding: 0.7rem 1rem;
+  background: var(--bg-surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+  color: var(--text-primary);
+  font-family: 'DM Sans', sans-serif;
+  font-size: 0.95rem;
+  outline: none;
+  transition: border-color 0.2s;
+}
+#search-input:focus {
+  border-color: var(--accent);
+}
+#search-input::placeholder {
+  color: var(--text-muted);
+}
+/* Limpiar estilos nativos de search */
+#search-input::-webkit-search-cancel-button {
+  -webkit-appearance: none;
+}
+
+/* ========================================
+   FILTROS DE CATEGORÍA
+   ======================================== */
+#cat-filter {
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 0 1.5rem var(--space-lg);
+  display: flex;
+  gap: var(--space-sm);
+  overflow-x: auto;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+#cat-filter::-webkit-scrollbar { display: none; }
+
+.cat-btn {
+  position: relative;
+  background: transparent;
+  border: none;
+  color: var(--text-secondary);
+  font-family: 'DM Sans', sans-serif;
+  font-size: 0.85rem;
+  font-weight: 500;
+  padding: 0.4rem 0.9rem;
+  border-radius: 20px;
+  white-space: nowrap;
+  transition: color 0.2s, background 0.2s;
+}
+
+.cat-btn:hover {
+  color: var(--text-primary);
+  background: rgba(255,255,255,0.04);
+}
+
+.cat-btn.active {
+  color: var(--accent);
+  background: var(--accent-dim);
+}
+
+.cat-btn.active::after {
+  content: '';
+  position: absolute;
+  bottom: -2px;
+  left: 20%;
+  right: 20%;
+  height: 2px;
+  background: var(--accent);
+  border-radius: 1px;
+  animation: underlineIn 0.25s ease-out;
+}
+
+@keyframes underlineIn {
+  from { transform: scaleX(0); }
+  to   { transform: scaleX(1); }
+}
+
+/* ========================================
+   GRID DE ARTEFACTOS
+   ======================================== */
+#artefactos-grid {
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 0 1.5rem var(--space-2xl);
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+  gap: var(--space-md);
+  position: relative;
+  z-index: 1;
+}
+
+/* ========================================
+   TARJETA DE ARTEFACTO
+   ======================================== */
+.artefacto-card {
+  background: var(--bg-surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  padding: 1.25rem;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-sm);
+  transition: transform 0.25s ease, border-color 0.25s ease, box-shadow 0.25s ease;
+  text-decoration: none;
+  /* Animación de entrada */
+  opacity: 0;
+  transform: translateY(16px);
+  animation: cardIn 0.4s ease-out forwards;
+}
+
+.artefacto-card:hover {
+  transform: translateY(-3px);
+  border-color: var(--border-hover);
+}
+
+/* Glow por categoría al hacer hover */
+.artefacto-card[data-cat="entretenimiento"]:hover {
+  box-shadow: 0 8px 30px rgba(167,139,250,0.08);
+  border-color: rgba(167,139,250,0.25);
+}
+.artefacto-card[data-cat="productividad"]:hover {
+  box-shadow: 0 8px 30px rgba(52,211,153,0.08);
+  border-color: rgba(52,211,153,0.25);
+}
+.artefacto-card[data-cat="research"]:hover {
+  box-shadow: 0 8px 30px rgba(96,165,250,0.08);
+  border-color: rgba(96,165,250,0.25);
+}
+.artefacto-card[data-cat="creatividad"]:hover {
+  box-shadow: 0 8px 30px rgba(251,146,60,0.08);
+  border-color: rgba(251,146,60,0.25);
+}
+.artefacto-card[data-cat="educacion"]:hover {
+  box-shadow: 0 8px 30px rgba(251,191,36,0.08);
+  border-color: rgba(251,191,36,0.25);
+}
+
+/* Animación staggered de entrada */
+@keyframes cardIn {
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Cabecera de tarjeta: icono + badge */
+.card-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.card-icon {
+  font-size: 1.6rem;
+  line-height: 1;
+}
+
+.card-badge {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.65rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  padding: 0.15rem 0.5rem;
+  border-radius: 20px;
+}
+
+.card-badge--live {
+  color: #34d399;
+  background: rgba(52,211,153,0.1);
+  border: 1px solid rgba(52,211,153,0.2);
+}
+
+.card-badge--proximamente {
+  color: var(--text-muted);
+  background: rgba(255,255,255,0.03);
+  border: 1px solid rgba(255,255,255,0.06);
+}
+
+/* Nombre del artefacto */
+.card-name {
+  font-family: 'Syne', sans-serif;
+  font-weight: 700;
+  font-size: 1.05rem;
+  color: var(--text-primary);
+  line-height: 1.3;
+}
+
+/* Descripción */
+.card-desc {
+  font-size: 0.85rem;
+  color: var(--text-secondary);
+  line-height: 1.5;
+  flex: 1;
+}
+
+/* Botón de acción */
+.card-action {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.45rem 0;
+  font-family: 'DM Sans', sans-serif;
+  font-weight: 500;
+  font-size: 0.8rem;
+  border-radius: var(--radius-sm);
+  border: none;
+  transition: opacity 0.2s;
+  margin-top: auto;
+}
+
+.card-action--live {
+  background: var(--accent);
+  color: #09090b;
+}
+.card-action--live:hover { opacity: 0.85; }
+
+.card-action--proximamente {
+  background: rgba(255,255,255,0.04);
+  color: var(--text-muted);
+  pointer-events: none;
+}
+
+/* Indicador de categoría en el borde superior */
+.card-cat-indicator {
+  height: 2px;
+  border-radius: 1px;
+  margin-bottom: var(--space-xs);
+}
+.card-cat-indicator[data-cat="entretenimiento"] { background: var(--cat-entretenimiento); }
+.card-cat-indicator[data-cat="productividad"]   { background: var(--cat-productividad); }
+.card-cat-indicator[data-cat="research"]        { background: var(--cat-research); }
+.card-cat-indicator[data-cat="creatividad"]     { background: var(--cat-creatividad); }
+.card-cat-indicator[data-cat="educacion"]       { background: var(--cat-educacion); }
+
+/* Tarjeta deshabilitada (próximamente) */
+.artefacto-card--disabled {
+  opacity: 0.55;
+  pointer-events: none;
+}
+.artefacto-card--disabled:hover {
+  transform: none;
+  box-shadow: none;
+  border-color: var(--border);
+}
+
+/* ========================================
+   FOOTER
+   ======================================== */
+#site-footer {
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: var(--space-xl) 1.5rem var(--space-lg);
+  border-top: 1px solid var(--border);
+  text-align: center;
+  position: relative;
+  z-index: 1;
+}
+
+#footer-credit {
+  color: var(--text-muted);
+  font-size: 0.8rem;
+  margin-top: var(--space-md);
+}
+
+/* ========================================
+   MENSAJE SIN RESULTADOS
+   ======================================== */
+.no-results {
+  grid-column: 1 / -1;
+  text-align: center;
+  padding: var(--space-2xl) var(--space-md);
+  color: var(--text-muted);
+  font-size: 1rem;
+}
+
+/* ========================================
+   RESPONSIVE
+   ======================================== */
+
+/* Tablet y superior (≥640px) */
+@media (min-width: 640px) {
+  #artefactos-grid {
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: var(--space-lg);
+  }
+}
+
+/* Desktop (≥1024px) */
+@media (min-width: 1024px) {
+  #artefactos-grid {
+    grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+  }
+  .header-inner {
+    padding: 0.85rem 2rem;
+  }
+  #hero {
+    padding: var(--space-2xl) 2rem var(--space-xl);
+  }
+  #cat-filter {
+    padding: 0 2rem var(--space-lg);
+  }
+  #artefactos-grid {
+    padding: 0 2rem var(--space-2xl);
+  }
+  #site-footer {
+    padding: var(--space-xl) 2rem var(--space-lg);
+  }
+}
+
+/* Mobile pequeño (<400px) */
+@media (max-width: 400px) {
+  .header-inner {
+    padding: 0.7rem 1rem;
+  }
+  #hero {
+    padding: var(--space-xl) 1rem var(--space-lg);
+  }
+  #artefactos-grid {
+    padding: 0 1rem var(--space-xl);
+    grid-template-columns: 1fr;
+  }
+  #cat-filter {
+    padding: 0 1rem var(--space-md);
+    justify-content: flex-start;
+  }
+}

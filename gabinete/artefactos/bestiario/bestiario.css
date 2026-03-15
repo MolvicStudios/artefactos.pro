@@ -1,0 +1,455 @@
+@import url('https://fonts.googleapis.com/css2?family=Caesar+Dressing&family=Gentium+Book+Basic:ital,wght@0,400;0,700;1,400&display=swap');
+
+.bestiario-page {
+  background: #0d0d0a;
+  color: #f0e6c8;
+  min-height: 100vh;
+  font-family: 'Gentium Book Basic', serif;
+  overflow-x: hidden;
+  position: relative;
+}
+
+/* Parchment texture noise overlay */
+.bestiario-page::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  background: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.03'/%3E%3C/svg%3E");
+  pointer-events: none;
+  z-index: 0;
+  opacity: 0.5;
+}
+
+/* Header */
+.bestiario-header {
+  position: relative;
+  z-index: 2;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 20px 24px;
+}
+
+.bestiario-back {
+  color: #d4a017;
+  text-decoration: none;
+  font-size: 0.85rem;
+}
+
+.bestiario-back:hover { opacity: 0.7; }
+
+.bestiario-lang {
+  background: transparent;
+  border: 1px solid rgba(212, 160, 23, 0.4);
+  color: #d4a017;
+  padding: 4px 14px;
+  font-size: 0.75rem;
+  cursor: pointer;
+  border-radius: 3px;
+  font-family: 'Gentium Book Basic', serif;
+}
+
+/* Content */
+.bestiario-content {
+  position: relative;
+  z-index: 2;
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 0 24px 80px;
+}
+
+/* Title */
+.bestiario-title {
+  font-family: 'Caesar Dressing', cursive;
+  font-size: clamp(1.5rem, 4vw, 2.4rem);
+  color: #d4a017;
+  text-align: center;
+  margin-bottom: 32px;
+  letter-spacing: 0.06em;
+}
+
+/* Celtic border decoration */
+.bestiario-border {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 24px;
+  opacity: 0.3;
+}
+
+.bestiario-border svg {
+  width: 240px;
+  height: 20px;
+}
+
+/* Search bar */
+.bestiario-search {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 8px;
+  position: relative;
+}
+
+.bestiario-search__input {
+  flex: 1;
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(212, 160, 23, 0.25);
+  color: #f0e6c8;
+  padding: 12px 16px;
+  font-family: 'Gentium Book Basic', serif;
+  font-size: 0.95rem;
+  border-radius: 4px;
+}
+
+.bestiario-search__input:focus {
+  outline: none;
+  border-color: #d4a017;
+}
+
+.bestiario-search__input::placeholder {
+  color: rgba(240, 230, 200, 0.3);
+}
+
+.bestiario-search__btn {
+  background: transparent;
+  border: 1px solid #6b0f0f;
+  color: #f0e6c8;
+  padding: 12px 24px;
+  font-family: 'Caesar Dressing', cursive;
+  font-size: 0.85rem;
+  cursor: pointer;
+  border-radius: 4px;
+  transition: all 0.2s;
+}
+
+.bestiario-search__btn:hover {
+  background: rgba(107, 15, 15, 0.2);
+}
+
+.bestiario-random-btn {
+  background: rgba(107, 15, 15, 0.15);
+  border: 1px solid rgba(107, 15, 15, 0.4);
+  color: #d4a017;
+  padding: 8px 20px;
+  font-family: 'Gentium Book Basic', serif;
+  font-size: 0.8rem;
+  cursor: pointer;
+  border-radius: 4px;
+  margin-bottom: 24px;
+  transition: all 0.2s;
+}
+
+.bestiario-random-btn:hover {
+  background: rgba(107, 15, 15, 0.3);
+}
+
+/* Suggestions dropdown */
+.bestiario-suggestions {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  right: 80px;
+  background: #1a1510;
+  border: 1px solid rgba(212, 160, 23, 0.2);
+  border-radius: 0 0 4px 4px;
+  max-height: 200px;
+  overflow-y: auto;
+  z-index: 20;
+  display: none;
+}
+
+.bestiario-suggestions.visible {
+  display: block;
+}
+
+.bestiario-suggestion-item {
+  padding: 8px 14px;
+  font-size: 0.85rem;
+  cursor: pointer;
+  color: rgba(240, 230, 200, 0.8);
+  transition: background 0.15s;
+}
+
+.bestiario-suggestion-item:hover {
+  background: rgba(212, 160, 23, 0.1);
+  color: #d4a017;
+}
+
+/* Creature entry */
+.bestiario-entry {
+  display: grid;
+  grid-template-columns: 1fr 180px;
+  gap: 32px;
+  background: rgba(255, 255, 255, 0.02);
+  border: 1px solid rgba(212, 160, 23, 0.1);
+  border-radius: 8px;
+  padding: 32px;
+  animation: bestiario-fadein 0.6s ease;
+}
+
+@keyframes bestiario-fadein {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* Capital letter */
+.bestiario-entry__dropcap {
+  float: left;
+  font-family: 'Caesar Dressing', cursive;
+  font-size: 3.5rem;
+  line-height: 1;
+  color: #6b0f0f;
+  margin-right: 8px;
+  margin-top: -4px;
+}
+
+.bestiario-entry__name {
+  font-family: 'Caesar Dressing', cursive;
+  font-size: 1.6rem;
+  color: #d4a017;
+  margin-bottom: 4px;
+}
+
+.bestiario-entry__original-name {
+  font-style: italic;
+  font-size: 0.85rem;
+  color: rgba(240, 230, 200, 0.5);
+  margin-bottom: 4px;
+}
+
+.bestiario-entry__culture {
+  font-size: 0.8rem;
+  color: #1a2f6b;
+  background: rgba(26, 47, 107, 0.1);
+  display: inline-block;
+  padding: 2px 10px;
+  border-radius: 3px;
+  margin-bottom: 16px;
+}
+
+.bestiario-entry__desc {
+  font-size: 0.95rem;
+  line-height: 1.7;
+  color: rgba(240, 230, 200, 0.85);
+  margin-bottom: 16px;
+}
+
+/* Fields */
+.bestiario-field {
+  margin-bottom: 12px;
+}
+
+.bestiario-field__label {
+  font-size: 0.7rem;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  color: rgba(240, 230, 200, 0.4);
+  margin-bottom: 4px;
+}
+
+.bestiario-field__value {
+  font-size: 0.9rem;
+  color: rgba(240, 230, 200, 0.8);
+  line-height: 1.5;
+}
+
+.bestiario-field__list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.bestiario-field__list li {
+  font-size: 0.85rem;
+  color: rgba(240, 230, 200, 0.75);
+  padding: 2px 0 2px 12px;
+  position: relative;
+}
+
+.bestiario-field__list li::before {
+  content: '◆';
+  position: absolute;
+  left: 0;
+  color: #6b0f0f;
+  font-size: 0.6rem;
+  top: 5px;
+}
+
+/* Danger skulls */
+.bestiario-danger {
+  display: flex;
+  gap: 4px;
+  margin-top: 4px;
+}
+
+.bestiario-danger__skull {
+  font-size: 1rem;
+  opacity: 0.8;
+}
+
+.bestiario-danger__skull.empty {
+  opacity: 0.2;
+}
+
+/* Creature SVG illustration */
+.bestiario-illustration {
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+  padding-top: 16px;
+}
+
+.bestiario-illustration svg {
+  width: 160px;
+  height: 200px;
+  animation: bestiario-breathe 3s ease-in-out infinite;
+}
+
+@keyframes bestiario-breathe {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.03); }
+}
+
+/* Explored creatures panel */
+.bestiario-explored {
+  margin-top: 32px;
+}
+
+.bestiario-explored__title {
+  font-family: 'Caesar Dressing', cursive;
+  font-size: 1rem;
+  color: #d4a017;
+  margin-bottom: 12px;
+}
+
+.bestiario-explored__grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.bestiario-explored__item {
+  background: rgba(107, 15, 15, 0.1);
+  border: 1px solid rgba(107, 15, 15, 0.25);
+  color: rgba(240, 230, 200, 0.7);
+  padding: 6px 14px;
+  font-size: 0.8rem;
+  cursor: pointer;
+  border-radius: 4px;
+  transition: all 0.2s;
+}
+
+.bestiario-explored__item:hover {
+  border-color: #d4a017;
+  color: #d4a017;
+}
+
+/* Loading */
+.bestiario-loading {
+  text-align: center;
+  color: #d4a017;
+  font-size: 0.85rem;
+  padding: 40px 0;
+  animation: pulse-load 1.5s ease-in-out infinite;
+}
+
+@keyframes pulse-load {
+  0%, 100% { opacity: 0.5; }
+  50% { opacity: 1; }
+}
+
+/* API Key panel */
+.apikey-panel {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 80vh;
+  padding: 24px;
+}
+
+.apikey-panel__card {
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(212, 160, 23, 0.2);
+  border-radius: 12px;
+  padding: 40px;
+  max-width: 420px;
+  text-align: center;
+}
+
+.apikey-panel__title {
+  font-family: 'Caesar Dressing', cursive;
+  font-size: 1.3rem;
+  color: #d4a017;
+  margin-bottom: 12px;
+}
+
+.apikey-panel__desc {
+  font-size: 0.85rem;
+  color: rgba(240, 230, 200, 0.6);
+  margin-bottom: 24px;
+  line-height: 1.5;
+}
+
+.apikey-panel__field {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 16px;
+}
+
+.apikey-panel__input {
+  flex: 1;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(212, 160, 23, 0.3);
+  color: #f0e6c8;
+  padding: 10px 14px;
+  font-family: 'Gentium Book Basic', serif;
+  font-size: 0.85rem;
+  border-radius: 4px;
+}
+
+.apikey-panel__input:focus { outline: none; border-color: #d4a017; }
+
+.apikey-panel__save {
+  background: #6b0f0f;
+  color: #f0e6c8;
+  border: none;
+  padding: 10px 20px;
+  font-weight: 700;
+  font-size: 0.8rem;
+  cursor: pointer;
+  border-radius: 4px;
+}
+
+.apikey-panel__link {
+  font-size: 0.75rem;
+  color: #d4a017;
+  text-decoration: none;
+}
+
+.apikey-panel__link:hover { text-decoration: underline; }
+
+.apikey-change-btn {
+  position: fixed;
+  bottom: 16px;
+  right: 16px;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(212, 160, 23, 0.2);
+  color: #d4a017;
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  cursor: pointer;
+  font-size: 0.9rem;
+  z-index: 50;
+}
+
+@media (max-width: 700px) {
+  .bestiario-entry {
+    grid-template-columns: 1fr;
+  }
+  .bestiario-illustration {
+    order: -1;
+    padding-top: 0;
+    margin-bottom: 16px;
+  }
+  .bestiario-content { padding: 0 16px 60px; }
+}

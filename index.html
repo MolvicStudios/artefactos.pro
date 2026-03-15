@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>artefactos.pro — 50 experiencias de IA</title>
+  <meta name="description" content="50 artefactos de inteligencia artificial: entretenimiento, productividad, research, creatividad y educación. Bilingüe ES/EN. Trae tu clave Groq gratuita.">
+
+  <!-- Open Graph -->
+  <meta property="og:title" content="artefactos.pro">
+  <meta property="og:description" content="50 experiencias de IA. Trae tu clave Groq.">
+  <meta property="og:url" content="https://artefactos.pro">
+  <meta property="og:type" content="website">
+
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@700&family=DM+Sans:wght@400;500&family=JetBrains+Mono:wght@400&display=swap" rel="stylesheet">
+
+  <!-- AdSense (async, no bloquea render) -->
+  <!-- Publisher ID: ca-pub-1513893788851225 -->
+  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-1513893788851225" crossorigin="anonymous"></script>
+
+  <!-- Estilos -->
+  <link rel="stylesheet" href="styles/main.css">
+  <link rel="stylesheet" href="styles/ads.css">
+</head>
+<body>
+
+  <!-- CURSOR PERSONALIZADO -->
+  <div id="custom-cursor"></div>
+
+  <!-- HEADER -->
+  <header id="site-header">
+    <div class="header-inner">
+      <div class="logo">
+        <span class="logo-text">artefactos<span class="logo-dot">.</span>pro</span>
+      </div>
+      <div class="header-controls">
+        <span id="artefacto-count" class="artefacto-count"></span>
+        <button id="lang-toggle" class="lang-toggle" aria-label="Cambiar idioma">EN</button>
+      </div>
+    </div>
+
+    <!-- Slot AdSense header -->
+    <!-- REEMPLAZAR SLOT_HEADER con el ID real de tu unidad de anuncio en AdSense -->
+    <div class="ad-container" id="ad-header-wrap">
+      <span class="ad-label">publicidad</span>
+      <ins class="adsbygoogle" id="ad-header"
+           style="display:block"
+           data-ad-client="ca-pub-1513893788851225"
+           data-ad-slot="SLOT_HEADER"
+           data-ad-format="auto"
+           data-full-width-responsive="true"></ins>
+    </div>
+  </header>
+
+  <!-- HERO -->
+  <section id="hero">
+    <h1 id="site-title">artefactos<span class="logo-dot">.</span>pro</h1>
+    <p id="site-subtitle"></p>
+
+    <!-- Barra de búsqueda -->
+    <div class="search-wrap">
+      <input type="search" id="search-input" autocomplete="off" spellcheck="false" />
+    </div>
+  </section>
+
+  <!-- FILTROS DE CATEGORÍA -->
+  <nav id="cat-filter" aria-label="Filtrar por categoría">
+    <button class="cat-btn active" data-cat="all"></button>
+    <button class="cat-btn" data-cat="entretenimiento"></button>
+    <button class="cat-btn" data-cat="productividad"></button>
+    <button class="cat-btn" data-cat="research"></button>
+    <button class="cat-btn" data-cat="creatividad"></button>
+    <button class="cat-btn" data-cat="educacion"></button>
+  </nav>
+
+  <!-- GRID DE ARTEFACTOS (se renderiza desde main.js) -->
+  <main id="artefactos-grid"></main>
+
+  <!-- FOOTER -->
+  <footer id="site-footer">
+    <!-- Slot AdSense footer -->
+    <!-- REEMPLAZAR SLOT_FOOTER con el ID real de tu unidad de anuncio en AdSense -->
+    <div class="ad-container" id="ad-footer-wrap">
+      <span class="ad-label">publicidad</span>
+      <ins class="adsbygoogle" id="ad-footer"
+           style="display:block"
+           data-ad-client="ca-pub-1513893788851225"
+           data-ad-slot="SLOT_FOOTER"
+           data-ad-format="auto"
+           data-full-width-responsive="true"></ins>
+    </div>
+    <p id="footer-credit"></p>
+  </footer>
+
+  <!-- Scripts -->
+  <script type="module" src="js/ads.js"></script>
+  <script type="module" src="js/main.js"></script>
+</body>
+</html>
