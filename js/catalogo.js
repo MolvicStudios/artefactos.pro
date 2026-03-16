@@ -169,7 +169,7 @@ export const CATALOGO = [
     id: "detective",
     slug: "detective",
     categoria: "diversion",
-    ruta: "artefactos/entretenimiento/detective/",
+    ruta: "artefactos/diversion/detective/",
     icono: "🔍",
     color: "var(--cat-diversion)",
     categoria_schema: "EntertainmentApplication",
@@ -183,13 +183,13 @@ export const CATALOGO = [
     features_en: ["Interactive noir novel", "Procedural case generation", "Decisions that alter the plot", "Bilingual ES/EN"],
     paso_es: "Investiga la escena del crimen y resuelve el caso",
     paso_en: "Investigate the crime scene and solve the case",
-    estado: "proximamente"
+    estado: "live"
   },
   {
     id: "trivia",
     slug: "trivia",
     categoria: "diversion",
-    ruta: "artefactos/entretenimiento/trivia/",
+    ruta: "artefactos/diversion/trivia/",
     icono: "🧩",
     color: "var(--cat-diversion)",
     categoria_schema: "EntertainmentApplication",
@@ -203,7 +203,7 @@ export const CATALOGO = [
     features_en: ["Ultra-specific AI-generated questions", "Adaptive difficulty", "Unexpected connections between topics", "Bilingual ES/EN"],
     paso_es: "Responde preguntas cada vez más imposibles",
     paso_en: "Answer increasingly impossible questions",
-    estado: "proximamente"
+    estado: "live"
   },
 
   // ═══════════════════════════════════════
@@ -471,7 +471,7 @@ export const CATALOGO = [
     features_en: ["Structured analysis of similarities and differences", "Visual comparison table", "Works with any pair of concepts", "Bilingual ES/EN"],
     paso_es: "Introduce dos conceptos y obtén un análisis comparativo",
     paso_en: "Enter two concepts and get a comparative analysis",
-    estado: "proximamente"
+    estado: "live"
   },
   {
     id: "dafo",
@@ -491,7 +491,7 @@ export const CATALOGO = [
     features_en: ["Complete visual SWOT matrix", "Real analytical depth", "Works with any project or decision", "Bilingual ES/EN"],
     paso_es: "Describe tu proyecto o decisión para generar el análisis DAFO",
     paso_en: "Describe your project or decision to generate the SWOT analysis",
-    estado: "proximamente"
+    estado: "live"
   },
   {
     id: "detector-sesgos",
@@ -511,7 +511,7 @@ export const CATALOGO = [
     features_en: ["Detects multiple cognitive biases", "Points to exact location in text", "Clear explanations of each bias", "Bilingual ES/EN"],
     paso_es: "Pega un argumento o texto para detectar sesgos",
     paso_en: "Paste an argument or text to detect biases",
-    estado: "proximamente"
+    estado: "live"
   },
   {
     id: "contraargumentador",
@@ -531,7 +531,7 @@ export const CATALOGO = [
     features_en: ["Solid, grounded counterarguments", "Identifies blind spots", "Strengthens your arguments", "Bilingual ES/EN"],
     paso_es: "Presenta tu argumento y recibe contraargumentos",
     paso_en: "Present your argument and receive counterarguments",
-    estado: "proximamente"
+    estado: "live"
   },
   {
     id: "linea-tiempo",
@@ -551,7 +551,7 @@ export const CATALOGO = [
     features_en: ["Interactive visual timelines", "Events with context and connections", "Works with any topic or period", "Bilingual ES/EN"],
     paso_es: "Introduce un tema o período para generar la línea temporal",
     paso_en: "Enter a topic or period to generate the timeline",
-    estado: "proximamente"
+    estado: "live"
   },
   {
     id: "arbol-decision",
@@ -571,7 +571,7 @@ export const CATALOGO = [
     features_en: ["Interactive visual Canvas diagram", "Options with consequences and probabilities", "Navigate decision branches", "Bilingual ES/EN"],
     paso_es: "Describe tu decisión y navega por las opciones",
     paso_en: "Describe your decision and navigate the options",
-    estado: "proximamente"
+    estado: "live"
   },
   {
     id: "analogias",
@@ -591,7 +591,7 @@ export const CATALOGO = [
     features_en: ["Analogies from multiple domains", "Accessible explanations of complex topics", "Ideal for teaching and presentations", "Bilingual ES/EN"],
     paso_es: "Introduce un concepto complejo para encontrar analogías",
     paso_en: "Enter a complex concept to find analogies",
-    estado: "proximamente"
+    estado: "live"
   },
   {
     id: "sintetizador",
@@ -611,7 +611,7 @@ export const CATALOGO = [
     features_en: ["Key position extraction", "Strong arguments from each side", "Consensus and disagreement points", "Bilingual ES/EN"],
     paso_es: "Introduce un tema controvertido para sintetizar el debate",
     paso_en: "Enter a controversial topic to synthesize the debate",
-    estado: "proximamente"
+    estado: "live"
   },
 
   // ═══════════════════════════════════════
