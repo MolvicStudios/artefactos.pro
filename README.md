@@ -11,14 +11,12 @@ artefactos/                     ← Raíz (Cloudflare Pages)
 ├── _redirects                  ← Reglas Cloudflare Pages
 ├── _headers                    ← Headers de seguridad y caché
 ├── styles/
-│   ├── main.css                ← Estilos globales del hub
-│   └── ads.css                 ← Estilos AdSense
+│   └── main.css                ← Estilos globales del hub
 ├── js/
 │   ├── groq.js                 ← Cliente Groq (namespace: artefactos_groq_key)
 │   ├── apikey-panel.js         ← Componente UI para clave API
 │   ├── i18n.js                 ← Sistema bilingüe (50 artefactos × 2 idiomas)
-│   ├── main.js                 ← Lógica galería: filtros, búsqueda, idioma
-│   └── ads.js                  ← Inicialización AdSense
+│   └── main.js                 ← Lógica galería: filtros, búsqueda, idioma
 ├── gabinete/                   ← ⚠️ PREEXISTENTE — NO MODIFICAR
 │   └── (10 artefactos live)
 └── artefactos/                 ← Carpetas para futuros artefactos
@@ -35,10 +33,6 @@ artefactos/                     ← Raíz (Cloudflare Pages)
 - Ningún build tool — vanilla HTML/CSS/JS
 - El usuario aporta su clave Groq gratuita (sin registro, sin backend)
 - Clave se almacena en `localStorage` con key `artefactos_groq_key`
-
-## Monetización
-
-Se usa **Monetag** (auto-inyección vía tag). No necesita slots HTML ni configuración adicional en el código.
 
 ## Deploy en Cloudflare Pages
 
@@ -84,5 +78,4 @@ Se usa **Monetag** (auto-inyección vía tag). No necesita slots HTML ni configu
 - **Frontend:** Vanilla HTML, CSS, JavaScript (ES modules)
 - **IA:** Groq API (LLaMA 3.3 70B Versatile)
 - **Hosting:** Cloudflare Pages
-- **Monetización:** Google AdSense
 - **Tipografías:** Syne · DM Sans · JetBrains Mono (Google Fonts)
