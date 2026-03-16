@@ -1,15 +1,43 @@
 // duelo.js — Lógica del Duelo de Filósofos
-import { askGroq } from '../../../js/groq.js';
-import { getLang, setLang, t } from '../../../js/i18n.js';
+import { askGroq, hasApiKey } from '../../../js/groq.js';
+import { renderApiKeyPanel } from '../../../js/apikey-panel.js';
 
-// === CONSTANTES ===
+const lang = localStorage.getItem('artefactos_lang') || 'es';
+
+const txt = {
+  es: {
+    langToggle: 'EN', back: '← Volver',
+    title: 'Duelo de Filósofos', subtitle: 'Elige dos mentes. Elige un tema. Observa cómo chocan.',
+    selectA: 'Filósofo A', selectB: 'Filósofo B',
+    topic: 'Tema del debate', topicPlaceholder: 'Ej: ¿Existe el libre albedrío?',
+    start: '¡Que comience el duelo!', nextRound: 'Siguiente ronda',
+    verdict: 'Veredicto del árbitro', newDuel: 'Nuevo duelo',
+    round: 'Ronda', of: 'de',
+    loading: '⚡ Preparando argumentos...',
+    diffAlert: 'Elige dos filósofos diferentes.',
+    error: 'Error al consultar'
+  },
+  en: {
+    langToggle: 'ES', back: '← Back',
+    title: 'Philosopher Duel', subtitle: 'Choose two minds. Choose a topic. Watch them clash.',
+    selectA: 'Philosopher A', selectB: 'Philosopher B',
+    topic: 'Debate topic', topicPlaceholder: 'E.g.: Does free will exist?',
+    start: 'Let the duel begin!', nextRound: 'Next round',
+    verdict: 'Arbiter verdict', newDuel: 'New duel',
+    round: 'Round', of: 'of',
+    loading: '⚡ Preparing arguments...',
+    diffAlert: 'Choose two different philosophers.',
+    error: 'Error consulting'
+  }
+};
+const t = txt[lang] || txt.es;
+
 const MAX_ROUNDS = 3;
 const PHILOSOPHERS = [
   'Sócrates', 'Platón', 'Aristóteles', 'Nietzsche', 'Kant',
   'Descartes', 'Hume', 'Sartre', 'Simone de Beauvoir', 'Confucio'
 ];
 
-// Retratos SVG geométricos únicos por filósofo
 const PORTRAITS = {
   'Sócrates': `<svg viewBox="0 0 60 60" fill="none"><circle cx="30" cy="22" r="14" stroke="#f8f6f0" stroke-width="1.5"/><path d="M20 22 Q30 32 40 22" stroke="#f8f6f0" stroke-width="1" fill="none"/><line x1="30" y1="36" x2="30" y2="50" stroke="#f8f6f0" stroke-width="1.5"/><circle cx="26" cy="20" r="1.5" fill="#f8f6f0"/><circle cx="34" cy="20" r="1.5" fill="#f8f6f0"/></svg>`,
   'Platón': `<svg viewBox="0 0 60 60" fill="none"><rect x="18" y="12" width="24" height="28" rx="12" stroke="#f8f6f0" stroke-width="1.5"/><path d="M18 18 Q30 8 42 18" stroke="#f8f6f0" stroke-width="1" fill="none"/><circle cx="26" cy="24" r="1.5" fill="#f8f6f0"/><circle cx="34" cy="24" r="1.5" fill="#f8f6f0"/><line x1="30" y1="42" x2="30" y2="54" stroke="#f8f6f0" stroke-width="1.5"/></svg>`,
@@ -23,15 +51,13 @@ const PORTRAITS = {
   'Confucio': `<svg viewBox="0 0 60 60" fill="none"><circle cx="30" cy="24" r="13" stroke="#f8f6f0" stroke-width="1.5"/><path d="M18 20 Q24 12 30 16 Q36 12 42 20" stroke="#f8f6f0" stroke-width="1" fill="none"/><circle cx="26" cy="22" r="1.5" fill="#f8f6f0"/><circle cx="34" cy="22" r="1.5" fill="#f8f6f0"/><path d="M24 30 Q30 34 36 30" stroke="#f8f6f0" stroke-width="1" fill="none"/><path d="M20 36 Q30 42 40 36" stroke="#f8f6f0" stroke-width="1" fill="none"/><line x1="30" y1="37" x2="30" y2="52" stroke="#f8f6f0" stroke-width="1.5"/></svg>`
 };
 
-// === ESTADO ===
 let currentRound = 0;
-let debateHistory = []; // Todas las intervenciones
+let debateHistory = [];
 let philosopherA = '';
 let philosopherB = '';
 let topic = '';
 
-// === SYSTEM PROMPTS ===
-function getDebatePrompt(lang, philA, philB, tema, prevSpeeches) {
+function getDebatePrompt(philA, philB, tema, prevSpeeches) {
   const idioma = lang === 'es' ? 'español' : 'English';
   let context = '';
   if (prevSpeeches.length > 0) {
@@ -49,7 +75,7 @@ ${philB}: "..."
 Usa el pensamiento histórico real de cada filósofo. No inventes posturas.${context}`;
 }
 
-function getVerdictPrompt(lang, philA, philB, tema, allSpeeches) {
+function getVerdictPrompt(philA, philB, tema, allSpeeches) {
   const idioma = lang === 'es' ? 'español' : 'English';
   return `Eres un árbitro neutral filosófico. Hablas en ${idioma}.
 Has presenciado un debate entre ${philA} y ${philB} sobre: ${tema}.
@@ -58,29 +84,39 @@ ${allSpeeches.join('\n')}
 Resume en máximo 4 oraciones los puntos clave de cada postura y quién tuvo argumentos más sólidos. Sé justo y ecuánime.`;
 }
 
-// === INICIALIZACIÓN ===
 document.addEventListener('DOMContentLoaded', () => {
+  if (!hasApiKey()) {
+    document.querySelector('main').style.display = 'none';
+    renderApiKeyPanel('key-panel', () => {
+      document.getElementById('key-panel').innerHTML = '';
+      document.querySelector('main').style.display = '';
+      setup();
+    }, lang);
+    return;
+  }
+  setup();
+});
+
+function setup() {
   updateTexts();
   populateSelects();
   initEvents();
-});
-
-// === TEXTOS BILINGÜES ===
-function updateTexts() {
-  document.getElementById('lang-toggle').textContent = t('selectLang');
-  document.getElementById('back-btn').textContent = t('backBtn');
-  document.getElementById('duelo-title').textContent = t('duelo_name');
-  document.getElementById('label-a').textContent = t('duelo_select_a');
-  document.getElementById('label-b').textContent = t('duelo_select_b');
-  document.getElementById('label-topic').textContent = t('duelo_topic');
-  document.getElementById('topic-input').placeholder = t('duelo_topic_placeholder');
-  document.getElementById('btn-start').textContent = t('duelo_start');
-  document.getElementById('btn-next').textContent = t('duelo_next_round');
-  document.getElementById('btn-verdict').textContent = t('duelo_verdict');
-  document.getElementById('btn-new').textContent = t('duelo_new');
 }
 
-// === POPULAR SELECTS ===
+function updateTexts() {
+  document.getElementById('lang-toggle').textContent = t.langToggle;
+  document.getElementById('back-btn').textContent = t.back;
+  document.getElementById('duelo-title').textContent = t.title;
+  document.getElementById('label-a').textContent = t.selectA;
+  document.getElementById('label-b').textContent = t.selectB;
+  document.getElementById('label-topic').textContent = t.topic;
+  document.getElementById('topic-input').placeholder = t.topicPlaceholder;
+  document.getElementById('btn-start').textContent = t.start;
+  document.getElementById('btn-next').textContent = t.nextRound;
+  document.getElementById('btn-verdict').textContent = t.verdict;
+  document.getElementById('btn-new').textContent = t.newDuel;
+}
+
 function populateSelects() {
   const selectA = document.getElementById('select-a');
   const selectB = document.getElementById('select-b');
@@ -95,17 +131,14 @@ function populateSelects() {
     });
   });
 
-  // Defaults diferentes
-  selectA.value = PHILOSOPHERS[0]; // Sócrates
-  selectB.value = PHILOSOPHERS[3]; // Nietzsche
+  selectA.value = PHILOSOPHERS[0];
+  selectB.value = PHILOSOPHERS[3];
 }
 
-// === EVENTOS ===
 function initEvents() {
   document.getElementById('lang-toggle').addEventListener('click', () => {
-    const next = getLang() === 'es' ? 'en' : 'es';
-    setLang(next);
-    updateTexts();
+    localStorage.setItem('artefactos_lang', lang === 'es' ? 'en' : 'es');
+    location.reload();
   });
 
   document.getElementById('btn-start').addEventListener('click', startDuel);
@@ -114,46 +147,34 @@ function initEvents() {
   document.getElementById('btn-new').addEventListener('click', resetDuel);
 }
 
-// === INICIAR DUELO ===
 async function startDuel() {
   philosopherA = document.getElementById('select-a').value;
   philosopherB = document.getElementById('select-b').value;
   topic = document.getElementById('topic-input').value.trim();
 
   if (!topic) return;
-  if (philosopherA === philosopherB) {
-    const lang = getLang();
-    alert(lang === 'es' ? 'Elige dos filósofos diferentes.' : 'Choose two different philosophers.');
-    return;
-  }
+  if (philosopherA === philosopherB) { alert(t.diffAlert); return; }
 
   currentRound = 0;
   debateHistory = [];
 
-  // Mostrar arena, ocultar setup
   document.getElementById('duelo-setup').style.display = 'none';
   document.getElementById('duelo-arena').classList.add('active');
 
-  // Configurar nombres y retratos
   document.getElementById('name-a').textContent = philosopherA;
   document.getElementById('name-b').textContent = philosopherB;
   document.getElementById('portrait-a').innerHTML = PORTRAITS[philosopherA] || '';
   document.getElementById('portrait-b').innerHTML = PORTRAITS[philosopherB] || '';
   document.getElementById('arena-topic').textContent = topic;
-
-  // Limpiar
   document.getElementById('debate-rounds').innerHTML = '';
   document.getElementById('duelo-verdict').classList.remove('active');
 
   await nextRound();
 }
 
-// === SIGUIENTE RONDA ===
 async function nextRound() {
   if (currentRound >= MAX_ROUNDS) return;
-
   currentRound++;
-  const lang = getLang();
 
   const loader = document.getElementById('duelo-loader');
   const errorBox = document.getElementById('duelo-error');
@@ -165,12 +186,11 @@ async function nextRound() {
   errorBox.classList.remove('active');
   loader.classList.add('active');
 
-  // Actualizar cabecera de ronda
-  document.getElementById('round-label').textContent = `${t('duelo_round')} ${currentRound} ${t('duelo_of')} ${MAX_ROUNDS}`;
+  document.getElementById('round-label').textContent = `${t.round} ${currentRound} ${t.of} ${MAX_ROUNDS}`;
 
   try {
     const answer = await askGroq({
-      systemPrompt: getDebatePrompt(lang, philosopherA, philosopherB, topic, debateHistory),
+      systemPrompt: getDebatePrompt(philosopherA, philosopherB, topic, debateHistory),
       userMessage: lang === 'es'
         ? `Ronda ${currentRound}. Genera las intervenciones.`
         : `Round ${currentRound}. Generate the speeches.`,
@@ -180,18 +200,12 @@ async function nextRound() {
 
     debateHistory.push(answer);
 
-    // Parsear las dos intervenciones
     const { speechA, speechB } = parseSpeeches(answer, philosopherA, philosopherB);
-
-    // Añadir al historial visual
     addRoundToDOM(currentRound, speechA, speechB);
-
-    // Actualizar columnas principales
     showSpeaking('a', speechA);
     setTimeout(() => showSpeaking('b', speechB), 800);
-
   } catch (err) {
-    errorBox.textContent = t('errorMsg') + ' — ' + err.message;
+    errorBox.textContent = t.error + ' — ' + err.message;
     errorBox.classList.add('active');
   } finally {
     loader.classList.remove('active');
@@ -200,9 +214,7 @@ async function nextRound() {
   }
 }
 
-// === PARSEAR DISCURSOS ===
 function parseSpeeches(text, philA, philB) {
-  // Intentar encontrar los patrones "Filósofo: "texto""
   const lines = text.split('\n').filter(l => l.trim());
   let speechA = '';
   let speechB = '';
@@ -222,7 +234,6 @@ function parseSpeeches(text, philA, philB) {
     }
   }
 
-  // Fallback si no se pudo parsear
   if (!speechA && !speechB) {
     const half = Math.floor(text.length / 2);
     speechA = text.substring(0, half);
@@ -232,7 +243,6 @@ function parseSpeeches(text, philA, philB) {
   return { speechA: speechA.trim(), speechB: speechB.trim() };
 }
 
-// === MOSTRAR QUIÉN HABLA ===
 function showSpeaking(side, text) {
   const colA = document.getElementById('column-a');
   const colB = document.getElementById('column-b');
@@ -252,13 +262,12 @@ function showSpeaking(side, text) {
   }
 }
 
-// === AÑADIR RONDA AL DOM ===
 function addRoundToDOM(roundNum, speechA, speechB) {
   const container = document.getElementById('debate-rounds');
   const block = document.createElement('div');
   block.className = 'duelo-round-block';
   block.innerHTML = `
-    <div class="duelo-round-label">${t('duelo_round')} ${roundNum}</div>
+    <div class="duelo-round-label">${t.round} ${roundNum}</div>
     <div class="duelo-columns">
       <div class="duelo-column duelo-column--a">
         <div class="duelo-column__name">${escapeHtml(philosopherA)}</div>
@@ -273,11 +282,9 @@ function addRoundToDOM(roundNum, speechA, speechB) {
   container.appendChild(block);
 }
 
-// === SOLICITAR VEREDICTO ===
 async function requestVerdict() {
   if (debateHistory.length === 0) return;
 
-  const lang = getLang();
   const loader = document.getElementById('duelo-loader');
   const errorBox = document.getElementById('duelo-error');
   const btnVerdict = document.getElementById('btn-verdict');
@@ -290,7 +297,7 @@ async function requestVerdict() {
 
   try {
     const verdict = await askGroq({
-      systemPrompt: getVerdictPrompt(lang, philosopherA, philosopherB, topic, debateHistory),
+      systemPrompt: getVerdictPrompt(philosopherA, philosopherB, topic, debateHistory),
       userMessage: lang === 'es' ? 'Emite tu veredicto.' : 'Give your verdict.',
       temperature: 0.7,
       maxTokens: 400
@@ -299,17 +306,15 @@ async function requestVerdict() {
     const verdictBox = document.getElementById('duelo-verdict');
     document.getElementById('verdict-text').textContent = verdict;
     verdictBox.classList.add('active');
-
   } catch (err) {
-    errorBox.textContent = t('errorMsg') + ' — ' + err.message;
+    errorBox.textContent = t.error + ' — ' + err.message;
     errorBox.classList.add('active');
   } finally {
     loader.classList.remove('active');
-    btnVerdict.disabled = true; // Solo un veredicto
+    btnVerdict.disabled = true;
   }
 }
 
-// === RESETEAR DUELO ===
 function resetDuel() {
   currentRound = 0;
   debateHistory = [];
@@ -327,7 +332,6 @@ function resetDuel() {
   document.getElementById('duelo-error').classList.remove('active');
 }
 
-// === UTILIDADES ===
 function escapeHtml(text) {
   const div = document.createElement('div');
   div.textContent = text;

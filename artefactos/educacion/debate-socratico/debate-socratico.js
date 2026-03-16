@@ -121,7 +121,6 @@ REGLAS:
 
   try {
     const resp = await askGroq({ systemPrompt: sys, userMessage: tema, temperature: 0.85, maxTokens: 1500 });
-    if (resp === 'NO_KEY' || resp === 'INVALID_KEY') { resultado.innerHTML = `<p class="loading">${t.error}</p>`; resetBtn(); return; }
     const data = parsearJSON(resp);
     if (!data || !data.argumentosA) { resultado.innerHTML = `<p class="loading">${t.error}</p>`; resetBtn(); return; }
     renderDebate(data);

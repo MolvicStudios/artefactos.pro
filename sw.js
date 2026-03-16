@@ -2,7 +2,6 @@
 const CACHE_NAME = 'artefactos-v2';
 const STATIC_ASSETS = [
   '/',
-  '/index.html',
   '/styles/main.css',
   '/js/main.js',
   '/js/catalogo.js',

@@ -131,7 +131,6 @@ La pregunta debe ser específica y clara. Las opciones deben ser plausibles.`;
 
   try {
     const resp = await askGroq({ systemPrompt: sys, userMessage: `Pregunta ${preguntaIdx + 1} de ${NUM_PREGUNTAS}`, temperature: 0.9, maxTokens: 300 });
-    if (resp === 'NO_KEY' || resp === 'INVALID_KEY') { zona.innerHTML = `<p class="loading">${t.error}</p>`; generando = false; return; }
     preguntaActual = parsearJSON(resp);
     if (!preguntaActual || !preguntaActual.opciones || preguntaActual.opciones.length < 4) {
       zona.innerHTML = `<p class="loading">${t.error}</p>`; generando = false; return;

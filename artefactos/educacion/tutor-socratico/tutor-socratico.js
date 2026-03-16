@@ -93,9 +93,6 @@ Escribe la síntesis en prosa clara, en 3-4 párrafos. Usa un tono cálido y mot
 async function llamarGroq(systemPrompt, userMessage) {
   try {
     const resp = await askGroq({ systemPrompt, userMessage, temperature: 0.8, maxTokens: 400 });
-    if (resp === 'NO_KEY' || resp === 'INVALID_KEY') {
-      return { ok: false, error: t.error };
-    }
     return { ok: true, data: resp };
   } catch {
     return { ok: false, error: t.error };

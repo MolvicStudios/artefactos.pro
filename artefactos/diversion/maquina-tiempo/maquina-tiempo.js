@@ -1,9 +1,32 @@
 // artefactos/maquina-tiempo/maquina-tiempo.js
-import { askGroq, hasGroqKey } from '../../../js/groq.js';
+import { askGroq, hasApiKey } from '../../../js/groq.js';
 import { renderApiKeyPanel, renderChangeKeyButton } from '../../../js/apikey-panel.js';
-import { t, getLang, setLang } from '../../../js/i18n.js';
 
-const lang = () => getLang();
+const lang = () => localStorage.getItem('artefactos_lang') || 'es';
+function setLang(l) { localStorage.setItem('artefactos_lang', l); }
+
+const TXT = {
+  es: {
+    back: '← Volver', langToggle: 'EN', title: 'Máquina del Tiempo',
+    cockpit: 'Cockpit temporal', selectEra: 'Selecciona una época',
+    rolePlaceholder: 'Tu rol (opcional): mercader, monje, espía...',
+    start: 'Iniciar viaje', traveling: 'Viajando en el tiempo...',
+    action: '¿Qué quieres hacer?', turn: 'Turno', of: 'de',
+    returnBtn: 'Regresar al presente', summary: 'Resumen del viaje',
+    facts: 'Datos históricos', newTrip: 'Nuevo viaje'
+  },
+  en: {
+    back: '← Back', langToggle: 'ES', title: 'Time Machine',
+    cockpit: 'Temporal cockpit', selectEra: 'Select an era',
+    rolePlaceholder: 'Your role (optional): merchant, monk, spy...',
+    start: 'Start journey', traveling: 'Traveling through time...',
+    action: 'What do you want to do?', turn: 'Turn', of: 'of',
+    returnBtn: 'Return to the present', summary: 'Trip summary',
+    facts: 'Historical facts', newTrip: 'New journey'
+  }
+};
+function T(key) { return (TXT[lang()] || TXT.es)[key] || key; }
+
 const MAX_TURNS = 4;
 
 const EPOCAS = [
@@ -18,17 +41,11 @@ const EPOCAS = [
 ];
 
 let state = {
-  epoca: null,
-  rol: '',
-  turn: 0,
-  history: [],
-  narration: '',
-  actions: [],
-  finished: false
+  epoca: null, rol: '', turn: 0, history: [], narration: '', actions: [], finished: false
 };
 
 function init() {
-  if (!hasGroqKey()) {
+  if (!hasApiKey()) {
     renderApiKeyPanel('app-container', () => renderArtefacto(), lang());
     return;
   }
@@ -44,19 +61,16 @@ function renderArtefacto() {
     <div class="maquina-flash" id="flash"></div>
     <div class="maquina-content">
       <div class="maquina-header">
-        <a href="../../index.html" class="maquina-back">${t('backBtn')}</a>
-        <button class="maquina-lang" id="lang-toggle">${t('selectLang')}</button>
+        <a href="../../../index.html" class="maquina-back">${T('back')}</a>
+        <button class="maquina-lang" id="lang-toggle">${T('langToggle')}</button>
       </div>
-      <h1 class="maquina-title">${t('maquina_name')}</h1>
-      <p class="maquina-subtitle">⚙ ${lang() === 'es' ? 'Cockpit temporal' : 'Temporal cockpit'}</p>
-
-      <!-- Decorative dials -->
+      <h1 class="maquina-title">${T('title')}</h1>
+      <p class="maquina-subtitle">⚙ ${T('cockpit')}</p>
       <div class="maquina-dials">
         <svg viewBox="0 0 48 48"><circle cx="24" cy="24" r="20" stroke="#b87333" stroke-width="1" fill="none"/><line x1="24" y1="8" x2="24" y2="20" stroke="#39ff14" stroke-width="1.5"/><circle cx="24" cy="24" r="2" fill="#b87333"/></svg>
         <svg viewBox="0 0 48 48"><circle cx="24" cy="24" r="20" stroke="#b87333" stroke-width="1" fill="none"/><line x1="24" y1="24" x2="36" y2="18" stroke="#b87333" stroke-width="1.5"/><circle cx="24" cy="24" r="2" fill="#39ff14"/></svg>
         <svg viewBox="0 0 48 48"><rect x="8" y="14" width="32" height="20" rx="3" stroke="#b87333" stroke-width="1" fill="none"/><line x1="14" y1="34" x2="14" y2="24" stroke="#39ff14" stroke-width="2"/><line x1="22" y1="34" x2="22" y2="28" stroke="#39ff14" stroke-width="2"/><line x1="30" y1="34" x2="30" y2="20" stroke="#39ff14" stroke-width="2"/><line x1="38" y1="34" x2="38" y2="26" stroke="#39ff14" stroke-width="2"/></svg>
       </div>
-
       <div id="main-area"></div>
     </div>
   `;
@@ -65,110 +79,59 @@ function renderArtefacto() {
   initLangToggle();
   renderChangeKeyButton('apikey-change-container', lang());
 
-  if (state.finished) {
-    renderSummary();
-  } else if (state.turn > 0) {
-    renderNarrative();
-  } else {
-    renderSetup();
-  }
+  if (state.finished) renderSummary();
+  else if (state.turn > 0) renderNarrative();
+  else renderSetup();
 }
 
-// === STARS CANVAS ===
 function initStars() {
   const canvas = document.getElementById('stars-canvas');
   if (!canvas) return;
   const ctx = canvas.getContext('2d');
   let w, h, stars = [];
-
-  function resize() {
-    w = canvas.width = window.innerWidth;
-    h = canvas.height = window.innerHeight;
-  }
-
-  function createStars() {
-    stars = [];
-    for (let i = 0; i < 120; i++) {
-      stars.push({ x: Math.random() * w, y: Math.random() * h, r: Math.random() * 1.5 + 0.3, speed: Math.random() * 0.15 + 0.02 });
-    }
-  }
-
+  function resize() { w = canvas.width = window.innerWidth; h = canvas.height = window.innerHeight; }
+  function createStars() { stars = []; for (let i = 0; i < 120; i++) stars.push({ x: Math.random()*w, y: Math.random()*h, r: Math.random()*1.5+0.3, speed: Math.random()*0.15+0.02 }); }
   function draw() {
-    ctx.clearRect(0, 0, w, h);
-    ctx.fillStyle = '#f2e8d5';
-    for (const s of stars) {
-      ctx.globalAlpha = 0.3 + Math.sin(Date.now() * s.speed * 0.01) * 0.3;
-      ctx.beginPath();
-      ctx.arc(s.x, s.y, s.r, 0, Math.PI * 2);
-      ctx.fill();
-      s.y += s.speed;
-      if (s.y > h + 2) { s.y = -2; s.x = Math.random() * w; }
-    }
-    ctx.globalAlpha = 1;
-    requestAnimationFrame(draw);
+    ctx.clearRect(0,0,w,h); ctx.fillStyle = '#f2e8d5';
+    for (const s of stars) { ctx.globalAlpha = 0.3+Math.sin(Date.now()*s.speed*0.01)*0.3; ctx.beginPath(); ctx.arc(s.x,s.y,s.r,0,Math.PI*2); ctx.fill(); s.y += s.speed; if (s.y>h+2){s.y=-2;s.x=Math.random()*w;} }
+    ctx.globalAlpha = 1; requestAnimationFrame(draw);
   }
-
-  resize();
-  createStars();
-  draw();
+  resize(); createStars(); draw();
   window.addEventListener('resize', () => { resize(); createStars(); });
 }
 
-// === LANG TOGGLE ===
 function initLangToggle() {
   const btn = document.getElementById('lang-toggle');
   if (!btn) return;
-  btn.addEventListener('click', () => {
-    setLang(getLang() === 'es' ? 'en' : 'es');
-    renderArtefacto();
-  });
+  btn.addEventListener('click', () => { setLang(lang() === 'es' ? 'en' : 'es'); renderArtefacto(); });
 }
 
-// === SETUP SCREEN ===
 function renderSetup() {
   const area = document.getElementById('main-area');
-  const epocaOptions = EPOCAS.map(e =>
-    `<option value="${e.id}">${lang() === 'es' ? e.label_es : e.label_en}</option>`
-  ).join('');
-
+  const epocaOptions = EPOCAS.map(e => `<option value="${e.id}">${lang() === 'es' ? e.label_es : e.label_en}</option>`).join('');
   area.innerHTML = `
     <div class="maquina-setup">
-      <label class="maquina-label">${t('maquina_select_era')}</label>
-      <select id="epoca-select" class="maquina-select">
-        <option value="">—</option>
-        ${epocaOptions}
-      </select>
-      <br>
-      <input id="role-input" class="maquina-role-input" type="text" placeholder="${t('maquina_role_placeholder')}">
-      <br>
-      <button id="travel-btn" class="maquina-btn" disabled>${t('maquina_start')}</button>
-    </div>
-  `;
-
+      <label class="maquina-label">${T('selectEra')}</label>
+      <select id="epoca-select" class="maquina-select"><option value="">—</option>${epocaOptions}</select><br>
+      <input id="role-input" class="maquina-role-input" type="text" placeholder="${T('rolePlaceholder')}"><br>
+      <button id="travel-btn" class="maquina-btn" disabled>${T('start')}</button>
+    </div>`;
   const select = document.getElementById('epoca-select');
   const travelBtn = document.getElementById('travel-btn');
-
-  select.addEventListener('change', () => {
-    travelBtn.disabled = !select.value;
-  });
-
+  select.addEventListener('change', () => { travelBtn.disabled = !select.value; });
   travelBtn.addEventListener('click', () => startTravel());
 }
 
-// === START TRAVEL ===
 async function startTravel() {
   const select = document.getElementById('epoca-select');
   const roleInput = document.getElementById('role-input');
   state.epoca = EPOCAS.find(e => e.id === select.value);
   state.rol = roleInput.value.trim();
-  state.turn = 1;
-  state.history = [];
-
+  state.turn = 1; state.history = [];
   flashEffect();
   await narrate();
 }
 
-// === FLASH EFFECT ===
 function flashEffect() {
   const flash = document.getElementById('flash');
   if (!flash) return;
@@ -176,10 +139,9 @@ function flashEffect() {
   setTimeout(() => flash.classList.remove('active'), 300);
 }
 
-// === NARRATE ===
 async function narrate(actionText) {
   const area = document.getElementById('main-area');
-  area.innerHTML = `<div class="maquina-loading">${t('maquina_traveling')}</div>`;
+  area.innerHTML = `<div class="maquina-loading">${T('traveling')}</div>`;
 
   const idioma = lang() === 'es' ? 'español' : 'inglés';
   const epocaLabel = lang() === 'es' ? state.epoca.label_es : state.epoca.label_en;
@@ -222,21 +184,15 @@ function parseNarration(text) {
   const lines = text.split('\n');
   const actions = [];
   const narrativeLines = [];
-
   for (const line of lines) {
     const match = line.match(/^ACCION_\d+:\s*(.+)/i);
-    if (match) {
-      actions.push(match[1].trim());
-    } else {
-      narrativeLines.push(line);
-    }
+    if (match) actions.push(match[1].trim());
+    else narrativeLines.push(line);
   }
-
   state.narration = narrativeLines.join('\n').trim();
   state.actions = actions.length >= 3 ? actions.slice(0, 3) : actions;
 }
 
-// === RENDER NARRATIVE ===
 function renderNarrative() {
   const area = document.getElementById('main-area');
   const isLastTurn = state.turn >= MAX_TURNS;
@@ -244,29 +200,24 @@ function renderNarrative() {
   let actionsHTML = '';
   if (!isLastTurn && state.actions.length > 0) {
     actionsHTML = `
-      <p class="maquina-label" style="margin-top:24px">${t('maquina_action')}</p>
+      <p class="maquina-label" style="margin-top:24px">${T('action')}</p>
       <div class="maquina-actions">
         ${state.actions.map((a, i) => `<button class="maquina-action-btn" data-idx="${i}">${a}</button>`).join('')}
-      </div>
-    `;
+      </div>`;
   }
-
   const returnBtn = isLastTurn
-    ? `<div style="text-align:center;margin-top:24px"><button class="maquina-btn" id="return-btn">${t('maquina_return')}</button></div>`
+    ? `<div style="text-align:center;margin-top:24px"><button class="maquina-btn" id="return-btn">${T('returnBtn')}</button></div>`
     : '';
 
   area.innerHTML = `
     <div class="maquina-narrative">
-      <div class="maquina-turn-indicator">${t('maquina_turn')} ${state.turn} ${t('maquina_of')} ${MAX_TURNS}</div>
+      <div class="maquina-turn-indicator">${T('turn')} ${state.turn} ${T('of')} ${MAX_TURNS}</div>
       <div class="maquina-text" id="narrative-text"></div>
-      ${actionsHTML}
-      ${returnBtn}
-    </div>
-  `;
+      ${actionsHTML}${returnBtn}
+    </div>`;
 
   typewriterEffect(document.getElementById('narrative-text'), state.narration);
 
-  // Bind action buttons
   area.querySelectorAll('.maquina-action-btn').forEach(btn => {
     btn.addEventListener('click', () => {
       const actionText = btn.textContent;
@@ -288,29 +239,21 @@ function renderNarrative() {
   }
 }
 
-// === TYPEWRITER ===
 function typewriterEffect(el, text) {
   el.textContent = '';
   const cursor = document.createElement('span');
   cursor.className = 'cursor';
   el.appendChild(cursor);
-
   let i = 0;
   const interval = setInterval(() => {
-    if (i < text.length) {
-      el.insertBefore(document.createTextNode(text[i]), cursor);
-      i++;
-    } else {
-      clearInterval(interval);
-      setTimeout(() => cursor.remove(), 2000);
-    }
+    if (i < text.length) { el.insertBefore(document.createTextNode(text[i]), cursor); i++; }
+    else { clearInterval(interval); setTimeout(() => cursor.remove(), 2000); }
   }, 18);
 }
 
-// === FINISH TRIP ===
 async function finishTrip() {
   const area = document.getElementById('main-area');
-  area.innerHTML = `<div class="maquina-loading">${t('maquina_traveling')}</div>`;
+  area.innerHTML = `<div class="maquina-loading">${T('traveling')}</div>`;
 
   const idioma = lang() === 'es' ? 'español' : 'inglés';
   const epocaLabel = lang() === 'es' ? state.epoca.label_es : state.epoca.label_en;
@@ -324,57 +267,38 @@ DATO_3: [título breve] | [explicación de 1 oración]`;
   try {
     const response = await callGroq(systemPrompt, `Datos sobre ${epocaLabel}`);
     if (!response) return;
-    renderSummaryWithFacts(response);
+    const facts = [];
+    for (const line of response.split('\n')) {
+      const match = line.match(/^DATO_\d+:\s*(.+?)\s*\|\s*(.+)/i);
+      if (match) facts.push({ name: match[1].trim(), desc: match[2].trim() });
+    }
+    renderSummaryUI(facts);
   } catch (err) {
     area.innerHTML = `<div class="maquina-loading" style="color:#ff4444">${err.message}</div>`;
   }
 }
 
-function renderSummaryWithFacts(factsText) {
-  const facts = [];
-  const lines = factsText.split('\n');
-  for (const line of lines) {
-    const match = line.match(/^DATO_\d+:\s*(.+?)\s*\|\s*(.+)/i);
-    if (match) facts.push({ name: match[1].trim(), desc: match[2].trim() });
-  }
-
-  renderSummaryUI(facts);
-}
-
-function renderSummary() {
-  renderSummaryUI([]);
-}
+function renderSummary() { renderSummaryUI([]); }
 
 function renderSummaryUI(facts) {
   const area = document.getElementById('main-area');
   const epocaLabel = lang() === 'es' ? state.epoca.label_es : state.epoca.label_en;
-
   const summaryText = state.history.map((h, i) =>
-    `${t('maquina_turn')} ${i + 1}: ${h.narration.substring(0, 120)}...`
+    `${T('turn')} ${i + 1}: ${h.narration.substring(0, 120)}...`
   ).join('\n\n');
 
   const factsHTML = facts.length > 0 ? `
-    <div class="maquina-facts">
-      <h3 class="maquina-facts__title">${t('maquina_facts')}</h3>
-      ${facts.map(f => `
-        <div class="maquina-fact">
-          <div class="maquina-fact__name">${f.name}</div>
-          <div class="maquina-fact__desc">${f.desc}</div>
-        </div>
-      `).join('')}
-    </div>
-  ` : '';
+    <div class="maquina-facts"><h3 class="maquina-facts__title">${T('facts')}</h3>
+      ${facts.map(f => `<div class="maquina-fact"><div class="maquina-fact__name">${f.name}</div><div class="maquina-fact__desc">${f.desc}</div></div>`).join('')}
+    </div>` : '';
 
   area.innerHTML = `
     <div class="maquina-summary">
-      <h2 class="maquina-summary__title">${t('maquina_summary')} — ${epocaLabel}</h2>
+      <h2 class="maquina-summary__title">${T('summary')} — ${epocaLabel}</h2>
       <div class="maquina-summary__text">${summaryText}</div>
       ${factsHTML}
-      <div style="text-align:center;margin-top:32px">
-        <button class="maquina-btn" id="new-trip-btn">${t('maquina_new_trip')}</button>
-      </div>
-    </div>
-  `;
+      <div style="text-align:center;margin-top:32px"><button class="maquina-btn" id="new-trip-btn">${T('newTrip')}</button></div>
+    </div>`;
 
   document.getElementById('new-trip-btn').addEventListener('click', () => {
     state = { epoca: null, rol: '', turn: 0, history: [], narration: '', actions: [], finished: false };
@@ -382,12 +306,11 @@ function renderSummaryUI(facts) {
   });
 }
 
-// === GROQ CALL WITH ERROR HANDLING ===
 async function callGroq(systemPrompt, userMessage) {
   try {
     return await askGroq({ systemPrompt, userMessage, temperature: 0.9, maxTokens: 600 });
   } catch (err) {
-    if (err.message === 'API_KEY_MISSING' || err.message === 'NO_KEY' || err.message === 'INVALID_KEY') {
+    if (err.message === 'NO_KEY' || err.message === 'INVALID_KEY') {
       renderApiKeyPanel('app-container', () => renderArtefacto(), lang());
       return null;
     }

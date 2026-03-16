@@ -1,16 +1,39 @@
 // artefactos/gabinete-objetos/gabinete-objetos.js
-import { askGroq, hasGroqKey } from '../../../js/groq.js';
+import { askGroq, hasApiKey } from '../../../js/groq.js';
 import { renderApiKeyPanel, renderChangeKeyButton } from '../../../js/apikey-panel.js';
-import { t, getLang, setLang } from '../../../js/i18n.js';
 
-const lang = () => getLang();
+const lang = () => localStorage.getItem('artefactos_lang') || 'es';
+function setLang(l) { localStorage.setItem('artefactos_lang', l); }
+
+const TXT = {
+  es: {
+    back: '← Volver', langToggle: 'EN', title: 'Gabinete de Objetos',
+    counter: 'Objetos descubiertos:', ofInf: 'de ∞',
+    loading: 'Buscando en las vitrinas...',
+    reveal: 'Revelar objeto', use: 'Uso original', story: 'Historia',
+    anecdote: 'Anécdota', location: 'Ubicación actual',
+    rarity: 'Rareza', next: 'Siguiente objeto',
+    parseError: 'No se pudo interpretar la respuesta. Intenta de nuevo.'
+  },
+  en: {
+    back: '← Back', langToggle: 'ES', title: 'Cabinet of Objects',
+    counter: 'Objects discovered:', ofInf: 'of ∞',
+    loading: 'Searching the display cases...',
+    reveal: 'Reveal object', use: 'Original use', story: 'Story',
+    anecdote: 'Anecdote', location: 'Current location',
+    rarity: 'Rarity', next: 'Next object',
+    parseError: 'Could not parse the response. Try again.'
+  }
+};
+function T(key) { return (TXT[lang()] || TXT.es)[key] || key; }
+
 let objectCount = 0;
 let seenNames = [];
 let currentObject = null;
 let revealed = false;
 
 function init() {
-  if (!hasGroqKey()) {
+  if (!hasApiKey()) {
     renderApiKeyPanel('app-container', () => renderArtefacto(), lang());
     return;
   }
@@ -23,16 +46,16 @@ function renderArtefacto() {
 
   app.innerHTML = `
     <div class="gabobj-header">
-      <a href="../../index.html" class="gabobj-back">${t('backBtn')}</a>
-      <button class="gabobj-lang" id="lang-toggle">${t('selectLang')}</button>
+      <a href="../../../index.html" class="gabobj-back">${T('back')}</a>
+      <button class="gabobj-lang" id="lang-toggle">${T('langToggle')}</button>
     </div>
-    <h1 class="gabobj-title">${t('gabinete_obj_name')}</h1>
+    <h1 class="gabobj-title">${T('title')}</h1>
     <div class="gabobj-counter" id="obj-counter"></div>
     <div class="gabobj-vitrina" id="vitrina"></div>
   `;
 
   document.getElementById('lang-toggle').addEventListener('click', () => {
-    setLang(getLang() === 'es' ? 'en' : 'es');
+    setLang(lang() === 'es' ? 'en' : 'es');
     renderArtefacto();
     if (currentObject) {
       if (revealed) renderRevealed();
@@ -55,12 +78,12 @@ function renderArtefacto() {
 
 function updateCounter() {
   const el = document.getElementById('obj-counter');
-  if (el) el.textContent = `${t('gabinete_obj_counter')} ${objectCount} ${t('gabinete_obj_of_inf')}`;
+  if (el) el.textContent = `${T('counter')} ${objectCount} ${T('ofInf')}`;
 }
 
 async function loadNewObject() {
   const vitrina = document.getElementById('vitrina');
-  vitrina.innerHTML = `<div class="gabobj-loading">${t('gabinete_obj_loading')}</div>`;
+  vitrina.innerHTML = `<div class="gabobj-loading">${T('loading')}</div>`;
   revealed = false;
 
   const idioma = lang() === 'es' ? 'español' : 'inglés';
@@ -88,8 +111,7 @@ No repitas objetos comunes. Prioriza lo realmente insólito y verificable.${avoi
 
     const obj = parseJSON(response);
     if (!obj) {
-      vitrina.innerHTML = `<div class="gabobj-loading" style="color:#ff6b6b">Error parsing response. Trying again...</div>`;
-      setTimeout(() => loadNewObject(), 1500);
+      vitrina.innerHTML = `<div class="gabobj-loading" style="color:#ff6b6b">${T('parseError')}</div>`;
       return;
     }
 
@@ -104,15 +126,11 @@ No repitas objetos comunes. Prioriza lo realmente insólito y verificable.${avoi
 }
 
 function parseJSON(text) {
-  // Extract JSON from possible surrounding text
   const start = text.indexOf('{');
   const end = text.lastIndexOf('}');
   if (start === -1 || end === -1) return null;
-  try {
-    return JSON.parse(text.substring(start, end + 1));
-  } catch {
-    return null;
-  }
+  try { return JSON.parse(text.substring(start, end + 1)); }
+  catch { return null; }
 }
 
 function renderMystery() {
@@ -128,7 +146,7 @@ function renderMystery() {
         <div class="gabobj-label__origin">${obj.origen}</div>
         <div class="gabobj-label__era">${obj.epoca}</div>
       </div>
-      <button class="gabobj-reveal-btn" id="reveal-btn">${t('gabinete_obj_reveal')}</button>
+      <button class="gabobj-reveal-btn" id="reveal-btn">${T('reveal')}</button>
     </div>
   `;
 
@@ -158,34 +176,28 @@ function renderRevealed() {
       </div>
       <div class="gabobj-info">
         <h2 class="gabobj-info__name">${obj.nombre}</h2>
-
         <div class="gabobj-info__field">
-          <div class="gabobj-info__field-label">${t('gabinete_obj_use')}</div>
+          <div class="gabobj-info__field-label">${T('use')}</div>
           <div class="gabobj-info__field-value">${obj.uso_original}</div>
         </div>
-
         <div class="gabobj-info__field">
-          <div class="gabobj-info__field-label">${t('gabinete_obj_story')}</div>
+          <div class="gabobj-info__field-label">${T('story')}</div>
           <div class="gabobj-info__field-value">${obj.historia}</div>
         </div>
-
         <div class="gabobj-info__field">
-          <div class="gabobj-info__field-label">${t('gabinete_obj_anecdote')}</div>
+          <div class="gabobj-info__field-label">${T('anecdote')}</div>
           <div class="gabobj-info__field-value">${obj.anecdota}</div>
         </div>
-
         <div class="gabobj-info__field">
-          <div class="gabobj-info__field-label">${t('gabinete_obj_location')}</div>
+          <div class="gabobj-info__field-label">${T('location')}</div>
           <div class="gabobj-info__field-value">${obj.ubicacion_actual}</div>
         </div>
-
         <div class="gabobj-info__field">
-          <div class="gabobj-info__field-label">${t('gabinete_obj_rarity')}</div>
+          <div class="gabobj-info__field-label">${T('rarity')}</div>
           <div class="gabobj-rarity">${stars}</div>
         </div>
       </div>
-
-      <button class="gabobj-next-btn" id="next-btn">${t('gabinete_obj_next')}</button>
+      <button class="gabobj-next-btn" id="next-btn">${T('next')}</button>
     </div>
   `;
 
@@ -196,7 +208,6 @@ function renderRevealed() {
   });
 }
 
-// === SVG PROCEDURAL ILLUSTRATIONS ===
 function generateSVG(categoria) {
   const cat = (categoria || 'otro').toLowerCase();
   const svgs = {
@@ -257,16 +268,14 @@ function generateSVG(categoria) {
       <line x1="70" y1="45" x2="70" y2="75" stroke="#c8a951" stroke-width="0.5" opacity="0.4"/>
     </svg>`
   };
-
   return svgs[cat] || svgs.otro;
 }
 
-// === GROQ CALL ===
 async function callGroq(systemPrompt, userMessage) {
   try {
     return await askGroq({ systemPrompt, userMessage, temperature: 0.95, maxTokens: 700 });
   } catch (err) {
-    if (err.message === 'API_KEY_MISSING' || err.message === 'NO_KEY' || err.message === 'INVALID_KEY') {
+    if (err.message === 'NO_KEY' || err.message === 'INVALID_KEY') {
       renderApiKeyPanel('app-container', () => renderArtefacto(), lang());
       return null;
     }

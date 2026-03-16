@@ -1,12 +1,30 @@
 // alquimista.js — Lógica del Alquimista
-import { askGroq } from '../../../js/groq.js';
-import { getLang, setLang, t } from '../../../js/i18n.js';
+import { askGroq, hasApiKey } from '../../../js/groq.js';
+import { renderApiKeyPanel } from '../../../js/apikey-panel.js';
 
-// === ESTADO ===
+const lang = localStorage.getItem('artefactos_lang') || 'es';
+
+const txt = {
+  es: {
+    langToggle: 'EN', back: '← Volver',
+    title: 'El Alquimista',
+    placeholder: 'Pregunta al Alquimista...', send: 'Preguntar',
+    grimoire: 'Grimorio',
+    error: 'Error al consultar'
+  },
+  en: {
+    langToggle: 'ES', back: '← Back',
+    title: 'The Alchemist',
+    placeholder: 'Ask the Alchemist...', send: 'Ask',
+    grimoire: 'Grimoire',
+    error: 'Error consulting'
+  }
+};
+const t = txt[lang] || txt.es;
+
 let chatHistory = [];
 const MAX_DISPLAY = 8;
 
-// === SÍMBOLOS ALQUÍMICOS PARA "Símbolo del día" ===
 const symbols = [
   { icon: '☿', es: 'Mercurio — El mensajero, la mente fluida', en: 'Mercury — The messenger, the fluid mind' },
   { icon: '☉', es: 'Sol — El oro espiritual, la perfección', en: 'Sun — Spiritual gold, perfection' },
@@ -20,13 +38,6 @@ const symbols = [
   { icon: '◇', es: 'Piedra filosofal — La obra magna', en: "Philosopher's stone — The great work" },
 ];
 
-// === SYSTEM PROMPT ===
-function getSystemPrompt(lang) {
-  const idioma = lang === 'es' ? 'español' : 'English';
-  return `Eres Paracelso, el gran alquimista y filósofo hermético. Hablas en ${idioma}. Tu conocimiento abarca la filosofía neoplatónica, la alquimia árabe y europea, el hermetismo de Hermes Trismegisto y la proto-ciencia medieval. Hablas con gravedad y misterio, usando términos alquímicos reales ocasionalmente (explicándolos brevemente). Máximo 5 oraciones. Termina siempre con una máxima o aforismo breve.`;
-}
-
-// === GLOSARIO DEL GRIMORIO ===
 const grimoire = {
   es: [
     { icon: '☿', name: 'Mercurio', def: 'Principio de fluidez y transformación. El mediador entre Sol y Luna.' },
@@ -54,30 +65,44 @@ const grimoire = {
   ]
 };
 
-// === INICIALIZACIÓN ===
+function getSystemPrompt() {
+  const idioma = lang === 'es' ? 'español' : 'English';
+  return `Eres Paracelso, el gran alquimista y filósofo hermético. Hablas en ${idioma}. Tu conocimiento abarca la filosofía neoplatónica, la alquimia árabe y europea, el hermetismo de Hermes Trismegisto y la proto-ciencia medieval. Hablas con gravedad y misterio, usando términos alquímicos reales ocasionalmente (explicándolos brevemente). Máximo 5 oraciones. Termina siempre con una máxima o aforismo breve.`;
+}
+
 document.addEventListener('DOMContentLoaded', () => {
+  if (!hasApiKey()) {
+    const layout = document.querySelector('.alquimista-layout');
+    if (layout) layout.style.display = 'none';
+    renderApiKeyPanel('key-panel', () => {
+      document.getElementById('key-panel').innerHTML = '';
+      if (layout) layout.style.display = '';
+      setup();
+    }, lang);
+    return;
+  }
+  setup();
+});
+
+function setup() {
   updateTexts();
   renderGrimoire();
   initEvents();
-});
-
-// === TEXTOS BILINGÜES ===
-function updateTexts() {
-  document.getElementById('lang-toggle').textContent = t('selectLang');
-  document.getElementById('back-btn').textContent = t('backBtn');
-  document.getElementById('alquimista-title').textContent = t('alquimista_name');
-  document.getElementById('alquimista-input').placeholder = t('alquimista_placeholder');
-  document.getElementById('btn-send').textContent = t('alquimista_send');
-  document.getElementById('grimoire-title').textContent = t('alquimista_grimoire');
-  document.getElementById('grimoire-toggle').textContent = '📜 ' + t('alquimista_grimoire');
 }
 
-// === RENDERIZAR GRIMORIO ===
+function updateTexts() {
+  document.getElementById('lang-toggle').textContent = t.langToggle;
+  document.getElementById('back-btn').textContent = t.back;
+  document.getElementById('alquimista-title').textContent = t.title;
+  document.getElementById('alquimista-input').placeholder = t.placeholder;
+  document.getElementById('btn-send').textContent = t.send;
+  document.getElementById('grimoire-title').textContent = t.grimoire;
+  document.getElementById('grimoire-toggle').textContent = '📜 ' + t.grimoire;
+}
+
 function renderGrimoire() {
-  const lang = getLang();
   const list = document.getElementById('grimoire-list');
   list.innerHTML = '';
-
   grimoire[lang].forEach(term => {
     const div = document.createElement('div');
     div.className = 'alquimista-grimoire__term';
@@ -91,33 +116,22 @@ function renderGrimoire() {
   });
 }
 
-// === EVENTOS ===
 function initEvents() {
-  // Idioma
   document.getElementById('lang-toggle').addEventListener('click', () => {
-    const next = getLang() === 'es' ? 'en' : 'es';
-    setLang(next);
-    updateTexts();
-    renderGrimoire();
+    localStorage.setItem('artefactos_lang', lang === 'es' ? 'en' : 'es');
+    location.reload();
   });
 
-  // Enviar
   document.getElementById('btn-send').addEventListener('click', handleSend);
   document.getElementById('alquimista-input').addEventListener('keydown', (e) => {
-    if (e.key === 'Enter') {
-      e.preventDefault();
-      handleSend();
-    }
+    if (e.key === 'Enter') { e.preventDefault(); handleSend(); }
   });
 
-  // Toggle grimorio en móvil
   document.getElementById('grimoire-toggle').addEventListener('click', () => {
-    const content = document.getElementById('grimoire-content');
-    content.classList.toggle('collapsed');
+    document.getElementById('grimoire-content').classList.toggle('collapsed');
   });
 }
 
-// === ENVIAR MENSAJE ===
 async function handleSend() {
   const input = document.getElementById('alquimista-input');
   const message = input.value.trim();
@@ -137,29 +151,24 @@ async function handleSend() {
 
   try {
     const recentHistory = chatHistory.slice(-MAX_DISPLAY);
+    const historyText = recentHistory.map(m => `${m.role}: ${m.content}`).join('\n');
 
     const answer = await askGroq({
-      systemPrompt: getSystemPrompt(getLang()),
-      messages: recentHistory,
+      systemPrompt: getSystemPrompt(),
+      userMessage: historyText,
       temperature: 0.85,
       maxTokens: 500
     });
 
     chatHistory.push({ role: 'assistant', content: answer });
 
-    // Añadir símbolo aleatorio del día
     const randomSymbol = symbols[Math.floor(Math.random() * symbols.length)];
-    const lang = getLang();
     const symbolText = lang === 'es' ? randomSymbol.es : randomSymbol.en;
-
     addMessage('ai', answer, { icon: randomSymbol.icon, text: symbolText });
 
-    if (chatHistory.length > MAX_DISPLAY) {
-      chatHistory = chatHistory.slice(-MAX_DISPLAY);
-    }
-
+    if (chatHistory.length > MAX_DISPLAY) chatHistory = chatHistory.slice(-MAX_DISPLAY);
   } catch (err) {
-    errorBox.textContent = t('errorMsg') + ' — ' + err.message;
+    errorBox.textContent = t.error + ' — ' + err.message;
     errorBox.classList.add('active');
   } finally {
     btnSend.disabled = false;
@@ -167,14 +176,12 @@ async function handleSend() {
   }
 }
 
-// === AÑADIR MENSAJE ===
 function addMessage(type, text, symbol) {
   const chat = document.getElementById('alquimista-chat');
   const div = document.createElement('div');
   div.className = `alquimista-message alquimista-message--${type}`;
 
   let html = escapeHtml(text);
-
   if (symbol) {
     html += `<div class="alquimista-symbol-badge">
       <span class="alquimista-symbol-badge__icon">${symbol.icon}</span>
@@ -186,12 +193,10 @@ function addMessage(type, text, symbol) {
   chat.appendChild(div);
   chat.scrollTop = chat.scrollHeight;
 
-  // Limitar visibles
   const msgs = chat.querySelectorAll('.alquimista-message');
   if (msgs.length > MAX_DISPLAY * 2) msgs[0].remove();
 }
 
-// === UTILIDADES ===
 function escapeHtml(text) {
   const div = document.createElement('div');
   div.textContent = text;

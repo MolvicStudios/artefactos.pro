@@ -175,7 +175,6 @@ Genera UNA nueva pregunta de entrevista. Responde SOLO con la pregunta, nada má
 
   try {
     const resp = await askGroq({ systemPrompt: sys, userMessage: `Pregunta ${preguntaIdx + 1} de ${NUM_PREGUNTAS}`, temperature: 0.9, maxTokens: 200 });
-    if (resp === 'NO_KEY' || resp === 'INVALID_KEY') { zona.innerHTML = `<p class="loading">${t.error}</p>`; generando = false; return; }
     generando = false;
     renderPreguntaEntrevista(resp.trim());
   } catch {
@@ -221,7 +220,6 @@ score: 1-10.`;
 
   try {
     const resp = await askGroq({ systemPrompt: sys, userMessage: respuesta, temperature: 0.7, maxTokens: 500 });
-    if (resp === 'NO_KEY' || resp === 'INVALID_KEY') { generando = false; btn.disabled = false; btn.textContent = t.responder; return; }
     const data = parsearJSON(resp);
     if (!data) { generando = false; btn.disabled = false; btn.textContent = t.responder; return; }
 

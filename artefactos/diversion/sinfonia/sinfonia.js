@@ -1,8 +1,37 @@
-import { askGroq, hasGroqKey } from '../../../js/groq.js';
+// artefactos/sinfonia/sinfonia.js
+import { askGroq, hasApiKey } from '../../../js/groq.js';
 import { renderApiKeyPanel, renderChangeKeyButton } from '../../../js/apikey-panel.js';
-import { t, getLang, setLang } from '../../../js/i18n.js';
 
-const lang = () => getLang();
+const lang = () => localStorage.getItem('artefactos_lang') || 'es';
+function setLang(l) { localStorage.setItem('artefactos_lang', l); }
+
+const TXT = {
+  es: {
+    back: '← Volver', title: 'Sinfonía Generativa',
+    desc: 'Composiciones únicas generadas por IA',
+    loading: 'Componiendo...', selectMood: '— Estado de ánimo —',
+    compose: 'Componer', play: '▶ Reproducir', pause: '⏸ Pausar',
+    newComp: '✦ Nueva', meditation: 'Meditación', volume: 'Vol',
+    composerNote: 'Nota del compositor',
+    mood_melancholy: 'Melancolía', mood_euphoria: 'Euforia',
+    mood_mystery: 'Misterio', mood_chaos: 'Caos',
+    mood_serenity: 'Serenidad', mood_nostalgia: 'Nostalgia',
+    mood_terror: 'Terror', mood_ecstasy: 'Éxtasis'
+  },
+  en: {
+    back: '← Back', title: 'Generative Symphony',
+    desc: 'Unique AI-generated compositions',
+    loading: 'Composing...', selectMood: '— Mood —',
+    compose: 'Compose', play: '▶ Play', pause: '⏸ Pause',
+    newComp: '✦ New', meditation: 'Meditation', volume: 'Vol',
+    composerNote: 'Composer note',
+    mood_melancholy: 'Melancholy', mood_euphoria: 'Euphoria',
+    mood_mystery: 'Mystery', mood_chaos: 'Chaos',
+    mood_serenity: 'Serenity', mood_nostalgia: 'Nostalgia',
+    mood_terror: 'Terror', mood_ecstasy: 'Ecstasy'
+  }
+};
+function T(key) { return (TXT[lang()] || TXT.es)[key] || key; }
 
 const SCALES = {
   mayor:       [0,2,4,5,7,9,11],
@@ -15,17 +44,16 @@ const SCALES = {
 };
 
 const MOODS = [
-  { key: 'sinfonia_mood_melancholy', val: 'Melancolía' },
-  { key: 'sinfonia_mood_euphoria',   val: 'Euforia' },
-  { key: 'sinfonia_mood_mystery',    val: 'Misterio' },
-  { key: 'sinfonia_mood_chaos',      val: 'Caos' },
-  { key: 'sinfonia_mood_serenity',   val: 'Serenidad' },
-  { key: 'sinfonia_mood_nostalgia',  val: 'Nostalgia' },
-  { key: 'sinfonia_mood_terror',     val: 'Terror' },
-  { key: 'sinfonia_mood_ecstasy',    val: 'Éxtasis' }
+  { key: 'mood_melancholy', val: 'Melancolía' },
+  { key: 'mood_euphoria',   val: 'Euforia' },
+  { key: 'mood_mystery',    val: 'Misterio' },
+  { key: 'mood_chaos',      val: 'Caos' },
+  { key: 'mood_serenity',   val: 'Serenidad' },
+  { key: 'mood_nostalgia',  val: 'Nostalgia' },
+  { key: 'mood_terror',     val: 'Terror' },
+  { key: 'mood_ecstasy',    val: 'Éxtasis' }
 ];
 
-/* ── State ── */
 let audioCtx = null;
 let masterGain = null;
 let composition = null;
@@ -38,9 +66,8 @@ let activeOscillators = [];
 let currentNoteIdx = 0;
 let canvas, ctx;
 
-/* ── Init ── */
 function init() {
-  if (!hasGroqKey()) {
+  if (!hasApiKey()) {
     renderApiKeyPanel('app-container', () => renderArtefacto(), lang());
   } else {
     renderArtefacto();
@@ -53,30 +80,30 @@ function renderArtefacto() {
 
   app.innerHTML = `
     <header class="sinfonia-header">
-      <a href="../../index.html" class="sinfonia-back">← ${t('backBtn', lang())}</a>
+      <a href="../../../index.html" class="sinfonia-back">${T('back')}</a>
       <button class="sinfonia-lang" id="lang-toggle">${lang() === 'es' ? 'EN' : 'ES'}</button>
     </header>
     <div class="sinfonia-canvas-wrap">
       <canvas id="sinfonia-canvas"></canvas>
       <div class="sinfonia-title-overlay" id="title-overlay">
-        <div class="sinfonia-piece-title" id="piece-title">${t('sinfonia_name', lang())}</div>
-        <div class="sinfonia-piece-subtitle" id="piece-subtitle">${t('sinfonia_desc', lang())}</div>
+        <div class="sinfonia-piece-title" id="piece-title">${T('title')}</div>
+        <div class="sinfonia-piece-subtitle" id="piece-subtitle">${T('desc')}</div>
         <div class="sinfonia-composer-note" id="composer-note"></div>
       </div>
-      <div class="sinfonia-loading" id="loading" style="display:none">${t('sinfonia_loading', lang())}</div>
+      <div class="sinfonia-loading" id="loading" style="display:none">${T('loading')}</div>
     </div>
     <div class="sinfonia-controls">
       <div class="sinfonia-controls__row">
         <select class="sinfonia-mood-select" id="mood-select">
-          <option value="" disabled selected>${t('sinfonia_select_mood', lang())}</option>
-          ${MOODS.map(m => `<option value="${m.val}">${t(m.key, lang())}</option>`).join('')}
+          <option value="" disabled selected>${T('selectMood')}</option>
+          ${MOODS.map(m => `<option value="${m.val}">${T(m.key)}</option>`).join('')}
         </select>
-        <button class="sinfonia-btn sinfonia-btn--primary" id="btn-compose">${t('sinfonia_compose', lang())}</button>
-        <button class="sinfonia-btn" id="btn-play" disabled>${t('sinfonia_play', lang())}</button>
-        <button class="sinfonia-btn sinfonia-btn--cyan" id="btn-new" disabled>${t('sinfonia_new', lang())}</button>
-        <button class="sinfonia-btn" id="btn-meditation" disabled>${t('sinfonia_meditation', lang())}</button>
+        <button class="sinfonia-btn sinfonia-btn--primary" id="btn-compose">${T('compose')}</button>
+        <button class="sinfonia-btn" id="btn-play" disabled>${T('play')}</button>
+        <button class="sinfonia-btn sinfonia-btn--cyan" id="btn-new" disabled>${T('newComp')}</button>
+        <button class="sinfonia-btn" id="btn-meditation" disabled>${T('meditation')}</button>
         <div class="sinfonia-volume">
-          <span class="sinfonia-volume__label">${t('sinfonia_volume', lang())}</span>
+          <span class="sinfonia-volume__label">${T('volume')}</span>
           <input type="range" class="sinfonia-volume__slider" id="volume-slider" min="0" max="100" value="60">
         </div>
       </div>
@@ -89,7 +116,6 @@ function renderArtefacto() {
   startVisualization();
 }
 
-/* ── Canvas ── */
 function setupCanvas() {
   canvas = document.getElementById('sinfonia-canvas');
   ctx = canvas.getContext('2d');
@@ -109,7 +135,6 @@ function resizeCanvas() {
   ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
 }
 
-/* ── Events ── */
 function bindEvents() {
   document.getElementById('lang-toggle').addEventListener('click', () => {
     setLang(lang() === 'es' ? 'en' : 'es');
@@ -125,7 +150,6 @@ function bindEvents() {
   });
 }
 
-/* ── Compose via AI ── */
 async function compose() {
   const mood = document.getElementById('mood-select').value;
   if (!mood) return;
@@ -180,7 +204,7 @@ Responde SOLO con JSON válido (sin markdown, sin texto antes ni después):
     });
     return parseJSON(raw);
   } catch (err) {
-    if (err === 'API_KEY_MISSING' || (err && err.message === 'API_KEY_MISSING')) {
+    if (err.message === 'NO_KEY' || err.message === 'INVALID_KEY') {
       renderApiKeyPanel('app-container', () => renderArtefacto(), lang());
       return null;
     }
@@ -204,7 +228,7 @@ function displayComposition() {
   document.getElementById('piece-title').textContent = composition.titulo || 'Untitled';
   document.getElementById('piece-subtitle').textContent = composition.subtitulo || '';
   document.getElementById('composer-note').textContent =
-    `${t('sinfonia_composer_note', lang())}: "${composition.nota_compositor || ''}"`;
+    `${T('composerNote')}: "${composition.nota_compositor || ''}"`;
 }
 
 /* ─────────── Audio Engine ─────────── */
@@ -223,11 +247,11 @@ function togglePlay() {
   const btn = document.getElementById('btn-play');
   if (isPlaying) {
     stopAudio();
-    btn.textContent = t('sinfonia_play', lang());
+    btn.textContent = T('play');
     document.getElementById('title-overlay').classList.remove('faded');
   } else {
     startAudio();
-    btn.textContent = t('sinfonia_pause', lang());
+    btn.textContent = T('pause');
     document.getElementById('title-overlay').classList.add('faded');
   }
 }
@@ -252,7 +276,7 @@ function scheduleNote() {
   const scale = SCALES[composition.escala] || SCALES.menor;
   const baseFreq = composition.frecuencia_base_hz || 220;
   const tempo = Math.max(40, Math.min(180, composition.tempo_bpm || 80));
-  const noteDur = 60 / tempo;                       // seconds per beat
+  const noteDur = 60 / tempo;
   const layers = Math.min(composition.capas || 2, 5);
   const oscType = composition.oscilador_tipo || 'sine';
 
@@ -290,7 +314,6 @@ function playNote(freq, type, dur, layers) {
 
   osc.connect(noteGain);
 
-  // Simple delay-based reverb
   if ((composition.reverb_nivel || 0) > 0.15) {
     const delay = audioCtx.createDelay();
     delay.delayTime.value = 0.12 + composition.reverb_nivel * 0.25;
@@ -343,7 +366,6 @@ function animLoop() {
   const w = canvas.width / dpr;
   const h = canvas.height / dpr;
 
-  // Fade trail
   ctx.fillStyle = 'rgba(5, 5, 8, 0.12)';
   ctx.fillRect(0, 0, w, h);
 
@@ -391,14 +413,12 @@ function drawParticles(w, h) {
 
     const col = p.isPrimary ? primary : secondary;
 
-    // Glow
     ctx.beginPath();
     ctx.globalAlpha = p.life * 0.12;
     ctx.fillStyle = col;
     ctx.arc(p.x, p.y, p.radius * 3, 0, Math.PI * 2);
     ctx.fill();
 
-    // Core
     ctx.beginPath();
     ctx.globalAlpha = p.life * 0.7;
     ctx.fillStyle = col;
@@ -408,11 +428,10 @@ function drawParticles(w, h) {
   ctx.globalAlpha = 1;
 }
 
-/* ── Controls ── */
 function newComposition() {
   stopAudio();
   const playBtn = document.getElementById('btn-play');
-  playBtn.textContent = t('sinfonia_play', lang());
+  playBtn.textContent = T('play');
   playBtn.disabled = true;
   document.getElementById('btn-new').disabled = true;
   document.getElementById('btn-meditation').disabled = true;
@@ -423,8 +442,8 @@ function newComposition() {
   particles = [];
 
   document.getElementById('title-overlay').classList.remove('faded');
-  document.getElementById('piece-title').textContent = t('sinfonia_name', lang());
-  document.getElementById('piece-subtitle').textContent = t('sinfonia_desc', lang());
+  document.getElementById('piece-title').textContent = T('title');
+  document.getElementById('piece-subtitle').textContent = T('desc');
   document.getElementById('composer-note').textContent = '';
 
   compose();

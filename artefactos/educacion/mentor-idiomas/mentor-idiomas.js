@@ -115,7 +115,6 @@ function bindInicio() {
 
     try {
       const resp = await askGroq({ systemPrompt: sys, userMessage: 'Comienza la conversación.', temperature: 0.85, maxTokens: 300 });
-      if (resp === 'NO_KEY' || resp === 'INVALID_KEY') { zona.innerHTML = `<p class="loading">${t.error}</p>`; generando = false; return; }
       const data = parsearJSON(resp);
       if (data && data.mensaje) {
         mensajes.push({ role: 'assistant', content: resp });
@@ -230,7 +229,6 @@ async function enviarMensaje() {
 
   try {
     const resp = await askGroq({ systemPrompt: sysContent, userMessage: `Historial:\n${historialTexto}\n\nResponde al último mensaje del estudiante.`, temperature: 0.85, maxTokens: 400 });
-    if (resp === 'NO_KEY' || resp === 'INVALID_KEY') { generando = false; renderChat(); return; }
 
     mensajes.push({ role: 'assistant', content: resp });
     const data = parsearJSON(resp);

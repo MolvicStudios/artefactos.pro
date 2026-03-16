@@ -128,7 +128,6 @@ Responde SOLO con JSON válido:
 
   try {
     const resp = await askGroq({ systemPrompt: sys, userMessage: tema, temperature: 0.85, maxTokens: 1500 });
-    if (resp === 'NO_KEY' || resp === 'INVALID_KEY') { resultado.innerHTML = `<p class="loading">${t.error}</p>`; resetBtn(); return; }
     const data = parsearJSON(resp);
     if (!data || !data.secciones) { resultado.innerHTML = `<p class="loading">${t.error}</p>`; resetBtn(); return; }
     casoActual = data;
@@ -183,7 +182,6 @@ async function generarResolucion() {
 
   try {
     const resp = await askGroq({ systemPrompt: sys, userMessage: JSON.stringify(casoActual.secciones?.map(s => s.contenido).join(' ')), temperature: 0.8, maxTokens: 600 });
-    if (resp === 'NO_KEY' || resp === 'INVALID_KEY') { zona.innerHTML = ''; generando = false; return; }
     zona.innerHTML = `<div class="resolucion-panel"><h3>${t.resolTitulo}</h3><p>${escaparHTML(resp)}</p></div>`;
   } catch {
     zona.innerHTML = '';

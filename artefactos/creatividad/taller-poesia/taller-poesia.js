@@ -62,6 +62,7 @@ function renderArtefacto() {
         <a href="../../../index.html" class="back-link">${t.galeria}</a>
         <span class="cat-badge">${t.badge}</span>
       </div>
+      <div id="key-btn-wrap"></div>
     </header>
     <div class="main-wrap">
       <h1>${t.titulo}</h1>

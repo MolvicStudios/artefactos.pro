@@ -1,6 +1,3 @@
 # Legacy redirects
 /gabinete   /  301
 /gabinete/  /  301
-
-# SPA fallback
-/*          /index.html  200

@@ -1,11 +1,30 @@
 // artefactos/mapa-ideas/mapa-ideas.js
-import { askGroq, hasGroqKey } from '../../../js/groq.js';
+import { askGroq, hasApiKey } from '../../../js/groq.js';
 import { renderApiKeyPanel, renderChangeKeyButton } from '../../../js/apikey-panel.js';
-import { t, getLang, setLang } from '../../../js/i18n.js';
 
-const lang = () => getLang();
+const lang = () => localStorage.getItem('artefactos_lang') || 'es';
+function setLang(l) { localStorage.setItem('artefactos_lang', l); }
 
-// === INITIAL DATA ===
+const TXT = {
+  es: {
+    back: '← Volver', langToggle: 'EN', title: 'Mapa de Ideas',
+    searchPlaceholder: 'Añadir un concepto...', search: 'Buscar',
+    random: '🎲 Aleatorio', reset: 'Reiniciar',
+    loading: 'Explorando conexiones...',
+    thinker: 'Pensador principal', quote: 'Cita',
+    related: 'Conceptos relacionados'
+  },
+  en: {
+    back: '← Back', langToggle: 'ES', title: 'Idea Map',
+    searchPlaceholder: 'Add a concept...', search: 'Search',
+    random: '🎲 Random', reset: 'Reset',
+    loading: 'Exploring connections...',
+    thinker: 'Main thinker', quote: 'Quote',
+    related: 'Related concepts'
+  }
+};
+function T(key) { return (TXT[lang()] || TXT.es)[key] || key; }
+
 const NODOS_INICIALES = [
   { id: 'logos', label: 'Logos', categoria: 'filosofia' },
   { id: 'dialectica', label: 'Dialéctica', categoria: 'filosofia' },
@@ -69,7 +88,7 @@ let linkGroup = null;
 let nodeGroup = null;
 
 function init() {
-  if (!hasGroqKey()) {
+  if (!hasApiKey()) {
     renderApiKeyPanel('app-container', () => renderArtefacto(), lang());
     return;
   }
@@ -82,21 +101,21 @@ function renderArtefacto() {
 
   app.innerHTML = `
     <div class="mapa-header">
-      <a href="../../index.html" class="mapa-back">${t('backBtn')}</a>
+      <a href="../../../index.html" class="mapa-back">${T('back')}</a>
       <div class="mapa-header__right">
-        <button class="mapa-lang" id="lang-toggle">${t('selectLang')}</button>
+        <button class="mapa-lang" id="lang-toggle">${T('langToggle')}</button>
       </div>
     </div>
     <div class="mapa-title-bar">
-      <h1 class="mapa-title">${t('mapa_name')}</h1>
+      <h1 class="mapa-title">${T('title')}</h1>
     </div>
     <div class="mapa-controls">
       <div class="mapa-search-bar">
-        <input class="mapa-search-input" id="search-input" type="text" placeholder="${t('mapa_search_placeholder')}">
-        <button class="mapa-btn" id="search-btn">${t('mapa_search')}</button>
+        <input class="mapa-search-input" id="search-input" type="text" placeholder="${T('searchPlaceholder')}">
+        <button class="mapa-btn" id="search-btn">${T('search')}</button>
       </div>
-      <button class="mapa-btn mapa-btn--outline" id="random-btn">${t('mapa_random')}</button>
-      <button class="mapa-btn mapa-btn--red" id="reset-btn">${t('mapa_reset')}</button>
+      <button class="mapa-btn mapa-btn--outline" id="random-btn">${T('random')}</button>
+      <button class="mapa-btn mapa-btn--red" id="reset-btn">${T('reset')}</button>
     </div>
     <div class="mapa-graph" id="graph-container"></div>
     <div class="mapa-tooltip" id="tooltip"></div>
@@ -113,7 +132,7 @@ function renderArtefacto() {
 
 function initLangToggle() {
   document.getElementById('lang-toggle').addEventListener('click', () => {
-    setLang(getLang() === 'es' ? 'en' : 'es');
+    setLang(lang() === 'es' ? 'en' : 'es');
     renderArtefacto();
   });
 }
@@ -140,7 +159,6 @@ function bindControls() {
   resetBtn.addEventListener('click', resetGraph);
 }
 
-// === GRAPH ===
 function resetGraph() {
   nodes = NODOS_INICIALES.map(n => ({ ...n }));
   links = ENLACES_INICIALES.map(l => ({ ...l }));
@@ -159,7 +177,6 @@ function buildGraph() {
     .attr('width', width)
     .attr('height', height);
 
-  // Glow filter
   const defs = svg.append('defs');
   const filter = defs.append('filter').attr('id', 'glow');
   filter.append('feGaussianBlur').attr('stdDeviation', '3').attr('result', 'blur');
@@ -181,21 +198,16 @@ function buildGraph() {
 }
 
 function updateGraph() {
-  // Links
   const link = linkGroup.selectAll('line')
     .data(links, d => `${d.source.id || d.source}-${d.target.id || d.target}`);
-
   link.exit().remove();
-
   link.enter()
     .append('line')
     .attr('class', 'mapa-link')
     .attr('stroke-width', d => (d.strength || 0.5) * 3);
 
-  // Nodes
   const node = nodeGroup.selectAll('.mapa-node')
     .data(nodes, d => d.id);
-
   node.exit().transition().duration(300).attr('opacity', 0).remove();
 
   const nodeEnter = node.enter()
@@ -221,7 +233,6 @@ function updateGraph() {
     .attr('text-anchor', 'middle')
     .text(d => d.label);
 
-  // Restart simulation
   simulation.nodes(nodes);
   simulation.force('link').links(links);
   simulation.alpha(0.3).restart();
@@ -229,30 +240,20 @@ function updateGraph() {
 
 function ticked() {
   linkGroup.selectAll('line')
-    .attr('x1', d => d.source.x)
-    .attr('y1', d => d.source.y)
-    .attr('x2', d => d.target.x)
-    .attr('y2', d => d.target.y);
-
+    .attr('x1', d => d.source.x).attr('y1', d => d.source.y)
+    .attr('x2', d => d.target.x).attr('y2', d => d.target.y);
   nodeGroup.selectAll('.mapa-node')
     .attr('transform', d => `translate(${d.x},${d.y})`);
 }
 
 function dragStarted(event, d) {
   if (!event.active) simulation.alphaTarget(0.3).restart();
-  d.fx = d.x;
-  d.fy = d.y;
+  d.fx = d.x; d.fy = d.y;
 }
-
-function dragged(event, d) {
-  d.fx = event.x;
-  d.fy = event.y;
-}
-
+function dragged(event, d) { d.fx = event.x; d.fy = event.y; }
 function dragEnded(event, d) {
   if (!event.active) simulation.alphaTarget(0);
-  d.fx = null;
-  d.fy = null;
+  d.fx = null; d.fy = null;
 }
 
 function handleMouseOver(event, d) {
@@ -262,18 +263,13 @@ function handleMouseOver(event, d) {
   tooltip.style.top = event.clientY - 10 + 'px';
   tooltip.textContent = `${d.label} (${d.categoria})`;
 }
+function handleMouseOut() { document.getElementById('tooltip').style.display = 'none'; }
 
-function handleMouseOut() {
-  document.getElementById('tooltip').style.display = 'none';
-}
-
-// === EXPAND NODE (AI) ===
 async function expandNode(nodeData) {
   const panel = document.getElementById('side-panel');
   const panelContent = document.getElementById('panel-content');
-
   panel.classList.add('open');
-  panelContent.innerHTML = `<div class="mapa-loading-overlay" style="position:static;box-shadow:none;border:none">${t('mapa_loading')}</div>`;
+  panelContent.innerHTML = `<div class="mapa-loading-overlay" style="position:static;box-shadow:none;border:none">${T('loading')}</div>`;
 
   const idioma = lang() === 'es' ? 'español' : 'inglés';
 
@@ -302,7 +298,6 @@ Responde SOLO en este formato JSON (sin markdown):
 
     renderPanel(data, nodeData);
 
-    // Add related concepts as new nodes
     if (data.conceptos_relacionados) {
       data.conceptos_relacionados.forEach(concept => {
         const id = concept.toLowerCase().replace(/\s+/g, '_').normalize('NFD').replace(/[\u0300-\u036f]/g, '');
@@ -336,20 +331,17 @@ function renderPanel(data, nodeData) {
     <h2 class="mapa-panel__title">${data.concepto || nodeData.label}</h2>
     <span class="mapa-panel__category cat-bg-${cat}">${cat}</span>
     <p class="mapa-panel__definition">${data.definicion || ''}</p>
-
     <div class="mapa-panel__field">
-      <div class="mapa-panel__field-label">${t('mapa_thinker')}</div>
+      <div class="mapa-panel__field-label">${T('thinker')}</div>
       <div class="mapa-panel__field-value">${data.pensador_principal || ''}</div>
     </div>
-
     <div class="mapa-panel__field">
-      <div class="mapa-panel__field-label">${t('mapa_quote')}</div>
+      <div class="mapa-panel__field-label">${T('quote')}</div>
       <div class="mapa-panel__quote">"${data.cita || ''}"</div>
       <div class="mapa-panel__quote-author">— ${data.cita_autor || ''}</div>
     </div>
-
     <div class="mapa-panel__field">
-      <div class="mapa-panel__field-label">${t('mapa_related')}</div>
+      <div class="mapa-panel__field-label">${T('related')}</div>
       <div class="mapa-panel__related">${relatedBtns}</div>
     </div>
   `;
@@ -363,20 +355,16 @@ function renderPanel(data, nodeData) {
       const conceptLabel = btn.dataset.concept;
       const id = conceptLabel.toLowerCase().replace(/\s+/g, '_').normalize('NFD').replace(/[\u0300-\u036f]/g, '');
       const existing = nodes.find(n => n.id === id);
-      if (existing) {
-        expandNode(existing);
-      } else {
-        addConcept(conceptLabel);
-      }
+      if (existing) expandNode(existing);
+      else addConcept(conceptLabel);
     });
   });
 }
 
-// === ADD CONCEPT VIA SEARCH ===
 async function addConcept(conceptLabel) {
   const overlay = document.createElement('div');
   overlay.className = 'mapa-loading-overlay';
-  overlay.textContent = t('mapa_loading');
+  overlay.textContent = T('loading');
   document.body.appendChild(overlay);
 
   const idioma = lang() === 'es' ? 'español' : 'inglés';
@@ -409,7 +397,6 @@ Responde SOLO en este formato JSON (sin markdown):
       nodes.push({ id: mainId, label: data.concepto || conceptLabel, categoria: cat });
     }
 
-    // Connect to a random existing node
     if (nodes.length > 1) {
       const existingNodes = nodes.filter(n => n.id !== mainId);
       const randomTarget = existingNodes[Math.floor(Math.random() * existingNodes.length)];
@@ -418,7 +405,6 @@ Responde SOLO en este formato JSON (sin markdown):
       }
     }
 
-    // Add related
     if (data.conceptos_relacionados) {
       data.conceptos_relacionados.forEach(c => {
         const id = c.toLowerCase().replace(/\s+/g, '_').normalize('NFD').replace(/[\u0300-\u036f]/g, '');
@@ -435,7 +421,6 @@ Responde SOLO en este formato JSON (sin markdown):
 
     updateGraph();
 
-    // Open panel for new concept
     const nodeData = nodes.find(n => n.id === mainId);
     if (nodeData) renderPanel(data, nodeData);
     document.getElementById('side-panel').classList.add('open');
@@ -449,19 +434,15 @@ function parseJSON(text) {
   const start = text.indexOf('{');
   const end = text.lastIndexOf('}');
   if (start === -1 || end === -1) return null;
-  try {
-    return JSON.parse(text.substring(start, end + 1));
-  } catch {
-    return null;
-  }
+  try { return JSON.parse(text.substring(start, end + 1)); }
+  catch { return null; }
 }
 
-// === GROQ CALL ===
 async function callGroq(systemPrompt, userMessage) {
   try {
     return await askGroq({ systemPrompt, userMessage, temperature: 0.85, maxTokens: 600 });
   } catch (err) {
-    if (err.message === 'API_KEY_MISSING' || err.message === 'NO_KEY' || err.message === 'INVALID_KEY') {
+    if (err.message === 'NO_KEY' || err.message === 'INVALID_KEY') {
       renderApiKeyPanel('app-container', () => renderArtefacto(), lang());
       return null;
     }

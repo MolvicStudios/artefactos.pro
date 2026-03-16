@@ -133,7 +133,6 @@ REGLAS:
 
   try {
     const resp = await askGroq({ systemPrompt: sys, userMessage: texto, temperature: 0.7, maxTokens: 1200 });
-    if (resp === 'NO_KEY' || resp === 'INVALID_KEY') { resultado.innerHTML = `<p class="loading">${t.error}</p>`; reset(); return; }
     const data = parsearJSON(resp);
     if (!data || !data.traduccion) { resultado.innerHTML = `<p class="loading">${t.error}</p>`; reset(); return; }
     renderResultado(texto, data);

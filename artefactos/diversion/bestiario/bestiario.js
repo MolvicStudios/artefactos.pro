@@ -1,9 +1,31 @@
 // artefactos/bestiario/bestiario.js
-import { askGroq, hasGroqKey } from '../../../js/groq.js';
+import { askGroq, hasApiKey } from '../../../js/groq.js';
 import { renderApiKeyPanel, renderChangeKeyButton } from '../../../js/apikey-panel.js';
-import { t, getLang, setLang } from '../../../js/i18n.js';
 
-const lang = () => getLang();
+const lang = () => localStorage.getItem('artefactos_lang') || 'es';
+function setLang(l) { localStorage.setItem('artefactos_lang', l); }
+
+const TXT = {
+  es: {
+    back: '← Volver', langToggle: 'EN', title: 'Bestiario Fantástico',
+    searchPlaceholder: 'Busca una criatura mitológica...', search: 'Buscar',
+    random: 'Criatura aleatoria', loading: 'Consultando antiguos pergaminos...',
+    danger: 'Nivel de peligro', habitat: 'Hábitat', powers: 'Poderes',
+    weaknesses: 'Debilidades', invoke: 'Cómo invocarlo', protect: 'Protección',
+    texts: 'Textos históricos', explored: 'Criaturas exploradas',
+    parseError: 'No se pudo interpretar la respuesta. Intenta de nuevo.'
+  },
+  en: {
+    back: '← Back', langToggle: 'ES', title: 'Fantastic Bestiary',
+    searchPlaceholder: 'Search for a mythological creature...', search: 'Search',
+    random: 'Random creature', loading: 'Consulting ancient scrolls...',
+    danger: 'Danger level', habitat: 'Habitat', powers: 'Powers',
+    weaknesses: 'Weaknesses', invoke: 'How to summon', protect: 'Protection',
+    texts: 'Historical texts', explored: 'Explored creatures',
+    parseError: 'Could not parse the response. Try again.'
+  }
+};
+function T(key) { return (TXT[lang()] || TXT.es)[key] || key; }
 
 const CRIATURAS_SUGERENCIAS = [
   'Dragón','Fénix','Grifo','Basilisco','Quimera','Hidra','Manticora','Sirena','Kraken','Banshee',
@@ -18,7 +40,7 @@ let exploredCreatures = [];
 let currentCreature = null;
 
 function init() {
-  if (!hasGroqKey()) {
+  if (!hasApiKey()) {
     renderApiKeyPanel('app-container', () => renderArtefacto(), lang());
     return;
   }
@@ -31,13 +53,12 @@ function renderArtefacto() {
 
   app.innerHTML = `
     <div class="bestiario-header">
-      <a href="../../index.html" class="bestiario-back">${t('backBtn')}</a>
-      <button class="bestiario-lang" id="lang-toggle">${t('selectLang')}</button>
+      <a href="../../../index.html" class="bestiario-back">${T('back')}</a>
+      <button class="bestiario-lang" id="lang-toggle">${T('langToggle')}</button>
     </div>
     <div class="bestiario-content">
-      <h1 class="bestiario-title">${t('bestiario_name')}</h1>
+      <h1 class="bestiario-title">${T('title')}</h1>
 
-      <!-- Celtic border decoration -->
       <div class="bestiario-border">
         <svg viewBox="0 0 240 20" fill="none">
           <path d="M0 10 Q30 0 60 10 Q90 20 120 10 Q150 0 180 10 Q210 20 240 10" stroke="#d4a017" stroke-width="1" fill="none" opacity="0.4"/>
@@ -45,25 +66,20 @@ function renderArtefacto() {
         </svg>
       </div>
 
-      <!-- Search -->
       <div class="bestiario-search" id="search-container">
-        <input class="bestiario-search__input" id="search-input" type="text" placeholder="${t('bestiario_search_placeholder')}" autocomplete="off">
-        <button class="bestiario-search__btn" id="search-btn">${t('bestiario_search')}</button>
+        <input class="bestiario-search__input" id="search-input" type="text" placeholder="${T('searchPlaceholder')}" autocomplete="off">
+        <button class="bestiario-search__btn" id="search-btn">${T('search')}</button>
         <div class="bestiario-suggestions" id="suggestions"></div>
       </div>
-      <button class="bestiario-random-btn" id="random-btn">🎲 ${t('bestiario_random')}</button>
+      <button class="bestiario-random-btn" id="random-btn">🎲 ${T('random')}</button>
 
-      <!-- Entry area -->
       <div id="entry-area"></div>
-
-      <!-- Explored panel -->
       <div id="explored-panel"></div>
     </div>
   `;
 
   bindEvents();
   renderChangeKeyButton('apikey-change-container', lang());
-
   if (currentCreature) renderEntry(currentCreature);
   renderExplored();
 }
@@ -75,7 +91,7 @@ function bindEvents() {
   const suggestions = document.getElementById('suggestions');
 
   document.getElementById('lang-toggle').addEventListener('click', () => {
-    setLang(getLang() === 'es' ? 'en' : 'es');
+    setLang(lang() === 'es' ? 'en' : 'es');
     renderArtefacto();
   });
 
@@ -123,7 +139,7 @@ function bindEvents() {
 
 async function searchCreature(name) {
   const area = document.getElementById('entry-area');
-  area.innerHTML = `<div class="bestiario-loading">${t('bestiario_loading')}</div>`;
+  area.innerHTML = `<div class="bestiario-loading">${T('loading')}</div>`;
 
   const idioma = lang() === 'es' ? 'español' : 'inglés';
 
@@ -151,8 +167,7 @@ Responde SOLO en este formato JSON (sin markdown):
 
     const creature = parseJSON(response);
     if (!creature) {
-      area.innerHTML = `<div class="bestiario-loading" style="color:#ff6b6b">Error parsing. Retrying...</div>`;
-      setTimeout(() => searchCreature(name), 1500);
+      area.innerHTML = `<div class="bestiario-loading" style="color:#ff6b6b">${T('parseError')}</div>`;
       return;
     }
 
@@ -171,11 +186,8 @@ function parseJSON(text) {
   const start = text.indexOf('{');
   const end = text.lastIndexOf('}');
   if (start === -1 || end === -1) return null;
-  try {
-    return JSON.parse(text.substring(start, end + 1));
-  } catch {
-    return null;
-  }
+  try { return JSON.parse(text.substring(start, end + 1)); }
+  catch { return null; }
 }
 
 function renderEntry(creature) {
@@ -202,37 +214,37 @@ function renderEntry(creature) {
         </p>
 
         <div class="bestiario-field">
-          <div class="bestiario-field__label">${t('bestiario_danger')}</div>
+          <div class="bestiario-field__label">${T('danger')}</div>
           <div class="bestiario-danger">${skulls}</div>
         </div>
 
         <div class="bestiario-field">
-          <div class="bestiario-field__label">${t('bestiario_habitat')}</div>
+          <div class="bestiario-field__label">${T('habitat')}</div>
           <div class="bestiario-field__value">${creature.habitat || ''}</div>
         </div>
 
         <div class="bestiario-field">
-          <div class="bestiario-field__label">${t('bestiario_powers')}</div>
+          <div class="bestiario-field__label">${T('powers')}</div>
           <ul class="bestiario-field__list">${powers}</ul>
         </div>
 
         <div class="bestiario-field">
-          <div class="bestiario-field__label">${t('bestiario_weaknesses')}</div>
+          <div class="bestiario-field__label">${T('weaknesses')}</div>
           <ul class="bestiario-field__list">${weaknesses}</ul>
         </div>
 
         <div class="bestiario-field">
-          <div class="bestiario-field__label">${t('bestiario_invoke')}</div>
+          <div class="bestiario-field__label">${T('invoke')}</div>
           <div class="bestiario-field__value">${creature.como_invocar || ''}</div>
         </div>
 
         <div class="bestiario-field">
-          <div class="bestiario-field__label">${t('bestiario_protect')}</div>
+          <div class="bestiario-field__label">${T('protect')}</div>
           <div class="bestiario-field__value">${creature.como_protegerse || ''}</div>
         </div>
 
         <div class="bestiario-field">
-          <div class="bestiario-field__label">${t('bestiario_texts')}</div>
+          <div class="bestiario-field__label">${T('texts')}</div>
           <div class="bestiario-field__value">${creature.textos_historicos || ''}</div>
         </div>
       </div>
@@ -250,7 +262,7 @@ function renderExplored() {
 
   panel.innerHTML = `
     <div class="bestiario-explored">
-      <h3 class="bestiario-explored__title">${t('bestiario_explored')} (${exploredCreatures.length})</h3>
+      <h3 class="bestiario-explored__title">${T('explored')} (${exploredCreatures.length})</h3>
       <div class="bestiario-explored__grid">
         ${exploredCreatures.map(c => `<button class="bestiario-explored__item" data-name="${c.nombre}">${c.nombre}</button>`).join('')}
       </div>
@@ -265,22 +277,19 @@ function renderExplored() {
   });
 }
 
-// === SVG CREATURE ILLUSTRATIONS ===
 function generateCreatureSVG(tipo) {
-  const t = (tipo || 'bestia').toLowerCase();
+  const key = (tipo || 'bestia').toLowerCase();
   const svgs = {
     serpiente: `<svg viewBox="0 0 160 200" fill="none">
       <path d="M80 20 Q60 40 80 60 Q100 80 80 100 Q60 120 80 140 Q100 160 80 180" stroke="#d4a017" stroke-width="2" fill="none"/>
-      <circle cx="76" cy="22" r="2" fill="#6b0f0f"/>
-      <circle cx="84" cy="22" r="2" fill="#6b0f0f"/>
+      <circle cx="76" cy="22" r="2" fill="#6b0f0f"/><circle cx="84" cy="22" r="2" fill="#6b0f0f"/>
       <path d="M72 28 L80 32 L88 28" stroke="#d4a017" stroke-width="1" fill="none"/>
       <path d="M65 58 Q80 50 95 58" stroke="#d4a017" stroke-width="0.8" fill="none" opacity="0.4"/>
       <path d="M65 98 Q80 90 95 98" stroke="#d4a017" stroke-width="0.8" fill="none" opacity="0.4"/>
     </svg>`,
     humanoide: `<svg viewBox="0 0 160 200" fill="none">
       <circle cx="80" cy="40" r="20" stroke="#d4a017" stroke-width="1.5" fill="none"/>
-      <circle cx="74" cy="36" r="3" fill="#6b0f0f"/>
-      <circle cx="86" cy="36" r="3" fill="#6b0f0f"/>
+      <circle cx="74" cy="36" r="3" fill="#6b0f0f"/><circle cx="86" cy="36" r="3" fill="#6b0f0f"/>
       <line x1="80" y1="60" x2="80" y2="130" stroke="#d4a017" stroke-width="1.5"/>
       <line x1="80" y1="80" x2="50" y2="110" stroke="#d4a017" stroke-width="1.5"/>
       <line x1="80" y1="80" x2="110" y2="110" stroke="#d4a017" stroke-width="1.5"/>
@@ -291,8 +300,7 @@ function generateCreatureSVG(tipo) {
     bestia: `<svg viewBox="0 0 160 200" fill="none">
       <ellipse cx="80" cy="80" rx="45" ry="30" stroke="#d4a017" stroke-width="1.5" fill="none"/>
       <circle cx="50" cy="60" r="15" stroke="#d4a017" stroke-width="1.5" fill="none"/>
-      <circle cx="45" cy="56" r="3" fill="#6b0f0f"/>
-      <circle cx="55" cy="56" r="3" fill="#6b0f0f"/>
+      <circle cx="45" cy="56" r="3" fill="#6b0f0f"/><circle cx="55" cy="56" r="3" fill="#6b0f0f"/>
       <path d="M42 65 Q50 70 58 65" stroke="#d4a017" stroke-width="1" fill="none"/>
       <line x1="50" y1="110" x2="40" y2="160" stroke="#d4a017" stroke-width="1.5"/>
       <line x1="70" y1="110" x2="60" y2="160" stroke="#d4a017" stroke-width="1.5"/>
@@ -309,8 +317,7 @@ function generateCreatureSVG(tipo) {
     </svg>`,
     alado: `<svg viewBox="0 0 160 200" fill="none">
       <circle cx="80" cy="80" r="15" stroke="#d4a017" stroke-width="1.5" fill="none"/>
-      <circle cx="75" cy="76" r="2.5" fill="#6b0f0f"/>
-      <circle cx="85" cy="76" r="2.5" fill="#6b0f0f"/>
+      <circle cx="75" cy="76" r="2.5" fill="#6b0f0f"/><circle cx="85" cy="76" r="2.5" fill="#6b0f0f"/>
       <path d="M75 85 L80 88 L85 85" stroke="#d4a017" stroke-width="0.8" fill="none"/>
       <line x1="80" y1="95" x2="80" y2="145" stroke="#d4a017" stroke-width="1.5"/>
       <path d="M65 80 Q30 40 10 60 Q25 50 40 65 Q50 72 65 80" stroke="#d4a017" stroke-width="1.2" fill="none"/>
@@ -328,16 +335,14 @@ function generateCreatureSVG(tipo) {
       <path d="M70 100 Q80 105 90 100" stroke="#1a2f6b" stroke-width="1" fill="none"/>
     </svg>`
   };
-
-  return svgs[t] || svgs.bestia;
+  return svgs[key] || svgs.bestia;
 }
 
-// === GROQ CALL ===
 async function callGroq(systemPrompt, userMessage) {
   try {
     return await askGroq({ systemPrompt, userMessage, temperature: 0.9, maxTokens: 700 });
   } catch (err) {
-    if (err.message === 'API_KEY_MISSING' || err.message === 'NO_KEY' || err.message === 'INVALID_KEY') {
+    if (err.message === 'NO_KEY' || err.message === 'INVALID_KEY') {
       renderApiKeyPanel('app-container', () => renderArtefacto(), lang());
       return null;
     }

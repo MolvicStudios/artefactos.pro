@@ -98,7 +98,6 @@ Cada sección debe tener contenido sustancial (2-4 frases). Keywords: 5-8 concep
 
   try {
     const resp = await askGroq({ systemPrompt: sys, userMessage: texto, temperature: 0.6, maxTokens: 1500 });
-    if (resp === 'NO_KEY' || resp === 'INVALID_KEY') { resultado.innerHTML = `<p class="loading">${t.error}</p>`; reset(); return; }
     const data = parsearJSON(resp);
     if (!data || !data.secciones) { resultado.innerHTML = `<p class="loading">${t.error}</p>`; reset(); return; }
     ultimoResultado = data;
@@ -172,7 +171,6 @@ async function expandirKeyword(keyword, textoOriginal) {
   const sys = `Basándote en el contexto del texto académico analizado, explica el concepto "${keyword}" en 2-3 frases claras. Relaciona con el texto original.`;
   try {
     const resp = await askGroq({ systemPrompt: sys, userMessage: `Concepto: ${keyword}`, temperature: 0.7, maxTokens: 200 });
-    if (resp === 'NO_KEY' || resp === 'INVALID_KEY') { expansion.innerHTML = ''; return; }
     expansion.innerHTML = `<div class="keyword-expansion"><strong>${escaparHTML(keyword)}:</strong> ${escaparHTML(resp)}</div>`;
   } catch {
     expansion.innerHTML = '';
