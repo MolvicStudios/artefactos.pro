@@ -529,6 +529,33 @@ h1, h2, h3 { font-family: 'Syne', 'DM Sans', system-ui, sans-serif; font-weight:
     scrollbar-width: none;
   }
   .filters::-webkit-scrollbar { display: none; }
+
+  /* Touch targets mínimo 44px */
+  .filter-btn {
+    min-height: 44px;
+    padding: 0.625rem 1.2rem;
+    font-size: 0.875rem;
+    display: inline-flex;
+    align-items: center;
+  }
+  #pwa-dismiss {
+    min-width: 44px;
+    min-height: 44px;
+    padding: 0.5rem;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+  }
+  #pwa-install {
+    min-height: 44px;
+    padding: 0.625rem 1.2rem;
+    font-size: 0.875rem;
+  }
+
+  /* Tipografía mínima legible */
+  .card-badge { font-size: 0.8rem; }
+  .counter { font-size: 0.875rem; }
+  .site-footer { font-size: 0.875rem; }
 }
 
 @media (min-width: 769px) and (max-width: 1024px) {
